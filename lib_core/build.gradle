@@ -1,0 +1,56 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+def pomName = this.getName()
+def pomVersion = '2.0.0-SNAPSHOT'
+def pomDescription = 'This library is the core'
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 30
+        versionCode 1
+        versionName '1.0.0'
+        multiDexEnabled true
+
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compileOnly 'com.google.android:flexbox:2.0.1'
+    compileOnly 'com.airbnb.android:lottie:3.4.0'
+    api 'com.google.android.material:material:1.2.1'
+    compileOnly 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    compileOnly 'com.google.code.gson:gson:2.8.5'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository (url: NEXUS_REPOSITORY_URL){
+                authentication(
+                        userName:NEXUS_USERNAME,
+                        password:NEXUS_PASSWORD)
+            }
+            pom.project {
+                name pomName
+                version pomVersion
+                description pomDescription
+                artifactId pomName
+                groupId POM_GROUPID
+                packaging POM_PACKAGING
+            }
+        }
+    }
+}

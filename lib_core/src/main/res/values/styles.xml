@@ -1,0 +1,43 @@
+<resources>
+
+    <!-- Bottom Sheet Dialog -->
+    <style name="Core_BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    <!-- Bottom Sheet Dialog -->
+
+
+    <!-- ShapeAppearance -->
+    <style name="Core_ShapeAppearance.circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+    <!-- ShapeAppearance -->
+
+
+    <!-- Pop Window -->
+    <style name="Core_Pop_Left_Animation">
+        <item name="android:windowEnterAnimation">@anim/core_pop_in_left2right</item>
+        <item name="android:windowExitAnimation">@anim/core_pop_out_right2left</item>
+    </style>
+
+    <style name="Core_Pop_Right_Animation">
+        <item name="android:windowEnterAnimation">@anim/core_pop_in_right2left</item>
+        <item name="android:windowExitAnimation">@anim/core_pop_out_left2right</item>
+    </style>
+
+    <style name="Core_Pop_Bottom_Animation">
+        <item name="android:windowEnterAnimation">@anim/core_pop_in_bottom2top</item>
+        <item name="android:windowExitAnimation">@anim/core_pop_out_top2bottom</item>
+    </style>
+
+    <style name="Core_Pop_Top_Animation">
+        <item name="android:windowEnterAnimation">@anim/core_pop_in_top2bottom</item>
+        <item name="android:windowExitAnimation">@anim/core_pop_out_bottom2top</item>
+    </style>
+    <!-- Pop Window -->
+</resources>

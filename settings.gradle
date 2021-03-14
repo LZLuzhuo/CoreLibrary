@@ -1,0 +1,2 @@
+include ':luzhuoapp', ':lib_core', ':lib_core_ktx'
+rootProject.name='CoreLibrary'

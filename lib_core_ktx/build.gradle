@@ -1,0 +1,54 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'maven'
+
+def pomName = this.getName()
+def pomVersion = '2.0.0-SNAPSHOT'
+def pomDescription = 'This library is the core kotlin'
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 30
+        versionCode 1
+        versionName '1.0.0'
+        multiDexEnabled true
+
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compileOnly 'androidx.constraintlayout:constraintlayout:2.0.4'
+    compileOnly 'me.luzhuo.android:lib_core:2.0.0-SNAPSHOT'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository (url: NEXUS_REPOSITORY_URL){
+                authentication(
+                        userName:NEXUS_USERNAME,
+                        password:NEXUS_PASSWORD)
+            }
+            pom.project {
+                name pomName
+                version pomVersion
+                description pomDescription
+                artifactId pomName
+                groupId POM_GROUPID
+                packaging POM_PACKAGING
+            }
+        }
+    }
+}
