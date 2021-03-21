@@ -89,6 +89,11 @@ public class SpinnerX extends ListPopupWindow {
         if (adapter != null) adapter.notifyDataSetChanged();
     }
 
+    public void setIndex(int index) {
+        this.index = index;
+        if (adapter != null) adapter.notifyDataSetChanged();
+    }
+
     public void setAnchorView(View view) {
         final Resources res = context.getResources();
         int mPopupMaxWidth = Math.max(res.getDisplayMetrics().widthPixels / 2, res.getDimensionPixelSize(R.dimen.abc_config_prefDialogWidth));

@@ -16,7 +16,13 @@ package me.luzhuo.lib_core_ktx
 
 import org.json.JSONArray
 import org.json.JSONObject
+import java.lang.Exception
 
+fun String.toJSONObject():JSONObject? = try {
+    JSONObject(this)
+} catch (e: Exception) {
+    null
+}
 fun JSONObject.getIntValue(name: String): Int? = if (this.has(name)) this.getInt(name) else null
 fun JSONObject.getLongValue(name: String): Long? = if (this.has(name)) this.getLong(name) else null
 fun JSONObject.getBooleanValue(name: String): Boolean? = if (this.has(name)) this.getBoolean(name) else null

@@ -55,6 +55,7 @@ class TagButtonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private UICalculation ui;
     // 默认为单选
     private boolean singleSelect = true;
+    private boolean cancelable = false;
     private TagButtonListener listener = null;
 
     public TagButtonAdapter(Context context) {
@@ -69,9 +70,10 @@ class TagButtonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.InvalidTextColor = 0xFFA8A8A8;
     }
 
-    public TagButtonAdapter(Context context, boolean singleSelect) {
+    public TagButtonAdapter(Context context, boolean singleSelect, boolean cancelable) {
         this(context);
         this.singleSelect = singleSelect;
+        this.cancelable = cancelable;
     }
 
     public void setData(List<TagButton> data) {
@@ -92,8 +94,11 @@ class TagButtonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private void setCurrent(TagButton data, int position, boolean isClick) {
         if (!singleSelect) data.isChecked = !isClick || !data.isChecked; // isClick ? !data.isChecked : true
         else {
-            for (TagButton mData : mDatas) { mData.isChecked = false; }
-            data.isChecked = true;
+            if (cancelable && data.isChecked) data.isChecked = false;
+            else {
+                for (TagButton mData : mDatas) { mData.isChecked = false; }
+                data.isChecked = true;
+            }
         }
 
         if (!singleSelect) notifyItemChanged(position);

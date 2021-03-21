@@ -62,10 +62,12 @@ public class TagButtonView extends RecyclerView {
         int span_count;
         float interval;
         boolean single;
+        boolean cancelable;
         try {
             span_count = typedArray.getInt(R.styleable.TagButtonView_core_span_count, 4); // 跨度个数
             interval = typedArray.getDimension(R.styleable.TagButtonView_core_interval, -1); // 间隔
-            single = typedArray.getBoolean(R.styleable.TagButtonView_core_single, true);
+            single = typedArray.getBoolean(R.styleable.TagButtonView_core_single, true); // 单选
+            cancelable = typedArray.getBoolean(R.styleable.TagButtonView_core_cancelable, false); // 不可取消选择
         } finally {
             typedArray.recycle();
         }
@@ -76,7 +78,7 @@ public class TagButtonView extends RecyclerView {
         this.setLayoutManager(layoutManager);
         recManager.setItemDecorationOnLinearLayout(this, interval == -1 ? 8 : ui.px2dp(interval));
 
-        adapter = new TagButtonAdapter(context, single);
+        adapter = new TagButtonAdapter(context, single, cancelable);
         this.setAdapter(adapter);
     }
 

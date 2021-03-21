@@ -1,9 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
-
-def pomName = this.getName()
-def pomVersion = '2.0.0-SNAPSHOT'
-def pomDescription = 'This library is the core'
 
 android {
     compileSdkVersion 30
@@ -34,23 +29,5 @@ dependencies {
 
     compileOnly 'com.google.code.gson:gson:2.8.5'
 }
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository (url: NEXUS_REPOSITORY_URL){
-                authentication(
-                        userName:NEXUS_USERNAME,
-                        password:NEXUS_PASSWORD)
-            }
-            pom.project {
-                name pomName
-                version pomVersion
-                description pomDescription
-                artifactId pomName
-                groupId POM_GROUPID
-                packaging POM_PACKAGING
-            }
-        }
-    }
-}
+apply from: 'maven.gradle'
+//apply from: 'jcenter.gradle'
