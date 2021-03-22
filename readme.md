@@ -4,7 +4,7 @@
 
 ```groovy
 implementation 'me.luzhuo.android:lib_core:2.0.1'
-implementation 'me.luzhuo.android:lib_core_ktx:2.0.1'
+implementation 'me.luzhuo.android:lib_core_ktx:2.0.2'
 ```
 
 # 2. 使用文档
