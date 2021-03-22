@@ -18,8 +18,23 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
 
-fun String.toJSONObject():JSONObject? = try {
+fun String.toJSONObject(): JSONObject? = try {
     JSONObject(this)
+} catch (e: Exception) {
+    null
+}
+fun String.toJSONArray(): JSONArray? = try {
+    JSONArray(this)
+} catch (e: Exception) {
+    null
+}
+fun JSONObject.toJSONObject(name: String): JSONObject? = try {
+    this.getJSONObject(name)
+} catch (e: Exception) {
+    null
+}
+fun JSONObject.toJSONArray(name: String): JSONArray? = try {
+    this.getJSONArray(name)
 } catch (e: Exception) {
     null
 }

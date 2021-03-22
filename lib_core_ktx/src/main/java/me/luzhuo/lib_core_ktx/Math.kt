@@ -48,3 +48,19 @@ fun Double.multiply(num: Double): Double = this * num
  * 除法
  */
 fun Double.divide(num: Double): Double = this / num
+
+// ===
+
+fun Float.scale2(): String {
+    return DecimalFormat("0.##").apply {
+        roundingMode = RoundingMode.FLOOR
+    }.format(this)
+}
+fun Float.add(num: Float): Float = this + num
+fun Float.subtract(num: Float): Float = this - num
+fun Float.multiply(num: Float): Float = this * num
+fun Float.divide(num: Float): Float = this / num
+fun Int.add(num: Int): Int = this + num
+fun Int.subtract(num: Int): Int = this - num
+fun Int.multiply(num: Int): Int = this * num
+fun Int.divide(num: Int): Double = this / num.toDouble()
