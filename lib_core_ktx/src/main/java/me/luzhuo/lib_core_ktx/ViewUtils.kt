@@ -16,6 +16,8 @@ package me.luzhuo.lib_core_ktx
 
 import android.view.View
 import androidx.constraintlayout.widget.Group
+import me.luzhuo.lib_core.app.base.CoreBaseApplication
+import me.luzhuo.lib_core.ui.calculation.UICalculation
 
 /**
  * Group 的群点击事件
@@ -25,3 +27,8 @@ fun Group.setOnClickListeners(listener: (View) -> Unit) {
         rootView.findViewById<View>(id).setOnClickListener(listener)
     }
 }
+
+fun Int.dp(): Int = UICalculation(CoreBaseApplication.context).px2dp(this.toFloat())
+fun Float.dp(): Int = UICalculation(CoreBaseApplication.context).px2dp(this)
+fun Int.px(): Int = UICalculation(CoreBaseApplication.context).dp2px(this.toFloat())
+fun Float.px(): Int = UICalculation(CoreBaseApplication.context).dp2px(this)

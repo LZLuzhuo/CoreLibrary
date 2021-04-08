@@ -25,22 +25,22 @@ import me.luzhuo.lib_core.date.enums.FormatRule;
  * @Creation Date: 2021/3/17 15:54
  * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
  **/
-public class DataManager {
+public class DateManager {
     private DateCalculate dateCalculate;
     private DateCalendar dateCalenda;
     private DateTransform dateTransform;
 
-    private DataManager(){
+    private DateManager(){
         dateCalculate = new DateCalculate();
         dateCalenda = new DateCalendar();
         dateTransform = new DateTransform();
     }
 
-    public static DataManager getInstance(){
+    public static DateManager getInstance(){
         return Instance.instance;
     }
     private static class Instance{
-        private static final DataManager instance = new DataManager();
+        private static final DateManager instance = new DateManager();
     }
 
     public boolean isToday(long previousTimesamp){
