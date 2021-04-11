@@ -41,9 +41,9 @@ import androidx.fragment.app.FragmentTransaction;
  * =================================================
  **/
 public class FragmentManager {
-	private androidx.fragment.app.FragmentManager fragmentManager;
-	private @IdRes int containerId;
-	private Fragment oldFragment;
+	protected androidx.fragment.app.FragmentManager fragmentManager;
+	protected @IdRes int containerId;
+	protected Fragment oldFragment;
 
 	/**
 	 * @param containerId 放Fragment的FrameLayout容器id

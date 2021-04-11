@@ -23,6 +23,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import me.luzhuo.lib_core.ui.toast.ToastManager;
 
@@ -30,12 +31,15 @@ import me.luzhuo.lib_core.ui.toast.ToastManager;
  * 拍照
  */
 public class CameraManager {
-    private FragmentActivity activity;
-    private ActivityResultLauncher<Context> takePicture;
+    private Context context;
+    private ActivityResultLauncher<Void> takePicture;
     private ICameraCallback cameraCallback;
 
+    /**
+     * 请在Activity的onCreate回调里创建该对象
+     */
     public CameraManager(FragmentActivity activity) {
-        this.activity = activity;
+        this.context = activity;
 
         takePicture = activity.registerForActivityResult(new Camera(), new ActivityResultCallback<String>() {
             @Override
@@ -45,12 +49,26 @@ public class CameraManager {
         });
     }
 
+    /**
+     * 请在Fragment的OnCreate回调里创建该对象
+     */
+    public CameraManager(Fragment fragment) {
+        this.context = fragment.getContext();
+
+        takePicture = fragment.registerForActivityResult(new Camera(), new ActivityResultCallback<String>() {
+            @Override
+            public void onActivityResult(String result) {
+                if(cameraCallback != null && !TextUtils.isEmpty(result)) cameraCallback.onCameraCallback(result);
+            }
+        });
+    }
+
     public void show() {
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ToastManager.show(activity, "请授予拍照权限");
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ToastManager.show(context, "请授予拍照权限");
             return;
         }
-        takePicture.launch(activity);
+        takePicture.launch(null);
     }
 
     public CameraManager setCameraCallback(ICameraCallback cameraCallback) {

@@ -40,7 +40,7 @@ import me.luzhuo.lib_core.media.ImageManager;
  * authority 在每个应用都必须是唯一的, 所以不同的应用是不一样的
  * authority 在代码中, 和 Manifest 这两处修改
  */
-class Camera extends ActivityResultContract<Context, String> {
+class Camera extends ActivityResultContract<Void, String> {
     private Uri imageUri;
     private File photoFile;
     private final FileManager fileManager = new FileManager();
@@ -50,8 +50,8 @@ class Camera extends ActivityResultContract<Context, String> {
 
     @NonNull
     @Override
-    public Intent createIntent(@NonNull Context context, Context input) {
-        this.context = input;
+    public Intent createIntent(@NonNull Context context, Void input) {
+        this.context = context;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         photoFile = new File(fileManager.getCacheDirectory(context), HashManager.getInstance().getUuid());

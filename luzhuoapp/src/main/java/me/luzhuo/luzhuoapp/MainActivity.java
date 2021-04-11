@@ -15,12 +15,10 @@ public class MainActivity extends CoreBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ToastManager.show(this, "Hello core library");
+    }
 
-        new CameraManager(this).setCameraCallback(new ICameraCallback() {
-            @Override
-            public void onCameraCallback(String filePath) {
-                Log.e("TAG", "" + filePath);
-            }
-        }).show();
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }
