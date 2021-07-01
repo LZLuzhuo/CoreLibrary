@@ -28,6 +28,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.UUID;
 
 import static android.os.Environment.MEDIA_MOUNTED;
@@ -40,6 +42,11 @@ import static android.os.Environment.MEDIA_MOUNTED;
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
 public class FileManager {
+    private DecimalFormat format = new DecimalFormat("0.##");
+
+    {
+        format.setRoundingMode(RoundingMode.HALF_UP);
+    }
 
     /**
      * 从 输入流 写入到文件
@@ -173,5 +180,91 @@ public class FileManager {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 获取缓存文件的大小
+     */
+    public long getCacheSize(Context context) {
+        long folderSize = getFolderSize(context.getCacheDir());
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            folderSize += getFolderSize(context.getExternalCacheDir());
+        }
+        return folderSize;
+    }
+
+    /**
+     * 清理缓存
+     */
+    public void clearCache(Context context) {
+        clearFolder(context.getCacheDir());
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            clearFolder(context.getExternalCacheDir());
+        }
+    }
+
+    /**
+     * 获取文件夹内所有文件的大小, 遇到文件夹则递归
+     * @param folder 文件夹
+     * @return 文件夹内文件的大小
+     */
+    public long getFolderSize(File folder) {
+        long size = 0;
+        try {
+            for (File file : folder.listFiles()) {
+                if (file.isDirectory()) size += getFolderSize(file);
+                else size += file.length();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return size;
+    }
+
+    /**
+     * 清空文件夹
+     * @param folder 文件夹
+     */
+    public boolean clearFolder(File folder) {
+        if (folder == null && !folder.exists()) return false;
+
+        if (folder.isDirectory()) {
+            for (File file : folder.listFiles()) {
+                boolean isDelete = clearFolder(file);
+                if (!isDelete) return false;
+            }
+        }
+        return folder.delete();
+    }
+
+    /**
+     * 获取格式化之后的文件大小
+     */
+    public String getFormatSize(double size) {
+        double KB = size / 1024;
+        if (KB < 1) return String.format("%dB", (int) size);
+        double MB = KB / 1024;
+        if (MB < 1) return String.format("%sKB", format.format(KB));
+        double GB = MB / 1024;
+        if (GB < 1) return String.format("%sMB", format.format(MB));
+        double TB = GB / 1024;
+        if (TB < 1) return String.format("%sGB", format.format(GB));
+        double PB = TB / 1024;
+        if (PB < 1) return String.format("%sTB", format.format(TB));
+        double EB = PB / 1024;
+        if (EB < 1) return String.format("%sPB", format.format(PB));
+        double ZB = EB / 1024;
+        if (ZB < 1) return String.format("%sEB", format.format(EB));
+        double YB = ZB / 1024;
+        if (YB < 1) return String.format("%sZB", format.format(ZB));
+        double BB = YB / 1024;
+        if (BB < 1) return String.format("%sYB", format.format(YB));
+        double NB = BB / 1024;
+        if (NB < 1) return String.format("%sBB", format.format(BB));
+        double DB = NB / 1024;
+        if (DB < 1) return String.format("%sNB", format.format(NB));
+        double CB = DB / 1024;
+        if (CB < 1) return String.format("%sDB", format.format(DB));
+        return String.format("%sCB", format.format(CB));
     }
 }

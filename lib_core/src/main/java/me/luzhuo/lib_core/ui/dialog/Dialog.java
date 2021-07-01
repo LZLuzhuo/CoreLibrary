@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -309,19 +310,23 @@ public class Dialog {
      * @param isCancelable whether it can be cancelled, return or click outside the control.
      * @return AlertDialog
      *
-     * @see #show(Context, String, View, String, String, boolean, boolean, boolean, OnClickListener, Object)
+     * @see #show(Context, String, View, String, String, boolean, OnClickListener, Object)
      */
-    public AlertDialog buildDialog(Context context, View view, boolean isCancelable){
+    public AlertDialog buildDialog(Context context, @StyleRes int style, View view, boolean isCancelable){
         if (Looper.myLooper() != Looper.getMainLooper()) {
             throw new IllegalStateException("You must create it on the main thread.");
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, style);
         builder.setCancelable(isCancelable);
         AlertDialog dialog = builder.create();
         dialog.setView(view, 0, 0, 0, 0);
         dialog.show();
         return dialog;
+    }
+
+    public AlertDialog buildDialog(Context context, View view, boolean isCancelable){
+        return buildDialog(context, 0, view, isCancelable);
     }
 
     /**

@@ -32,3 +32,16 @@ fun Int.dp(): Int = UICalculation(CoreBaseApplication.context).px2dp(this.toFloa
 fun Float.dp(): Int = UICalculation(CoreBaseApplication.context).px2dp(this)
 fun Int.px(): Int = UICalculation(CoreBaseApplication.context).dp2px(this.toFloat())
 fun Float.px(): Int = UICalculation(CoreBaseApplication.context).dp2px(this)
+
+/**
+ * 将dp转成系统需要的px
+ * 注意:
+ * 10.dp 此处的含义是将10dp转成系统需要的px
+ * 10.px() 此处的含义是将10dp转成系统需要的px
+ */
+val Int.dp: Int get() = UICalculation(CoreBaseApplication.context).dp2px(this.toFloat())
+val Float.dp: Int get() = UICalculation(CoreBaseApplication.context).dp2px(this)
+
+fun visible(vararg views: Any?) { views.forEach { (it as? View)?.visibility = View.VISIBLE } }
+fun invisible(vararg views: Any?) { views.forEach { (it as? View)?.visibility = View.INVISIBLE } }
+fun gone(vararg views: Any?) { views.forEach { (it as? View)?.visibility = View.GONE } }

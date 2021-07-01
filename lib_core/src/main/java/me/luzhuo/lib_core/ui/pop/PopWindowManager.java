@@ -37,12 +37,12 @@ import me.luzhuo.lib_core.ui.calculation.UICalculation;
  * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
  **/
 public class PopWindowManager extends PopupWindow {
-    private static final String TAG = PopWindowManager.class.getSimpleName();
-    private Context context;
-    private From from;
-    private View parentView;
-    private FragmentActivity activity;
-    private UICalculation ui;
+    protected static final String TAG = PopWindowManager.class.getSimpleName();
+    protected Context context;
+    protected From from;
+    protected View parentView;
+    protected FragmentActivity activity;
+    protected UICalculation ui;
 
     /**
      * @param view 用于展示的View
@@ -131,7 +131,7 @@ public class PopWindowManager extends PopupWindow {
     /**
      * 设置屏幕的背景透明度
      */
-    private void backgroundAlpha(float alpha) {
+    protected void backgroundAlpha(float alpha) {
         if (activity == null) return;
 
         final WindowManager.LayoutParams lp = activity.getWindow().getAttributes();

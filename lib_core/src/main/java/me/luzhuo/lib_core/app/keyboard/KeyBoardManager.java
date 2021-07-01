@@ -18,6 +18,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 /**
  * Description: 软键盘工具
@@ -47,9 +48,10 @@ public class KeyBoardManager {
      * 显示键盘
      * 弹出的键盘类型与editText的配置有关
      */
-    public void show(View editText) {
+    public void show(EditText editText) {
         if (editText == null) return;
 
+        editText.requestFocus(); // 请求获取焦点
         manager.showSoftInput(editText, flags);
     }
 

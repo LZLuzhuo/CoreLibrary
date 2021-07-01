@@ -15,11 +15,13 @@
 package me.luzhuo.lib_core.app.color;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.TypedValue;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import me.luzhuo.lib_core.R;
+import me.luzhuo.lib_core.app.base.CoreBaseApplication;
 
 /**
  * Description: 色彩管理
@@ -31,6 +33,9 @@ public class ColorManager {
     private Context context;
     public ColorManager(Context context) {
         this.context = context;
+    }
+    public ColorManager() {
+        this(CoreBaseApplication.context);
     }
 
     /**
@@ -44,7 +49,7 @@ public class ColorManager {
      * 30% 透明度的 ColorAccent
      */
     public int getSecondColorAccent() {
-        return (0x4D << 24) | (getColorAccent() & 0x00FFFFFF);
+        return getSecondColor(getColorAccent());
     }
 
     /**
@@ -62,10 +67,34 @@ public class ColorManager {
     }
 
     /**
-     * TextView 的默认颜色
+     * TextView 的默认颜色 是三级文本色
      */
     public int getTextColorDefault() {
-        return getColor(R.color.core_text_color_default);
+        return getTextColorTertiary();
+    }
+
+    /**
+     * 文本一级颜色
+     * ?android:attr/textColorPrimary
+     */
+    public int getTextColorPrimary() {
+        return getAndroidAttrColor(android.R.attr.textColorPrimary);
+    }
+
+    /**
+     * 文本二级颜色
+     * ?android:attr/textColorSecondary
+     */
+    public int getTextColorSecondary() {
+        return getAndroidAttrColor(android.R.attr.textColorSecondary);
+    }
+
+    /**
+     * 文本三级颜色
+     * ?android:attr/textColorTertiary
+     */
+    public int getTextColorTertiary() {
+        return getAndroidAttrColor(android.R.attr.textColorTertiary);
     }
 
     /**
@@ -83,11 +112,28 @@ public class ColorManager {
     }
 
     /**
-     * 获取 ?attr 的颜色纸
+     * 30% 透明度的 Color
+     */
+    public int getSecondColor(int color) {
+        return (0x4D << 24) | (color & 0x00FFFFFF);
+    }
+
+    /**
+     * 获取 ?attr 的颜色值
      */
     public int getAttrColor(@ColorInt int colorAttrId) {
-        TypedValue typedValue = new  TypedValue();
+        TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(colorAttrId, typedValue, true);
         return typedValue.data;
+    }
+
+    /**
+     * 获取 ?android:attr 的颜色值
+     */
+    public int getAndroidAttrColor(@ColorInt int androidColorAttrId) {
+        TypedArray array = context.getTheme().obtainStyledAttributes(new int[]{ androidColorAttrId });
+        int color = array.getColor(0, 0xDD000000);
+        array.recycle();
+        return color;
     }
 }

@@ -19,6 +19,7 @@ import android.content.Context;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -35,11 +36,14 @@ public class ClipboardManager implements LifecycleObserver {
     private android.content.ClipboardManager clipboardManager;
     private android.content.ClipboardManager.OnPrimaryClipChangedListener clipChangedListener;
 
-    private ClipboardManager(Context context) {
+    /**
+     * 如果需要监听剪贴板, 请使用 ClipboardManager(AppCompatActivity) 或 ClipboardManager(Fragment) 构造函数.
+     */
+    public ClipboardManager(Context context) {
         clipboardManager = (android.content.ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
     }
 
-    public ClipboardManager(AppCompatActivity activity) {
+    public ClipboardManager(FragmentActivity activity) {
         this(activity.getApplicationContext());
         activity.getLifecycle().addObserver(this);
     }

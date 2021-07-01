@@ -25,10 +25,7 @@ android {
 
 dependencies {
     compileOnly 'androidx.constraintlayout:constraintlayout:2.0.4'
-    compileOnly 'me.luzhuo.android:lib_core:2.0.2-SNAPSHOT'
-
-    // jcenter
-//    compileOnly 'me.luzhuo.android:lib_core:2.0.1'
+    compileOnly 'me.luzhuo.android:lib_core:2.0.12-SNAPSHOT'
 }
 apply from: 'maven.gradle'
 //apply from: 'jcenter.gradle'

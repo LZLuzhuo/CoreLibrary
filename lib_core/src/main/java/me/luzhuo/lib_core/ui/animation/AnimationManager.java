@@ -14,10 +14,13 @@
  */
 package me.luzhuo.lib_core.ui.animation;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 
 import androidx.annotation.AnimRes;
 import me.luzhuo.lib_core.R;
@@ -55,5 +58,29 @@ public class AnimationManager {
      */
     public void stopRotate(View view) {
         view.clearAnimation();
+    }
+
+    public void fadeInAnimation(View view) {
+        fadeInAnimation(view, 1300);
+    }
+    /**
+     * 淡入动画
+     * 前提View需要时 GONE 或者 INVISIBLE 状态
+     */
+    public void fadeInAnimation(View view, long duration) {
+        if (view.getVisibility() == View.VISIBLE) return;
+
+        final ObjectAnimator translationAnim = ObjectAnimator.ofFloat(view, "translationX", -120f, 0f);
+        translationAnim.setDuration(duration);
+        translationAnim.setInterpolator(new DecelerateInterpolator());
+
+        final ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+        alphaAnimator.setDuration(duration);
+
+        final AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(translationAnim, alphaAnimator);
+        animatorSet.start();
+
+        view.setVisibility(View.VISIBLE);
     }
 }

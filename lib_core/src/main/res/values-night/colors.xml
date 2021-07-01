@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- TextView 的默认颜色 -->
-    <color name="core_text_color_default">#FFC1C1C1</color>
     <!-- 前景色 #FF424242 -->
     <color name="core_colorForeground">@color/cardview_dark_background</color>
     <!-- ListPopupWindow 的背景色 -->

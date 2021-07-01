@@ -19,8 +19,16 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.TimerTask;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
 import me.luzhuo.lib_core.date.callback.ICountDownCallback;
 import me.luzhuo.lib_core.date.callback.ITimerCallback;
 
@@ -31,21 +39,29 @@ import me.luzhuo.lib_core.date.callback.ITimerCallback;
  * @Creation Date: 2020/9/14 18:13
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
-public class Timer {
+public class Timer implements LifecycleObserver {
     private static Handler mainThread;
+    private List<CountDownTimer> countDownTimers = new LinkedList<>();
 
-    public Timer() {
+    public Timer(FragmentActivity activity) {
         mainThread = new Handler(Looper.getMainLooper());
+        activity.getLifecycle().addObserver(this);
+    }
+
+    public Timer(Fragment fragment) {
+        mainThread = new Handler(Looper.getMainLooper());
+        fragment.getLifecycle().addObserver(this);
     }
 
     /**
      * 倒计时
+     * 可以同时开启多个
      * @param countSeconds 总时长, 单位s
      */
-    public void countDownTimer(int countSeconds, final ICountDownCallback callback) {
-        if(countSeconds <= 0) return;
+    public @Nullable CountDownTimer countDownTimer(int countSeconds, final ICountDownCallback callback) {
+        if(countSeconds <= 0) return null;
 
-        new CountDownTimer(countSeconds * 1000, 1000) {
+        CountDownTimer countDownTimer = new CountDownTimer(countSeconds * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 int untilFinishedSecondes = (int) ((millisUntilFinished / 1000f) + 0.5);
@@ -56,6 +72,8 @@ public class Timer {
                 if(callback != null) callback.finished();
             }
         }.start();
+        countDownTimers.add(countDownTimer);
+        return countDownTimer;
     }
 
 
@@ -63,8 +81,10 @@ public class Timer {
     private long startTime = 0;
     /**
      * 开始计时
+     * 同时只能开启一个
      */
     public TimerTask startTimer(final ITimerCallback callback) {
+        if (task != null) return task;
         final java.util.Timer timer = new java.util.Timer(true);
 
         task = new TimerTask() {
@@ -95,6 +115,18 @@ public class Timer {
         if (task == null) return 0;
 
         task.cancel();
-        return (task.scheduledExecutionTime() - startTime) / 1000;
+        long endTime = (task.scheduledExecutionTime() - startTime) / 1000;
+        task = null;
+        return endTime;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    protected void onDestroy() {
+        // CountDownTimer
+        for (CountDownTimer countDownTimer : countDownTimers) {
+            countDownTimer.cancel();
+        }
+        // TimerTask
+        endTimer();
     }
 }

@@ -1,5 +1,17 @@
 <resources>
 
+    <!-- 透明背景和状态栏的主题 -->
+    <style name="Core_Theme_Transparent" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+
     <!-- Bottom Sheet Dialog -->
     <style name="Core_BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
@@ -11,10 +23,22 @@
     <!-- Bottom Sheet Dialog -->
 
 
+    <!-- Dialog -->
+    <style name="Core_Transparent_Dialog" parent="@style/Theme.AppCompat.Dialog" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+    <!-- Dialog -->
+
+
     <!-- ShapeAppearance -->
     <style name="Core_ShapeAppearance.circle" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+    <style name="Core_ShapeAppearance.rounded_rectangle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10%</item>
     </style>
     <!-- ShapeAppearance -->
 
@@ -40,4 +64,18 @@
         <item name="android:windowExitAnimation">@anim/core_pop_out_bottom2top</item>
     </style>
     <!-- Pop Window -->
+
+
+    <!-- Button -->
+    <style name="Core_Button">
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+    <!-- Button -->
 </resources>

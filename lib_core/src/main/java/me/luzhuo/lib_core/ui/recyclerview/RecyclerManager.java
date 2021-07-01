@@ -29,6 +29,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import me.luzhuo.lib_core.math.calculation.MathCalculation;
 import me.luzhuo.lib_core.ui.calculation.UICalculation;
 
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
+
 /**
  * Description:
  *
@@ -219,11 +221,11 @@ public class RecyclerManager {
      * <p><img src="http://luzhuo.me/luzhuoCode/lib_common_ui/manager/RecyclerView/isScrollBottom_marginCont.png" /></p>
      *
      * @param recyclerView androidx.recyclerview.widget.RecyclerView
-     * @param marginCont
+     * @param marginCount
      * @return Return true if the last View is displayed.
      */
-    public boolean isScrollBottom(RecyclerView recyclerView, int marginCont){
-        if(recyclerView == null || marginCont < 0) return false;
+    public boolean isScrollBottom(RecyclerView recyclerView, int marginCount){
+        if(recyclerView == null || marginCount < 0) return false;
 
         int lastVisibleItemPosition = 0;
         int visibleItemCount = 0;
@@ -271,10 +273,74 @@ public class RecyclerManager {
             return false;
 
         int state = recyclerView.getScrollState();
-        if (visibleItemCount > 0 && lastVisibleItemPosition >= totalItemCount - 1 - marginCont && state == recyclerView.SCROLL_STATE_IDLE) {
+        if (visibleItemCount > 0 && lastVisibleItemPosition >= totalItemCount - 1 - marginCount && state == recyclerView.SCROLL_STATE_IDLE) {
             return true;
         } else {
             return false;
         }
+    }
+
+    private View oldView = null;
+    /**
+     * 检测 RecyclerView 内的 Item 的某个 View控件 是否可见
+     * @param recyclerView RecyclerView
+     */
+    public void checkItemViewVisibility(final RecyclerView recyclerView, final LinearLayoutManager layoutManager, final int resId /* 资源id */, final OnItemViewVisibilityCallback callback) {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            private int visibleCount = 0;
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (newState == SCROLL_STATE_IDLE) startCheckVisibility(recyclerView, visibleCount);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                final int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+                final int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+                visibleCount = lastVisibleItem - firstVisibleItem + 1;
+            }
+
+            private void startCheckVisibility(RecyclerView recyclerView, int visibleCount) {
+                for (int i = 0; i < visibleCount; i++) {
+                    if (recyclerView.getChildAt(i) == null) break;
+                    final View newView = recyclerView.getChildAt(i).findViewById(resId);
+                    if (newView == null) break;
+
+                    final Rect rect = new Rect();
+                    newView.getLocalVisibleRect(rect);
+                    if (rect.top == 0 && rect.bottom == newView.getHeight()) {
+                        if (oldView == newView) return;
+
+                        if (callback != null) {
+                            callback.onItemViewVisibility(false, oldView);
+                            callback.onItemViewVisibility(true, newView);
+                        }
+
+                        oldView = newView;
+                        return;
+                    }
+                }
+            }
+        });
+        recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                if (recyclerView.getChildCount() <= 0) return;
+                // 自动开始播放第一个
+                final View firstView = recyclerView.getChildAt(0).findViewById(resId);
+                oldView = firstView;
+
+                if (callback != null) callback.onItemViewVisibility(true, firstView);
+            }
+        });
+    }
+
+    public interface OnItemViewVisibilityCallback {
+        /**
+         * 检测 RecyclerView 内的 Item 的某个 View控件 是否可见的回调
+         * @param isVisible true 可见, false 不可见
+         */
+        public void onItemViewVisibility(boolean isVisible, View view);
     }
 }

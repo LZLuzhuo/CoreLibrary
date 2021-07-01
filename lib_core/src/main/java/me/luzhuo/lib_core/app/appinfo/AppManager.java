@@ -30,6 +30,11 @@ import java.security.MessageDigest;
 
 import me.luzhuo.lib_core.app.appinfo.bean.AppInfo;
 
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
+import static androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode;
+
 /**
  * Description: 应用管理
  *
@@ -104,6 +109,29 @@ public class AppManager {
     public boolean isDarkTheme(Context context) {
         int flag = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         return flag == Configuration.UI_MODE_NIGHT_YES;
+    }
+
+    public enum DarkMode {
+        Day/*白天模式*/, Night/*夜晚模式*/, System/*跟随系统*/
+    }
+
+    /**
+     * 设置黑暗模式
+     * 1. 设置夜间模式后, 应用结束也会失效
+     * 2. 成功切换模式后, Activity会销毁重建
+     */
+    public void setDarkMode(DarkMode mode) {
+        switch (mode) {
+            case Day:
+                setDefaultNightMode(MODE_NIGHT_NO);
+                break;
+            case Night:
+                setDefaultNightMode(MODE_NIGHT_YES);
+                break;
+            case System:
+                setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM);
+                break;
+        }
     }
 
     /**
