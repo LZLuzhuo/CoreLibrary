@@ -11,14 +11,14 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class MainActivity2 : CoreBaseActivity(){
+    private val TAG = MainActivity2::class.java.simpleName
+    private var isShow = true
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
         setContentView(R.layout.activity_second)
     }
 
     fun onClose(view: View) {
-        val textview = ""
-        (textview as? TextView)?.text = "asdfasdf"
-        Log.e("TAG", "");
+        toast2("asfdasdf")
     }
 }

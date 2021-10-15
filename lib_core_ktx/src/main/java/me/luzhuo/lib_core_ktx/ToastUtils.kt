@@ -15,10 +15,7 @@
 package me.luzhuo.lib_core_ktx
 
 import android.text.TextUtils
-import android.view.Gravity
-import android.widget.Toast
 import me.luzhuo.lib_core.app.base.CoreBaseApplication
-import me.luzhuo.lib_core.ui.calculation.UICalculation
 import me.luzhuo.lib_core.ui.toast.ToastManager
 
 /**
@@ -29,12 +26,9 @@ fun Any.toast(content: String?) {
     ToastManager.show(CoreBaseApplication.context, content)
 }
 
-private var height = 0
 fun Any.toast2(content: String?) {
-    if(height == 0) height = UICalculation(CoreBaseApplication.context).display[1] / 3
-    Toast.makeText(CoreBaseApplication.context, content, Toast.LENGTH_SHORT).apply {
-        setGravity(Gravity.TOP, 0, height)
-    }.show()
+    if(TextUtils.isEmpty(content)) return
+    ToastManager.show2(CoreBaseApplication.context, content)
 }
 
 /**

@@ -14,7 +14,9 @@
  */
 package me.luzhuo.lib_core_ktx
 
+import android.text.InputType
 import android.view.View
+import android.widget.EditText
 import androidx.constraintlayout.widget.Group
 import me.luzhuo.lib_core.app.base.CoreBaseApplication
 import me.luzhuo.lib_core.ui.calculation.UICalculation
@@ -45,3 +47,19 @@ val Float.dp: Int get() = UICalculation(CoreBaseApplication.context).dp2px(this)
 fun visible(vararg views: Any?) { views.forEach { (it as? View)?.visibility = View.VISIBLE } }
 fun invisible(vararg views: Any?) { views.forEach { (it as? View)?.visibility = View.INVISIBLE } }
 fun gone(vararg views: Any?) { views.forEach { (it as? View)?.visibility = View.GONE } }
+
+/**
+ * 隐藏密码
+ */
+fun EditText?.passwordHide() {
+    this?.inputType = InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD
+}
+fun EditText?.passwordShow() {
+    this?.inputType = InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+}
+fun EditText?.passwordHideNumber() {
+    this?.inputType = InputType.TYPE_CLASS_NUMBER + InputType.TYPE_NUMBER_VARIATION_PASSWORD
+}
+fun EditText?.passwordShowNumber() {
+    this?.inputType = InputType.TYPE_CLASS_NUMBER + InputType.TYPE_NUMBER_FLAG_DECIMAL
+}

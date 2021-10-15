@@ -14,20 +14,24 @@
  */
 package me.luzhuo.lib_core.app.appinfo;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
 import java.security.MessageDigest;
 
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentActivity;
 import me.luzhuo.lib_core.app.appinfo.bean.AppInfo;
 
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
@@ -43,6 +47,7 @@ import static androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode;
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
 public class AppManager {
+    public final static String AUTHORITY = "me.luzhuo.fileprovider.";
 
     /**
      * 检查当前应用的版本是否为 Debug 版本
@@ -228,7 +233,7 @@ public class AppManager {
     /**
      * 再按一次退出应用
      */
-    public void onBackPressed(Activity activity) {
+    public void onBackPressed(FragmentActivity activity) {
         long secondTime = System.currentTimeMillis();
         if (secondTime - firstTime > 2000) {
             Toast.makeText(activity.getBaseContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
@@ -236,5 +241,43 @@ public class AppManager {
         } else {
             activity.finish();
         }
+    }
+
+    /**
+     * 安装应用
+     * @param context Context
+     * @param appFilePath app file path
+     */
+    public void installApk(Context context, File appFilePath) {
+        if (context == null || appFilePath == null || !appFilePath.exists()) return;
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) { // <= android6.0
+            installApk_(context, appFilePath);
+        } else { // >= android7.1
+            installApkN(context, appFilePath);
+        }
+    }
+
+    /**
+     * 安装应用
+     * android <= android6.0
+     */
+    private void installApk_(Context context, File appFilePath) {
+        Intent install = new Intent(Intent.ACTION_VIEW);
+        install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        install.setDataAndType(Uri.parse("file://" + appFilePath.getAbsolutePath()), "application/vnd.android.package-archive");
+        context.startActivity(install);
+    }
+
+    /**
+     * 安装应用, 通过 FileProvider 共享目录的方式
+     * android == android 7.0
+     */
+    private void installApkN(Context context, File appFilePath) {
+        Intent install = new Intent(Intent.ACTION_VIEW);
+        install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // 对目标应用临时授权该 Uri 所代表的文件
+        install.setDataAndType(FileProvider.getUriForFile(context, AUTHORITY + context.getPackageName(), appFilePath), "application/vnd.android.package-archive");
+        context.startActivity(install);
     }
 }

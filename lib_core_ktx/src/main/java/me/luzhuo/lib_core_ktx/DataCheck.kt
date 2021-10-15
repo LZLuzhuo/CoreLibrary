@@ -14,23 +14,52 @@
  */
 package me.luzhuo.lib_core_ktx
 
-fun String.int(): Int? = try {
-    this.toInt()
+import com.google.gson.internal.LinkedTreeMap
+
+/**
+ * 后台返回的数据结构不规范, 可使用Any?去接收
+ * 使用方式:
+ *
+ * Object:
+ * if (t?.supplier.isObject) {
+ *     val obj = t?.supplier?.toObject
+ *     Log.e(TAG, "" + obj?.get("name"));
+ *     Log.e(TAG, "" + obj?.get("age"));
+ * }
+ *
+ * Array:
+ * val array = t?.supplier?.toArray
+ * Log.e(TAG, "" + array?.getObj(1))
+ */
+val Any?.isArray: Boolean get() = this is ArrayList<*>
+val Any?.isObject: Boolean get() = this is LinkedTreeMap<*, *>
+val Any?.toArray: ArrayList<*>? get() = if (this?.isArray == true) this as? ArrayList<*> else null
+val Any?.toObject: LinkedTreeMap<*, *>? get() = if (this?.isObject == true) this as? LinkedTreeMap<*, *> else null
+fun ArrayList<*>?.getObj(index: Int): Any? {
+    if (index < 0 || index >= this?.size ?: 0 - 1) return null
+    return this?.get(index)
+}
+fun LinkedTreeMap<*, *>?.getObj(key: String): Any? {
+    return this?.get(key)
+}
+
+val Any?.int: Int? get() = try {
+    this?.toString()?.toFloat()?.toInt()
 } catch (e: Exception) {
     null
 }
-fun String.long(): Long? = try {
-    this.toLong()
+val Any?.long: Long? get() = try {
+    this?.toString()?.toDouble()?.toLong()
 } catch (e: Exception) {
     null
 }
-fun String.double(): Double? = try {
-    this.toDouble()
+val Any?.double: Double? get() = try {
+    this?.toString()?.toDouble()
 } catch (e: Exception) {
     null
 }
-fun String.float(): Float? = try {
-    this.toFloat()
+val Any?.float: Float? get() = try {
+    this?.toString()?.toFloat()
 } catch (e: Exception) {
     null
 }

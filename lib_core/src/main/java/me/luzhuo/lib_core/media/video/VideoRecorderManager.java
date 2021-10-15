@@ -1,4 +1,4 @@
-/* Copyright 2020 Luzhuo. All rights reserved.
+/* Copyright 2021 Luzhuo. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,38 +12,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.luzhuo.lib_core.media.camera;
+package me.luzhuo.lib_core.media.video;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.text.TextUtils;
+import android.net.Uri;
+
+import java.io.File;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.content.ContextCompat;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import me.luzhuo.lib_core.ui.toast.ToastManager;
 
 /**
- * 拍照
- */
-public class CameraManager {
+ * Description: 录像
+ * @Author: Luzhuo
+ * @Creation Date: 2021/9/8 0:39
+ * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
+ **/
+public class VideoRecorderManager {
     private Context context;
-    private ActivityResultLauncher<Void> takePicture;
-    private ICameraCallback cameraCallback;
+    private ActivityResultLauncher<Void> takeVideo;
+    private IVideoRecorderCallback videoRecorderCallback;
 
     /**
      * 请在Activity的onCreate回调里创建该对象
      */
-    public CameraManager(FragmentActivity activity) {
+    public VideoRecorderManager(FragmentActivity activity) {
         this.context = activity;
 
-        takePicture = activity.registerForActivityResult(new Camera(), new ActivityResultCallback<String>() {
+        takeVideo = activity.registerForActivityResult(new VideoRecorder(), new ActivityResultCallback<Pair<Uri, File>>() {
             @Override
-            public void onActivityResult(String result) {
-                if(cameraCallback != null && !TextUtils.isEmpty(result)) cameraCallback.onCameraCallback(result);
+            public void onActivityResult(Pair<Uri, File> result) {
+                if(videoRecorderCallback != null && result != null) videoRecorderCallback.onVideoRecorderCallback(result.first, result.second);
             }
         });
     }
@@ -51,27 +57,27 @@ public class CameraManager {
     /**
      * 请在Fragment的OnCreate回调里创建该对象
      */
-    public CameraManager(Fragment fragment) {
+    public VideoRecorderManager(Fragment fragment) {
         this.context = fragment.getContext();
 
-        takePicture = fragment.registerForActivityResult(new Camera(), new ActivityResultCallback<String>() {
+        takeVideo = fragment.registerForActivityResult(new VideoRecorder(), new ActivityResultCallback<Pair<Uri, File>>() {
             @Override
-            public void onActivityResult(String result) {
-                if(cameraCallback != null && !TextUtils.isEmpty(result)) cameraCallback.onCameraCallback(result);
+            public void onActivityResult(Pair<Uri, File> result) {
+                if(videoRecorderCallback != null && result != null) videoRecorderCallback.onVideoRecorderCallback(result.first, result.second);
             }
         });
     }
 
     public void show() {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ToastManager.show(context, "请授予拍照权限");
+            ToastManager.show(context, "请授予录像权限");
             return;
         }
-        takePicture.launch(null);
+        takeVideo.launch(null);
     }
 
-    public CameraManager setCameraCallback(ICameraCallback cameraCallback) {
-        this.cameraCallback = cameraCallback;
+    public VideoRecorderManager setCameraCallback(IVideoRecorderCallback videoRecorderCallback) {
+        this.videoRecorderCallback = videoRecorderCallback;
         return this;
     }
 }

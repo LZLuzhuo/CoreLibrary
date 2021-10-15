@@ -103,7 +103,20 @@ public enum RegularType {
      * 全部字符都为中文字符
      * 如果中间掺杂着非中文字符, 则匹配失败
      */
-    Chinese("[\\u4e00-\\u9fa5]+");
+    Chinese("[\\u4e00-\\u9fa5]+"),
+
+    /**
+     * 网页地址
+     * 支持:
+     * http://xxx
+     * https://xxx
+     * HTTP://xxx
+     *
+     * 不支持
+     * http:////xxxx
+     * http://.xxx
+     */
+    HttpUrl("^(?i)http[s]?://[a-zA-Z0-9]+.*");
 
     public String value () {
         return this.regular;

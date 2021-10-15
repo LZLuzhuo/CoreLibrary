@@ -24,6 +24,7 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import me.luzhuo.lib_core.math.calculation.MathCalculation;
@@ -285,6 +286,7 @@ public class RecyclerManager {
      * 检测 RecyclerView 内的 Item 的某个 View控件 是否可见
      * @param recyclerView RecyclerView
      */
+    @Deprecated()
     public void checkItemViewVisibility(final RecyclerView recyclerView, final LinearLayoutManager layoutManager, final int resId /* 资源id */, final OnItemViewVisibilityCallback callback) {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             private int visibleCount = 0;
@@ -342,5 +344,43 @@ public class RecyclerManager {
          * @param isVisible true 可见, false 不可见
          */
         public void onItemViewVisibility(boolean isVisible, View view);
+    }
+
+    public enum ScrollType {
+        /**
+         * 每次都滚动到顶部
+         */
+        Start,
+        /**
+         * 每次到滚动到底部
+         */
+        End,
+        /**
+         * 在视野范围内不滚动
+         * 不在视野范围内, 将其移到视野范围内, 位置可能在顶部页可能在底部, 有原来的位置在上方还是在下方决定的
+         */
+        Any
+    }
+
+    /**
+     * 垂直方向的滚动
+     * @param type ScrollType
+     * @param position 滚动到指定位置
+     */
+    public void scroll(RecyclerView recyclerView, final ScrollType type, int position) {
+        RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(context) {
+            @Override protected int getVerticalSnapPreference() {
+                switch (type) {
+                    case Start:
+                        return LinearSmoothScroller.SNAP_TO_START;
+                    case End:
+                        return LinearSmoothScroller.SNAP_TO_END;
+                    default:
+                        return LinearSmoothScroller.SNAP_TO_ANY;
+                }
+            }
+        };
+        smoothScroller.setTargetPosition(position);
+        recyclerView.getLayoutManager().startSmoothScroll(smoothScroller);
     }
 }

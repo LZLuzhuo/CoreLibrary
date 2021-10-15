@@ -28,6 +28,18 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
+    <style name="Core_Bottom_Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:background">#00000000</item>
+    </style>
+
+    <style name="Core_Bottom_Dialog_UpOrDownAnimation" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/core_bottom_dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/core_bottom_dialog_exit</item>
+    </style>
     <!-- Dialog -->
 
 

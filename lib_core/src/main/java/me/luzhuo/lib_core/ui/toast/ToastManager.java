@@ -17,8 +17,11 @@ package me.luzhuo.lib_core.ui.toast;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
+
+import me.luzhuo.lib_core.ui.calculation.UICalculation;
 
 /**
  * =================================================
@@ -57,6 +60,29 @@ public class ToastManager {
         Toast.makeText(context.getApplicationContext(), content, Toast.LENGTH_SHORT).show();
     }
 
+    private static int toastHeight = 0;
+    /**
+     * 显示在 2/3 处的吐司
+     * Android 11 (API30) 及以上不再允许自定义Toast的位置
+     */
+    @Deprecated
+    public static void show2(final Context context, final String content) {
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            mainThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    show(context, content);
+                }
+            });
+            return;
+        }
+
+        if(toastHeight == 0) toastHeight = new UICalculation(context).getDisplay()[1] / 3;
+        Toast toast = Toast.makeText(context.getApplicationContext(), content, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP, 0, toastHeight);
+        toast.show();
+    }
+
     /**
      * 快速显示的吐司;
      * BUG: 如果连续不断的执行, 会导致一段时间后的吐司不显示
@@ -81,6 +107,7 @@ public class ToastManager {
     /**
      * 显示View的吐司
      * toast.showViewToast(this, LayoutInflater.from(this).inflate(R.layout.view_toast, null, false))
+     * Android 11 (API30) 及以上不再允许自定义Toast
      */
     public static void showView(final Context context, final View view) {
         if (Looper.myLooper() != Looper.getMainLooper()) {

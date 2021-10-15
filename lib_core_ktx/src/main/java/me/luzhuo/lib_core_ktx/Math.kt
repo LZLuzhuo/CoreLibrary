@@ -64,3 +64,7 @@ fun Int.add(num: Int): Int = this + num
 fun Int.subtract(num: Int): Int = this - num
 fun Int.multiply(num: Int): Int = this * num
 fun Int.divide(num: Int): Double = this / num.toDouble()
+fun Long.add(num: Int): Long = this + num
+fun Long.subtract(num: Int): Long = this - num
+fun Long.multiply(num: Int): Long = this * num
+fun Long.divide(num: Int): Double = this / num.toDouble()

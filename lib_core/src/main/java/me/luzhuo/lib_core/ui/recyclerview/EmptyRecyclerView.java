@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class EmptyRecyclerView extends RecyclerView {
     private Adapter adapter;
     public Adapter emptyAdapter = new EmptyAdapter();
+    private OnEmptyListener listener;
 
     public EmptyRecyclerView(@NonNull Context context) {
         this(context, null);
@@ -65,7 +66,25 @@ public class EmptyRecyclerView extends RecyclerView {
 
     private void checkEmptyData() {
         final int count = adapter.getItemCount();
-        if (count > 0) super.setAdapter(adapter);
-        else super.setAdapter(emptyAdapter);
+        if (listener == null) {
+            if (count > 0) super.setAdapter(adapter);
+            else super.setAdapter(emptyAdapter);
+        } else {
+            if (count > 0) listener.onEmpty(false);
+            else listener.onEmpty(true);
+        }
+    }
+
+    public interface OnEmptyListener {
+        /**
+         * 数据为空时回调
+         * @param isEmpty true数据为空, false数据为不空
+         */
+        public void onEmpty(boolean isEmpty);
+    }
+    public void setOnEmptyListener(OnEmptyListener listener) {
+        this.listener = listener;
+        super.setAdapter(adapter);
+        checkEmptyData();
     }
 }

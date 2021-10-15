@@ -20,9 +20,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
+import android.text.TextUtils;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -49,8 +51,8 @@ public class SMSManager {
      *
      * <p>
      * Example:
-     * final String msgConent = "【万梭纺织网】您的校验码：811257，您正在注册成为会员，感谢您的支持！(来自10655475603892696867)";
-     * phoneManager.matchMsg(msgConent, "万梭纺织网", 6)
+     * final String msgConent = "【XX纺织网】您的校验码：811257，您正在注册成为会员，感谢您的支持！(来自10655475603892696867)";
+     * phoneManager.matchMsg(msgConent, "XX纺织网", 6)
      * </p>
      *
      * @param smsContent 短信的文本内容
@@ -134,5 +136,20 @@ public class SMSManager {
         for (String singleContent : divideMessage) {
             smsManager.sendTextMessage(phone, null, singleContent, null, null);
         }
+    }
+
+    /**
+     * 跳转到短信发送界面
+     * @param phone 短信接收者的号码, 必填
+     * @param smsContent 短信内容, 可不填
+     */
+    public void send2Box(Context context, String phone, String smsContent) {
+        if (TextUtils.isEmpty(phone)) return;
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("smsto:" + phone));
+        intent.putExtra("sms_body", smsContent);
+        context.startActivity(intent);
     }
 }

@@ -67,13 +67,18 @@ public class ImageManager {
      * 按指定的角度旋转图片
      * @param bitmap 待旋转的图片
      * @param degree 旋转的角度
+     * @param recycler 是否对原Bitmap进行回收
      * @return 旋转之后的图片
      */
-    public Bitmap rotateBitmap(Bitmap bitmap, int degree) {
+    public Bitmap rotateBitmap(Bitmap bitmap, int degree, final boolean recycler) {
         Matrix matrix = new Matrix();
         matrix.postRotate(degree);
         Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        bitmap.recycle(); // 将不再需要的bitmap对象回收
+        if (recycler) bitmap.recycle(); // 将不再需要的bitmap对象回收
         return rotatedBitmap;
+    }
+
+    public Bitmap rotateBitmap(Bitmap bitmap, int degree) {
+        return rotateBitmap(bitmap, degree, true);
     }
 }
