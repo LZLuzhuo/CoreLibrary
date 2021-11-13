@@ -21,10 +21,9 @@ import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
-import me.luzhuo.lib_core.data.file.FileManager;
+import me.luzhuo.lib_file.FileManager;
 
 import static android.media.ThumbnailUtils.OPTIONS_RECYCLE_INPUT;
 

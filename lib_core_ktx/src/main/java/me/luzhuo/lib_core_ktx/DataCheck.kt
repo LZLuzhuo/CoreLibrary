@@ -63,3 +63,4 @@ val Any?.float: Float? get() = try {
 } catch (e: Exception) {
     null
 }
+val Any?.string: String? get() = this?.toString()

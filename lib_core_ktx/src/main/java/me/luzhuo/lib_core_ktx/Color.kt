@@ -19,9 +19,10 @@ import android.graphics.Color
 /**
  * 解析颜色, 解析失败返回透明色
  */
-fun parseColor(color: String?): Int {
+fun String?.parseColor(): Int {
+    if (this == null) return Color.TRANSPARENT
     return try {
-        Color.parseColor(color)
+        Color.parseColor(this)
     } catch (e: Exception) {
         Color.TRANSPARENT
     }

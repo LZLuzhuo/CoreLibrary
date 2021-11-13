@@ -15,59 +15,54 @@
 package me.luzhuo.lib_core.media.camera;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.text.TextUtils;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import me.luzhuo.lib_core.ui.toast.ToastManager;
 
 /**
  * 拍照
  */
 public class CameraManager {
-    private Context context;
-    private ActivityResultLauncher<Void> takePicture;
+    private static final String tag = "cameraFragment";
     private ICameraCallback cameraCallback;
+    private FragmentActivity activity;
 
     /**
      * 请在Activity的onCreate回调里创建该对象
      */
     public CameraManager(FragmentActivity activity) {
-        this.context = activity;
-
-        takePicture = activity.registerForActivityResult(new Camera(), new ActivityResultCallback<String>() {
-            @Override
-            public void onActivityResult(String result) {
-                if(cameraCallback != null && !TextUtils.isEmpty(result)) cameraCallback.onCameraCallback(result);
-            }
-        });
+        this.activity = activity;
     }
 
     /**
      * 请在Fragment的OnCreate回调里创建该对象
      */
     public CameraManager(Fragment fragment) {
-        this.context = fragment.getContext();
-
-        takePicture = fragment.registerForActivityResult(new Camera(), new ActivityResultCallback<String>() {
-            @Override
-            public void onActivityResult(String result) {
-                if(cameraCallback != null && !TextUtils.isEmpty(result)) cameraCallback.onCameraCallback(result);
-            }
-        });
+        this(fragment.requireActivity());
     }
 
     public void show() {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ToastManager.show(context, "请授予拍照权限");
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ToastManager.show(activity, "请授予拍照权限");
             return;
         }
-        takePicture.launch(null);
+
+        final FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        final Fragment exitedFragment = fragmentManager.findFragmentByTag(tag);
+
+        final CameraFragment fragment;
+        if (exitedFragment != null) fragment = (CameraFragment) exitedFragment;
+        else {
+            // 把新创建的Fragment添加到Activity中
+            final CameraFragment invisibleFragment = new CameraFragment();
+            fragmentManager.beginTransaction().add(invisibleFragment, tag).commitNowAllowingStateLoss();
+            fragment = invisibleFragment;
+        }
+        fragment.show(cameraCallback);
     }
 
     public CameraManager setCameraCallback(ICameraCallback cameraCallback) {

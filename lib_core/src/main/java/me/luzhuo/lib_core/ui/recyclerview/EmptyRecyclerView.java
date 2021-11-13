@@ -67,8 +67,11 @@ public class EmptyRecyclerView extends RecyclerView {
     private void checkEmptyData() {
         final int count = adapter.getItemCount();
         if (listener == null) {
-            if (count > 0) super.setAdapter(adapter);
-            else super.setAdapter(emptyAdapter);
+            if (count > 0) {
+                if (super.getAdapter() != adapter) super.setAdapter(adapter);
+            } else {
+                if (super.getAdapter() != emptyAdapter) super.setAdapter(emptyAdapter);
+            }
         } else {
             if (count > 0) listener.onEmpty(false);
             else listener.onEmpty(true);

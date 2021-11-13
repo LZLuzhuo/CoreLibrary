@@ -11,8 +11,11 @@ import java.io.File;
 import me.luzhuo.lib_core.app.base.CoreBaseActivity;
 import me.luzhuo.lib_core.app.pattern.PatternCheck;
 import me.luzhuo.lib_core.app.pattern.RegularType;
+import me.luzhuo.lib_core.math.money.MoneyCalculation;
 import me.luzhuo.lib_core.media.audio.AudioManager;
 import me.luzhuo.lib_core.media.audio.IAudioCallback;
+import me.luzhuo.lib_core.media.camera.CameraManager;
+import me.luzhuo.lib_core.media.camera.ICameraCallback;
 import me.luzhuo.lib_core.media.video.IVideoRecorderCallback;
 import me.luzhuo.lib_core.media.video.VideoRecorderManager;
 import me.luzhuo.lib_core.ui.toast.ToastManager;
@@ -33,10 +36,11 @@ public class MainActivity extends CoreBaseActivity {
     }
 
     public void onClick(View view) {
-
-        // startActivity(new Intent(this, MainActivity2.class));
-
-        String url = "http://www.baidu.com";
-        Log.e(TAG, "url: " + new PatternCheck().check(RegularType.HttpUrl, url));
+        new VideoRecorderManager(this).setVideoRecorderCallback(new IVideoRecorderCallback() {
+            @Override
+            public void onVideoRecorderCallback(Uri fileUri, File filePath) {
+                Log.e(TAG, "" + fileUri + " : " + filePath);
+            }
+        }).show();
     }
 }

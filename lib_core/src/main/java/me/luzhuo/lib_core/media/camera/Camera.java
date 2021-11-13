@@ -32,9 +32,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import me.luzhuo.lib_core.app.appinfo.AppManager;
-import me.luzhuo.lib_core.data.file.FileManager;
 import me.luzhuo.lib_core.data.hashcode.HashManager;
 import me.luzhuo.lib_core.media.ImageManager;
+import me.luzhuo.lib_file.FileManager;
 
 /**
  * 拍照后的结果处理

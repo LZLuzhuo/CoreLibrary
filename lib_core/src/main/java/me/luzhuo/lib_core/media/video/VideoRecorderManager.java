@@ -15,18 +15,12 @@
 package me.luzhuo.lib_core.media.video;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 
-import java.io.File;
-
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.content.ContextCompat;
-import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import me.luzhuo.lib_core.ui.toast.ToastManager;
 
 /**
@@ -36,47 +30,45 @@ import me.luzhuo.lib_core.ui.toast.ToastManager;
  * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
  **/
 public class VideoRecorderManager {
-    private Context context;
-    private ActivityResultLauncher<Void> takeVideo;
+    private static final String tag = "videoRecorderFragment";
     private IVideoRecorderCallback videoRecorderCallback;
+    private FragmentActivity activity;
 
     /**
      * 请在Activity的onCreate回调里创建该对象
      */
     public VideoRecorderManager(FragmentActivity activity) {
-        this.context = activity;
-
-        takeVideo = activity.registerForActivityResult(new VideoRecorder(), new ActivityResultCallback<Pair<Uri, File>>() {
-            @Override
-            public void onActivityResult(Pair<Uri, File> result) {
-                if(videoRecorderCallback != null && result != null) videoRecorderCallback.onVideoRecorderCallback(result.first, result.second);
-            }
-        });
+        this.activity = activity;
     }
 
     /**
      * 请在Fragment的OnCreate回调里创建该对象
      */
     public VideoRecorderManager(Fragment fragment) {
-        this.context = fragment.getContext();
-
-        takeVideo = fragment.registerForActivityResult(new VideoRecorder(), new ActivityResultCallback<Pair<Uri, File>>() {
-            @Override
-            public void onActivityResult(Pair<Uri, File> result) {
-                if(videoRecorderCallback != null && result != null) videoRecorderCallback.onVideoRecorderCallback(result.first, result.second);
-            }
-        });
+        this(fragment.requireActivity());
     }
 
     public void show() {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ToastManager.show(context, "请授予录像权限");
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ToastManager.show(activity, "请授予录像权限");
             return;
         }
-        takeVideo.launch(null);
+
+        final FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        final Fragment exitedFragment = fragmentManager.findFragmentByTag(tag);
+
+        final VideoFragment fragment;
+        if (exitedFragment != null) fragment = (VideoFragment) exitedFragment;
+        else {
+            // 把新创建的Fragment添加到Activity中
+            final VideoFragment invisibleFragment = new VideoFragment();
+            fragmentManager.beginTransaction().add(invisibleFragment, tag).commitNowAllowingStateLoss();
+            fragment = invisibleFragment;
+        }
+        fragment.show(videoRecorderCallback);
     }
 
-    public VideoRecorderManager setCameraCallback(IVideoRecorderCallback videoRecorderCallback) {
+    public VideoRecorderManager setVideoRecorderCallback(IVideoRecorderCallback videoRecorderCallback) {
         this.videoRecorderCallback = videoRecorderCallback;
         return this;
     }

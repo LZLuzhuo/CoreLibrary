@@ -28,8 +28,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.core.util.Pair;
-import me.luzhuo.lib_core.data.file.FileManager;
 import me.luzhuo.lib_core.data.hashcode.HashManager;
+import me.luzhuo.lib_file.FileManager;
 
 /**
  * Description: 录像结果的处理

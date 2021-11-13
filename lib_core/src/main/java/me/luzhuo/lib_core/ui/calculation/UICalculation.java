@@ -18,11 +18,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Description: UI计算
@@ -34,7 +35,7 @@ import android.widget.TextView;
 public class UICalculation {
     private Context context;
 
-    public UICalculation(Context context){
+    public UICalculation(@NonNull Context context){
         this.context = context.getApplicationContext();
     }
 
@@ -98,29 +99,64 @@ public class UICalculation {
     }
 
     /**
-     * 获取 statusbar 高度
-     * get statusbar hieght
-     * @param v
-     * @return
-     */
-    public int getStatusBarHeight(View v) {
-        if (v == null) return 0;
-
-        Rect frame = new Rect();
-        v.getWindowVisibleDisplayFrame(frame);
-        return frame.top;
-    }
-
-    /**
      * 从 textview 获取字体高度
      * get font height by textview
      * @param textView
      * @return
      */
     public int getFontHeight(TextView textView) {
+        if (textView == null) return -1;
+
         Paint paint = new Paint();
         paint.setTextSize(textView.getTextSize());
         Paint.FontMetrics fm = paint.getFontMetrics();
         return (int) Math.ceil(fm.bottom - fm.top);
+    }
+
+    /**
+     * 获取 StatusBar 高度, 并且要求沉浸式状态栏时对 StatusBar 的值无影响
+     * @param view 任意View
+     * @return 必然会返回一个 StatusBar 的高度, 不能保证高度值准确, 但尽量准确
+     */
+    public int getStatusBarHeight(@Nullable View view) {
+        int statusBarHeight;
+        statusBarHeight = getStatusBarHeightByDimen();
+        if (statusBarHeight <= 0) getStatusBarHeightByView(view);
+        if (statusBarHeight <= 0) getStatusBarHeightByDefault();
+        return statusBarHeight;
+    }
+
+    /**
+     * 从 android.R.dimen.status_bar_height 中获取 status bar 高度
+     */
+    protected int getStatusBarHeightByDimen() {
+        int statusBarHeight = -1;
+        // 从系统未公开的 android.R.dimen.status_bar_height 中获取状态栏的高度
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
+
+        return statusBarHeight;
+    }
+
+    /**
+     * 获取不到时, 给的默认的24dp
+     * @return
+     */
+    protected int getStatusBarHeightByDefault() {
+        return new UICalculation(context).dp2px(24f);
+    }
+
+    /**
+     * 获取 statusbar 高度
+     * get statusbar hieght
+     * @param v 任意View
+     * @return
+     */
+    protected int getStatusBarHeightByView(View v) {
+        if (v == null) return -1;
+
+        Rect frame = new Rect();
+        v.getWindowVisibleDisplayFrame(frame);
+        return frame.top;
     }
 }

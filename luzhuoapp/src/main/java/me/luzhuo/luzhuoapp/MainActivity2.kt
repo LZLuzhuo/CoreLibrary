@@ -19,6 +19,14 @@ class MainActivity2 : CoreBaseActivity(){
     }
 
     fun onClose(view: View) {
-        toast2("asfdasdf")
+        toast2("asdf")
+        Log.e(TAG, "" + 12.13124123.scale2());
+        Log.e(TAG, "" + 12.10.scale2());
+        Log.e(TAG, "" + 12.00.scale2());
+        Log.e(TAG, "" + 12.456.scale2());
+        Log.e(TAG, "" + 12.13124123.scale2(false));
+        Log.e(TAG, "" + 12.10.scale2(false));
+        Log.e(TAG, "" + 12.00.scale2(false));
+        Log.e(TAG, "" + 12.456.scale2(false));
     }
 }

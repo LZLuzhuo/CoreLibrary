@@ -68,6 +68,7 @@ public class StringManager {
 		private String text;
 		private List<Pair<String, Float>> scales = new ArrayList<>();
 		private List<Pair<String, Integer>> sizes = new ArrayList<>();
+		private List<Pair<String, Integer>> firstColors = new ArrayList<>();
 		private List<Pair<String, Integer>> colors = new ArrayList<>();
 		private List<Pair<String, Integer>> backgrounds = new ArrayList<>();
 		private List<String> suppers = new ArrayList<>();
@@ -82,12 +83,32 @@ public class StringManager {
 			this.text = text;
 		}
 
+		/**
+		 * 对第一个匹配到的字符设置颜色
+		 */
+		public StringManager.Text firstColor(String text, int color) {
+			if (TextUtils.isEmpty(text)) return this;
+
+			firstColors.add(new Pair<>(text, color));
+			return this;
+		}
+
+		/**
+		 * 对所有匹配到的字符设置颜色
+		 */
 		public StringManager.Text color(String text, int color) {
+			if (TextUtils.isEmpty(text)) return this;
+
 			colors.add(new Pair<>(text, color));
 			return this;
 		}
 
+		/**
+		 * 字符的背景颜色
+		 */
 		public StringManager.Text background(String text, int background) {
+			if (TextUtils.isEmpty(text)) return this;
+
 			backgrounds.add(new Pair<>(text, background));
 			return this;
 		}
@@ -97,6 +118,8 @@ public class StringManager {
 		 * @param scale 放大比例
 		 */
 		public StringManager.Text scale(String text, float scale) {
+			if (TextUtils.isEmpty(text)) return this;
+
 			scales.add(new Pair<>(text, scale));
 			return this;
 		}
@@ -105,6 +128,8 @@ public class StringManager {
 		 * 字体的绝对大小
 		 */
 		public StringManager.Text size(String text, int sp) {
+			if (TextUtils.isEmpty(text)) return this;
+
 			sizes.add(new Pair<>(text, sp));
 			return this;
 		}
@@ -113,6 +138,8 @@ public class StringManager {
 		 * 上标
 		 */
 		public StringManager.Text supper(String text) {
+			if (TextUtils.isEmpty(text)) return this;
+
 			suppers.add(text);
 			return this;
 		}
@@ -121,6 +148,8 @@ public class StringManager {
 		 * 下标
 		 */
 		public StringManager.Text sub(String text) {
+			if (TextUtils.isEmpty(text)) return this;
+
 			subs.add(text);
 			return this;
 		}
@@ -130,6 +159,8 @@ public class StringManager {
 		 * 根据图片的实际大小添加到内容中
 		 */
 		public StringManager.Text image(String text, int image) {
+			if (TextUtils.isEmpty(text)) return this;
+
 			images.add(new Pair<>(text, image));
 			return this;
 		}
@@ -138,6 +169,8 @@ public class StringManager {
 		 * 下划线
 		 */
 		public StringManager.Text underLine(String text) {
+			if (TextUtils.isEmpty(text)) return this;
+
 			underLines.add(text);
 			return this;
 		}
@@ -146,6 +179,8 @@ public class StringManager {
 		 * 删除线
 		 */
 		public StringManager.Text deleteLine(String text) {
+			if (TextUtils.isEmpty(text)) return this;
+
 			deleteLines.add(text);
 			return this;
 		}
@@ -155,6 +190,8 @@ public class StringManager {
 		 * 需要调用 {@link #setTextClickable(TextView)} } 才能实现回调事件
 		 */
 		public StringManager.Text click(String text, OnClickListener callback) {
+			if (TextUtils.isEmpty(text)) return this;
+
 			callbacks.add(new Pair<>(text, callback));
 			return this;
 		}
@@ -163,6 +200,8 @@ public class StringManager {
 		 * URL路径跳转
 		 */
 		public StringManager.Text url(String text, String url) {
+			if (TextUtils.isEmpty(text)) return this;
+
 			urls.add(new Pair<>(text, url));
 			return this;
 		}
@@ -172,12 +211,22 @@ public class StringManager {
 			int startIndex;
 			int textLength;
 
-			// color
-			for (Pair<String, Integer> color : colors) {
+			// first color
+			for (Pair<String, Integer> color : firstColors) {
 				startIndex = text.indexOf(color.first);
 				if (startIndex == -1) continue;
 				textLength = startIndex + color.first.length();
 				ss.setSpan(new ForegroundColorSpan(color.second), startIndex, textLength, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+			}
+
+			// colors
+			for (Pair<String, Integer> color : colors) {
+				int previous = 0;
+				int current;
+				while((current = text.indexOf(color.first, previous)) > -1) {
+					ss.setSpan(new ForegroundColorSpan(color.second), current, current + color.first.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+					previous = current + 1;
+				}
 			}
 
 			// background
@@ -267,6 +316,8 @@ public class StringManager {
 		 * 设置 TextView 为可点击
 		 */
 		public static void setTextClickable(TextView textView) {
+			if (textView == null) return;
+
 			textView.setMovementMethod(LinkMovementMethod.getInstance());
 			textView.setHighlightColor(0x00000000);
 		}

@@ -14,35 +14,36 @@
  */
 package me.luzhuo.lib_core_ktx
 
+import android.text.TextUtils
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
 
-fun String.toJSONObject(): JSONObject? = try {
+fun String?.toJSONObject(): JSONObject? = if (TextUtils.isEmpty(this)) null else try {
     JSONObject(this)
 } catch (e: Exception) {
     null
 }
-fun String.toJSONArray(): JSONArray? = try {
+fun String?.toJSONArray(): JSONArray? = if (TextUtils.isEmpty(this)) null else try {
     JSONArray(this)
 } catch (e: Exception) {
     null
 }
-fun JSONObject.toJSONObject(name: String): JSONObject? = try {
-    this.getJSONObject(name)
+fun JSONObject?.toJSONObject(name: String): JSONObject? = try {
+    this?.getJSONObject(name)
 } catch (e: Exception) {
     null
 }
-fun JSONObject.toJSONArray(name: String): JSONArray? = try {
-    this.getJSONArray(name)
+fun JSONObject?.toJSONArray(name: String): JSONArray? = try {
+    this?.getJSONArray(name)
 } catch (e: Exception) {
     null
 }
-fun JSONObject.getIntValue(name: String): Int? = if (this.has(name)) this.getInt(name) else null
-fun JSONObject.getLongValue(name: String): Long? = if (this.has(name)) this.getLong(name) else null
-fun JSONObject.getBooleanValue(name: String): Boolean? = if (this.has(name)) this.getBoolean(name) else null
-fun JSONObject.getDoubleValue(name: String): Double? = if (this.has(name)) this.getDouble(name) else null
-fun JSONObject.getStringValue(name: String): String? = if (this.has(name)) this.getString(name) else null
-fun JSONArray.isEmpty(): Boolean = this.length() <= 0
-fun JSONArray.isNotEmpty(): Boolean = this.length() > 0
-fun JSONArray.size(): Int = this.length()
+fun JSONObject?.getIntValue(name: String): Int? = if (this?.has(name) == true) this.getInt(name) else null
+fun JSONObject?.getLongValue(name: String): Long? = if (this?.has(name) == true) this.getLong(name) else null
+fun JSONObject?.getBooleanValue(name: String): Boolean? = if (this?.has(name) == true) this.getBoolean(name) else null
+fun JSONObject?.getDoubleValue(name: String): Double? = if (this?.has(name) == true) this.getDouble(name) else null
+fun JSONObject?.getStringValue(name: String): String? = if (this?.has(name) == true) this.getString(name) else null
+fun JSONArray?.isEmpty(): Boolean = if (this == null) true else this.length() <= 0
+fun JSONArray?.isNotEmpty(): Boolean = if (this == null) false else this.length() > 0
+fun JSONArray?.size(): Int = this?.length() ?: 0

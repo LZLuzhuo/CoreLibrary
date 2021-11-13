@@ -25,7 +25,7 @@ android {
 
 dependencies {
     compileOnly 'androidx.constraintlayout:constraintlayout:2.0.4'
-    compileOnly 'me.luzhuo.android:lib_core:2.0.16-SNAPSHOT'
+    compileOnly 'me.luzhuo.android:lib_core:2.1.0-SNAPSHOT'
     compileOnly 'com.squareup.retrofit2:converter-gson:2.9.0'
 }
 apply from: 'maven.gradle'

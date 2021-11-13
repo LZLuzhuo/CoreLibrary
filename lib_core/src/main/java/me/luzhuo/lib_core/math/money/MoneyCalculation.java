@@ -14,6 +14,8 @@
  */
 package me.luzhuo.lib_core.math.money;
 
+import android.text.TextUtils;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -28,6 +30,7 @@ public class MoneyCalculation {
     private BigDecimal defaultValue;
 
     public MoneyCalculation(String money){
+        if (TextUtils.isEmpty(money)) money = "0";
         defaultValue = new BigDecimal(money);
     }
 
@@ -53,6 +56,7 @@ public class MoneyCalculation {
      * Data of type float will be converted to type String, and then calculated
      */
     public MoneyCalculation add(String money) {
+        if (TextUtils.isEmpty(money)) money = "0";
         defaultValue = defaultValue.add(new BigDecimal(money));
         return this;
     }
@@ -81,7 +85,8 @@ public class MoneyCalculation {
      * 减法运算
      */
     public MoneyCalculation subtract(String money) {
-        defaultValue = defaultValue.subtract(new BigDecimal(String.valueOf(money)));
+        if (TextUtils.isEmpty(money)) money = "0";
+        defaultValue = defaultValue.subtract(new BigDecimal(money));
         return this;
     }
 
@@ -109,7 +114,8 @@ public class MoneyCalculation {
      * 乘法运算
      */
     public MoneyCalculation multiply(String money) {
-        defaultValue = defaultValue.multiply(new BigDecimal(String.valueOf(money)));
+        if (TextUtils.isEmpty(money)) money = "0";
+        defaultValue = defaultValue.multiply(new BigDecimal(money));
         return this;
     }
 
@@ -137,7 +143,8 @@ public class MoneyCalculation {
      * 除法运算
      */
     public MoneyCalculation divide(String money) {
-        defaultValue = defaultValue.divide(new BigDecimal(String.valueOf(money)), 2, RoundingMode.HALF_UP);
+        if (TextUtils.isEmpty(money)) money = "1";
+        defaultValue = defaultValue.divide(new BigDecimal(money), 2, RoundingMode.HALF_UP);
         return this;
     }
 

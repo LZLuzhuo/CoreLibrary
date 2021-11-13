@@ -20,51 +20,53 @@ import java.text.DecimalFormat
 /**
  * 保留最多两位小数, 并舍弃末尾0
  * 12.13124123 -> 12.13
- * 12.10 -> 12.1
- * 12.00 -> 12
+ * 12.10 -> 12.10 / 12.1
+ * 12.00 -> 12.00 / 12
+ * 12.456 -> 12.46
+ * @param makeup 不足两位是否补0, 默认补0
  */
-fun Double.scale2(): String {
-    return DecimalFormat("0.##").apply {
-        roundingMode = RoundingMode.FLOOR
-    }.format(this)
+fun Double?.scale2(makeup: Boolean = true): String {
+    return DecimalFormat(if (makeup) "0.00"  else "0.##").apply {
+        roundingMode = RoundingMode.HALF_UP
+    }.format(this ?: 0)
 }
 
 /**
  * 加法
  */
-fun Double.add(num: Double): Double = this + num
+fun Double?.add(num: Double): Double = (this ?: 0.0) + num
 
 /**
  * 减法
  */
-fun Double.subtract(num: Double): Double = this - num
+fun Double?.subtract(num: Double): Double = (this ?: 0.0) - num
 
 /**
  * 乘法
  */
-fun Double.multiply(num: Double): Double = this * num
+fun Double?.multiply(num: Double): Double = (this ?: 0.0) * num
 
 /**
  * 除法
  */
-fun Double.divide(num: Double): Double = this / num
+fun Double?.divide(num: Double): Double = (this ?: 0.0) / num
 
 // ===
 
-fun Float.scale2(): String {
-    return DecimalFormat("0.##").apply {
-        roundingMode = RoundingMode.FLOOR
-    }.format(this)
+fun Float?.scale2(makeup: Boolean = true): String {
+    return DecimalFormat(if (makeup) "0.00"  else "0.##").apply {
+        roundingMode = RoundingMode.HALF_UP
+    }.format(this ?: 0)
 }
-fun Float.add(num: Float): Float = this + num
-fun Float.subtract(num: Float): Float = this - num
-fun Float.multiply(num: Float): Float = this * num
-fun Float.divide(num: Float): Float = this / num
-fun Int.add(num: Int): Int = this + num
-fun Int.subtract(num: Int): Int = this - num
-fun Int.multiply(num: Int): Int = this * num
-fun Int.divide(num: Int): Double = this / num.toDouble()
-fun Long.add(num: Int): Long = this + num
-fun Long.subtract(num: Int): Long = this - num
-fun Long.multiply(num: Int): Long = this * num
-fun Long.divide(num: Int): Double = this / num.toDouble()
+fun Float?.add(num: Float): Float = (this ?: 0f) + num
+fun Float?.subtract(num: Float): Float = (this ?: 0f) - num
+fun Float?.multiply(num: Float): Float = (this ?: 0f) * num
+fun Float?.divide(num: Float): Float = (this ?: 0f) / num
+fun Int?.add(num: Int): Int = (this ?: 0) + num
+fun Int?.subtract(num: Int): Int = (this ?: 0) - num
+fun Int?.multiply(num: Int): Int = (this ?: 0) * num
+fun Int?.divide(num: Int): Double = (this ?: 0) / num.toDouble()
+fun Long?.add(num: Int): Long = (this ?: 0) + num
+fun Long?.subtract(num: Int): Long = (this ?: 0) - num
+fun Long?.multiply(num: Int): Long = (this ?: 0) * num
+fun Long?.divide(num: Int): Double = (this ?: 0) / num.toDouble()
