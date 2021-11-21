@@ -64,3 +64,9 @@ val Any?.float: Float? get() = try {
     null
 }
 val Any?.string: String? get() = this?.toString()
+
+val Int?.int: Int get() = this ?: 0
+val Long?.long: Long get() = this ?: 0
+val Double?.double: Double get() = this ?: 0.0
+val Float?.float: Float get() = this ?: 0.0f
+val String?.string: String get() = this ?: ""

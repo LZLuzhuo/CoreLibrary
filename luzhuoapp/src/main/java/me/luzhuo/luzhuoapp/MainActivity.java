@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.View;
 
 import java.io.File;
+import java.util.List;
 
 import me.luzhuo.lib_core.app.base.CoreBaseActivity;
 import me.luzhuo.lib_core.app.pattern.PatternCheck;
 import me.luzhuo.lib_core.app.pattern.RegularType;
+import me.luzhuo.lib_core.data.UriManager;
 import me.luzhuo.lib_core.math.money.MoneyCalculation;
 import me.luzhuo.lib_core.media.audio.AudioManager;
 import me.luzhuo.lib_core.media.audio.IAudioCallback;
@@ -36,11 +38,8 @@ public class MainActivity extends CoreBaseActivity {
     }
 
     public void onClick(View view) {
-        new VideoRecorderManager(this).setVideoRecorderCallback(new IVideoRecorderCallback() {
-            @Override
-            public void onVideoRecorderCallback(Uri fileUri, File filePath) {
-                Log.e(TAG, "" + fileUri + " : " + filePath);
-            }
-        }).show();
+        String url = "https://busmph5.lkkjjt.com/detail/8?types=2&edition=0.01&user_ca";
+        UriManager uri = new UriManager(url);
+        Log.e(TAG, "" + uri);
     }
 }

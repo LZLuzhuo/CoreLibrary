@@ -16,6 +16,9 @@ package me.luzhuo.lib_core.ui.fragment;
 
 import android.os.Bundle;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -132,7 +135,8 @@ public class FragmentManager {
 
 		oldFragment = target;
 	}
-	
+
+	private Set<Fragment> fragments = new HashSet<>();
 	/**
 	 * 切换Fragment,推荐使用该方法,该方法不会销毁旧的Fragment.<br>该方法不需要new出新的Fragment,推荐使用数组管理<br>该方法可以处理复杂业务
 	 * <br>不支持传递数据
@@ -146,9 +150,15 @@ public class FragmentManager {
 			transaction.hide(oldFragment);
 		}
 		if (!newFragment.isAdded()) {
-			transaction.add(containerId, newFragment);
+			// java.lang.IllegalStateException: Fragment already added:
+			if (!fragments.contains(newFragment)) {
+				fragments.add(newFragment);
+				transaction.add(containerId, newFragment);
+			}
 		}
-		transaction.show(newFragment).commit();
+		// commitAllowingStateLoss: 会造成 onSaveInstanceState 状态信息丢失
+		// commit: 不会造成 onSaveInstanceState 状态信息丢失, 但会抛出异常
+		transaction.show(newFragment).commitAllowingStateLoss();
 
 		oldFragment = newFragment;
 	}

@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.File;
 
@@ -42,20 +43,37 @@ class VideoRecorder extends ActivityResultContract<Void, Pair<Uri, File>> {
     private File videoFile;
     private final FileManager fileManager = new FileManager();
     private static final String authority = "me.luzhuo.fileprovider.";
+    private VideoQuality quality;
+    private int durationLimit;
+
+    /**
+     * @param quality 视频录制质量
+     * @param durationLimit 限制录制时长, 单位s
+     */
+    public VideoRecorder(VideoQuality quality, int durationLimit) {
+        this.quality = quality;
+        this.durationLimit = durationLimit;
+    }
+
+    public VideoRecorder() {
+        this.quality = VideoQuality.High;
+        this.durationLimit = Integer.MAX_VALUE;
+    }
 
     @NonNull
     @Override
     public Intent createIntent(@NonNull Context context, Void input) {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
-        videoFile = new File(fileManager.getCacheDirectory(context), HashManager.getInstance().getUuid());
+        videoFile = new File(fileManager.getCacheDirectory(), HashManager.getInstance().getUuid());
         // 指定调用相机拍照后照片的储存路径
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) videoUri = FileProvider.getUriForFile(context, authority + context.getPackageName(), videoFile);
         else videoUri = Uri.fromFile(videoFile);
 
         // 调用系统照相机
         intent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri);
-        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, durationLimit);
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, quality.getQuality());
         return intent;
     }
 

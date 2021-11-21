@@ -41,7 +41,7 @@ import java.util.ListIterator;
  * =================================================
  **/
 public class AppManager {
-    private static Context context = CoreBaseApplication.context;
+    private static Context context = CoreBaseApplication.appContext;
     private static List<Activity> activitys = new LinkedList<Activity>();
     private static List<Service> services = new LinkedList<Service>();
 

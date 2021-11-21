@@ -23,12 +23,12 @@ import me.luzhuo.lib_core.ui.toast.ToastManager
  */
 fun Any.toast(content: String?) {
     if(TextUtils.isEmpty(content)) return
-    ToastManager.show(CoreBaseApplication.context, content)
+    ToastManager.show(CoreBaseApplication.appContext, content)
 }
 
 fun Any.toast2(content: String?) {
     if(TextUtils.isEmpty(content)) return
-    ToastManager.show2(CoreBaseApplication.context, content)
+    ToastManager.show2(CoreBaseApplication.appContext, content)
 }
 
 /**

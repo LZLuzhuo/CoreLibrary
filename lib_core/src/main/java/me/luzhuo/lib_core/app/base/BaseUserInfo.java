@@ -25,7 +25,7 @@ import android.text.TextUtils;
  * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
  **/
 public class BaseUserInfo {
-    protected SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(CoreBaseApplication.context);
+    protected SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(CoreBaseApplication.appContext);
 
     protected String token;
 

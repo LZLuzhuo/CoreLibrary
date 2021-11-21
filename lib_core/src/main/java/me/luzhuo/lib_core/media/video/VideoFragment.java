@@ -15,6 +15,7 @@
 package me.luzhuo.lib_core.media.video;
 
 import android.net.Uri;
+import android.os.Bundle;
 
 import java.io.File;
 
@@ -31,13 +32,34 @@ import androidx.fragment.app.Fragment;
  **/
 public class VideoFragment extends Fragment {
     private IVideoRecorderCallback videoRecorderCallback;
+    private ActivityResultLauncher<Void> takeVideo;
 
-    private ActivityResultLauncher<Void> takeVideo = registerForActivityResult(new VideoRecorder(), new ActivityResultCallback<Pair<Uri, File>>() {
-        @Override
-        public void onActivityResult(Pair<Uri, File> result) {
-            if(videoRecorderCallback != null && result != null) videoRecorderCallback.onVideoRecorderCallback(result.first, result.second);
-        }
-    });
+    private VideoFragment() { }
+
+    public static VideoFragment instance(VideoQuality quality, int durationLimit) {
+        final VideoFragment fragment = new VideoFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("quality", quality);
+        args.putInt("durationLimit", durationLimit);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() == null) return;
+
+        final VideoQuality quality = (VideoQuality) getArguments().getSerializable("quality");
+        int durationLimit = getArguments().getInt("durationLimit");
+
+        takeVideo = registerForActivityResult(new VideoRecorder(quality, durationLimit), new ActivityResultCallback<Pair<Uri, File>>() {
+            @Override
+            public void onActivityResult(Pair<Uri, File> result) {
+                if(videoRecorderCallback != null && result != null) videoRecorderCallback.onVideoRecorderCallback(result.first, result.second);
+            }
+        });
+    }
 
     public void show(IVideoRecorderCallback videoRecorderCallback) {
         this.videoRecorderCallback = videoRecorderCallback;

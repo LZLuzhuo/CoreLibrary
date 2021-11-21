@@ -55,7 +55,7 @@ class Camera extends ActivityResultContract<Void, String> {
         this.context = context;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        photoFile = new File(fileManager.getCacheDirectory(context), HashManager.getInstance().getUuid());
+        photoFile = new File(fileManager.getCacheDirectory(), HashManager.getInstance().getUuid());
         // 指定调用相机拍照后照片的储存路径
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) imageUri = FileProvider.getUriForFile(context, authority + context.getPackageName(), photoFile);
         else imageUri = Uri.fromFile(photoFile);

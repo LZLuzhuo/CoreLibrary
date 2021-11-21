@@ -1,4 +1,4 @@
-/* Copyright 2016 Luzhuo. All rights reserved.
+/* Copyright 2021 Luzhuo. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,26 +12,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.luzhuo.lib_core.app.base;
-
-import android.app.Application;
-import android.content.Context;
+package me.luzhuo.lib_core.media.video;
 
 /**
- * Description:
- *
+ * Description: 视频质量
+ * 用于 MediaStore.ACTION_VIDEO_CAPTURE 的视频录制质量
  * @Author: Luzhuo
- * @Creation Date: 2016/11/8 23:20
- * @Copyright: Copyright 2016 Luzhuo. All rights reserved.
+ * @Creation Date: 2021/11/17 10:51
+ * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
  **/
-public class CoreBaseApplication extends Application {
-    // ============== 静态变量分享区 ==============
-    public static Context appContext;
-    // ============== 静态变量分享区 ==============
+public enum VideoQuality {
+    // 1高质量
+    High(1),
+    // 0低质量, 在某些手机上会很糊
+    Low(0);
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        appContext = this.getApplicationContext();
+    private int quality;
+
+    private VideoQuality(int quality) {
+        this.quality = quality;
+    }
+
+    public int getQuality() {
+        return quality;
     }
 }

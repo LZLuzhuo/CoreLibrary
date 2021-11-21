@@ -30,10 +30,10 @@ fun Group.setOnClickListeners(listener: (View) -> Unit) {
     }
 }
 
-fun Int.px2dp(): Int = UICalculation(CoreBaseApplication.context).px2dp(this.toFloat())
-fun Float.px2dp(): Int = UICalculation(CoreBaseApplication.context).px2dp(this)
-fun Int.dp2px(): Int = UICalculation(CoreBaseApplication.context).dp2px(this.toFloat())
-fun Float.dp2px(): Int = UICalculation(CoreBaseApplication.context).dp2px(this)
+fun Int.px2dp(): Int = UICalculation(CoreBaseApplication.appContext).px2dp(this.toFloat())
+fun Float.px2dp(): Int = UICalculation(CoreBaseApplication.appContext).px2dp(this)
+fun Int.dp2px(): Int = UICalculation(CoreBaseApplication.appContext).dp2px(this.toFloat())
+fun Float.dp2px(): Int = UICalculation(CoreBaseApplication.appContext).dp2px(this)
 
 /**
  * 将dp转成系统需要的px
@@ -41,8 +41,8 @@ fun Float.dp2px(): Int = UICalculation(CoreBaseApplication.context).dp2px(this)
  * 10.dp 此处的含义是将10dp转成系统需要的px
  * 10.dp2px() 此处的含义是将10dp转成系统需要的px
  */
-val Int.dp: Int get() = UICalculation(CoreBaseApplication.context).dp2px(this.toFloat())
-val Float.dp: Int get() = UICalculation(CoreBaseApplication.context).dp2px(this)
+val Int.dp: Int get() = UICalculation(CoreBaseApplication.appContext).dp2px(this.toFloat())
+val Float.dp: Int get() = UICalculation(CoreBaseApplication.appContext).dp2px(this)
 
 fun visible(vararg views: Any?) { views.forEach { (it as? View)?.visibility = View.VISIBLE } }
 fun invisible(vararg views: Any?) { views.forEach { (it as? View)?.visibility = View.INVISIBLE } }

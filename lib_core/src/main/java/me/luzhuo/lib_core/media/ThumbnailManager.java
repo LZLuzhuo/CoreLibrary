@@ -19,6 +19,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
+import android.text.TextUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,26 +40,32 @@ public class ThumbnailManager {
 
     /**
      * 从Video中获取缩略图
-     * @param videoFilePath video path
+     * @param videoFilePath video path or video uri
      * @return Bitmap or null
      */
-    public Bitmap getVideoThumbnail(String videoFilePath){
-        if(videoFilePath == null || videoFilePath.isEmpty() || !new File(videoFilePath).exists()) return null;
+    public Bitmap getVideoThumbnail(Context context, String videoFilePath) {
+        FileManager fileManager = new FileManager(context);
+        if (context == null || TextUtils.isEmpty(videoFilePath) || !fileManager.exists(videoFilePath)) return null;
 
         MediaMetadataRetriever media = new MediaMetadataRetriever();
-        media.setDataSource(videoFilePath);
+        if (fileManager.isUriForFile(videoFilePath)) media.setDataSource(context, Uri.parse(videoFilePath));
+        else media.setDataSource(videoFilePath);
         return media.getFrameAtTime();
+    }
+
+    public Bitmap getVideoThumbnail(Context context, Uri videoFileUri) {
+        return getVideoThumbnail(context, videoFileUri.toString());
     }
 
     /**
      * 从Video中获取忽略图, 并保存到指定路径
      * get primary image file from video
-     * @param videoPath video path
+     * @param videoFile video path or video uri
      * @return primary image file. or null
      */
-    public String getVideoThumbnail(String videoPath, String savePath) {
+    public String getVideoThumbnail(Context context, String videoFile, String savePath) {
         try {
-            Bitmap bitmap = getVideoThumbnail(videoPath);
+            Bitmap bitmap = getVideoThumbnail(context, videoFile);
             if(bitmap == null) return null;
 
             new FileManager().Bitmap2JPGFile(bitmap, savePath);
@@ -68,8 +76,15 @@ public class ThumbnailManager {
         return null;
     }
 
+    public String getVideoThumbnail(Context context, Uri videoFileUri, String savePath) {
+        return getVideoThumbnail(context, videoFileUri.toString(), savePath);
+    }
+
     /**
      * 从Image中获取缩略图
+     *
+     * Note: 仅支持从filePath中获取
+     *
      * @param imageFilePath image file path
      * @param width targeted width
      * @param height targeted height

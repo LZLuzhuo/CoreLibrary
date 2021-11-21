@@ -35,7 +35,7 @@ public class ColorManager {
         this.context = context;
     }
     public ColorManager() {
-        this(CoreBaseApplication.context);
+        this(CoreBaseApplication.appContext);
     }
 
     /**

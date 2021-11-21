@@ -274,7 +274,7 @@ public class StringManager {
 				startIndex = text.indexOf(image.first);
 				if (startIndex == -1) continue;
 				textLength = startIndex + image.first.length();
-				ss.setSpan(new ImageSpan(CoreBaseApplication.context, image.second, ImageSpan.ALIGN_BASELINE), startIndex, textLength, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+				ss.setSpan(new ImageSpan(CoreBaseApplication.appContext, image.second, ImageSpan.ALIGN_BASELINE), startIndex, textLength, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
 			}
 
 			// underLine

@@ -33,6 +33,9 @@ public class VideoRecorderManager {
     private static final String tag = "videoRecorderFragment";
     private IVideoRecorderCallback videoRecorderCallback;
     private FragmentActivity activity;
+    // 默认品质为高, 低品质在某些手机上会很糊
+    private VideoQuality quality = VideoQuality.High;
+    private int durationLimit = Integer.MAX_VALUE;
 
     /**
      * 请在Activity的onCreate回调里创建该对象
@@ -48,6 +51,22 @@ public class VideoRecorderManager {
         this(fragment.requireActivity());
     }
 
+    /**
+     * 设置视频质量
+     */
+    public VideoRecorderManager setVideoQuality(VideoQuality quality) {
+        this.quality = quality;
+        return this;
+    }
+
+    /**
+     * 设置录制时长, 单位s
+     */
+    public VideoRecorderManager setVideoDurationLimit(int durationLimit) {
+        this.durationLimit = durationLimit;
+        return this;
+    }
+
     public void show() {
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ToastManager.show(activity, "请授予录像权限");
@@ -61,7 +80,7 @@ public class VideoRecorderManager {
         if (exitedFragment != null) fragment = (VideoFragment) exitedFragment;
         else {
             // 把新创建的Fragment添加到Activity中
-            final VideoFragment invisibleFragment = new VideoFragment();
+            final VideoFragment invisibleFragment = VideoFragment.instance(quality, durationLimit);
             fragmentManager.beginTransaction().add(invisibleFragment, tag).commitNowAllowingStateLoss();
             fragment = invisibleFragment;
         }

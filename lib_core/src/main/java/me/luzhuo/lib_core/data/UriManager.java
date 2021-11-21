@@ -16,6 +16,7 @@ package me.luzhuo.lib_core.data;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ import androidx.core.util.Pair;
  * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
  **/
 public class UriManager {
+    private static final String TAG = UriManager.class.getSimpleName();
     private String uriString;
     private String scheme;
     private String authority;
@@ -59,11 +61,16 @@ public class UriManager {
         if (uri == null) uri = "";
         this.uriString = uri;
 
-        setScheme(getScheme());
-        setAuthority(getAuthority());
-        setPaths(getPath());
-        getQueryParameter();
-        setFragment(getFragment());
+        try {
+            setScheme(getScheme());
+            setAuthority(getAuthority());
+            setPaths(getPath());
+            getQueryParameter();
+            setFragment(getFragment());
+        } catch (Exception e) {
+            Log.e(TAG, "存在不规范地址: " + uri);
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     /**
@@ -301,8 +308,20 @@ public class UriManager {
         return this.paths;
     }
 
-    public List<Pair<String, String>> queryParameter() {
+    public List<Pair<String, String>> queryParameters() {
         return this.queryParameter;
+    }
+
+    public List<String> queryParameter(String key) {
+        List<String> parameterFilter = new ArrayList<>();
+        for (Pair<String, String> parameter : this.queryParameter) {
+            if (parameter.first.equals(key)) parameterFilter.add(parameter.second);
+        }
+        return parameterFilter;
+    }
+
+    public boolean containQueryParameter(String key) {
+        return queryParameter(key).size() > 0;
     }
 
     public String fragment() {
