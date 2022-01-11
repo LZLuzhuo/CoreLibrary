@@ -61,7 +61,9 @@ public class KeyBoardManager {
     public void hide(View view) {
         if (view == null) return;
 
-        manager.hideSoftInputFromWindow(view.getWindowToken(), flags);
+        try {
+            manager.hideSoftInputFromWindow(view.getWindowToken(), flags);
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     /**
@@ -70,6 +72,9 @@ public class KeyBoardManager {
     public void hide(Activity activity) {
         if (activity == null) return;
 
-        manager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), flags);
+        try {
+            // java.lang.NullPointerException: Attempt to invoke virtual method 'android.os.IBinder android.view.View.getWindowToken()' on a null object reference
+            manager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), flags);
+        } catch (Exception e) { e.printStackTrace(); }
     }
 }

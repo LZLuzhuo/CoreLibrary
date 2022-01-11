@@ -14,35 +14,6 @@
  */
 package me.luzhuo.lib_core_ktx
 
-import com.google.gson.internal.LinkedTreeMap
-
-/**
- * 后台返回的数据结构不规范, 可使用Any?去接收
- * 使用方式:
- *
- * Object:
- * if (t?.supplier.isObject) {
- *     val obj = t?.supplier?.toObject
- *     Log.e(TAG, "" + obj?.get("name"));
- *     Log.e(TAG, "" + obj?.get("age"));
- * }
- *
- * Array:
- * val array = t?.supplier?.toArray
- * Log.e(TAG, "" + array?.getObj(1))
- */
-val Any?.isArray: Boolean get() = this is ArrayList<*>
-val Any?.isObject: Boolean get() = this is LinkedTreeMap<*, *>
-val Any?.toArray: ArrayList<*>? get() = if (this?.isArray == true) this as? ArrayList<*> else null
-val Any?.toObject: LinkedTreeMap<*, *>? get() = if (this?.isObject == true) this as? LinkedTreeMap<*, *> else null
-fun ArrayList<*>?.getObj(index: Int): Any? {
-    if (index < 0 || index >= this?.size ?: 0 - 1) return null
-    return this?.get(index)
-}
-fun LinkedTreeMap<*, *>?.getObj(key: String): Any? {
-    return this?.get(key)
-}
-
 val Any?.int: Int? get() = try {
     this?.toString()?.toFloat()?.toInt()
 } catch (e: Exception) {
@@ -64,9 +35,15 @@ val Any?.float: Float? get() = try {
     null
 }
 val Any?.string: String? get() = this?.toString()
+val Any?.bool: Boolean? get() = try {
+    this?.toString()?.toBoolean()
+} catch (e: Exception) {
+    null
+}
 
 val Int?.int: Int get() = this ?: 0
 val Long?.long: Long get() = this ?: 0
 val Double?.double: Double get() = this ?: 0.0
 val Float?.float: Float get() = this ?: 0.0f
 val String?.string: String get() = this ?: ""
+val Boolean?.bool: Boolean get() = this ?: false

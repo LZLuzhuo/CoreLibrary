@@ -26,6 +26,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StrikethroughSpan;
+import android.text.style.StyleSpan;
 import android.text.style.SubscriptSpan;
 import android.text.style.SuperscriptSpan;
 import android.text.style.URLSpan;
@@ -41,6 +42,9 @@ import java.util.regex.Pattern;
 import androidx.annotation.NonNull;
 import androidx.core.util.Pair;
 import me.luzhuo.lib_core.app.base.CoreBaseApplication;
+
+import static android.graphics.Typeface.BOLD;
+import static android.graphics.Typeface.ITALIC;
 
 /**
  * Description: 字符串工具
@@ -78,6 +82,8 @@ public class StringManager {
 		private List<String> deleteLines = new ArrayList<>();
 		private List<Pair<String, OnClickListener>> callbacks = new ArrayList<>();
 		private List<Pair<String, String>> urls = new ArrayList<>();
+		private List<String> bolds = new ArrayList<>();
+		private List<String> italics = new ArrayList<>();
 
 		public Text(String text) {
 			this.text = text;
@@ -110,6 +116,22 @@ public class StringManager {
 			if (TextUtils.isEmpty(text)) return this;
 
 			backgrounds.add(new Pair<>(text, background));
+			return this;
+		}
+
+		/**
+		 * 字体加粗
+		 */
+		public StringManager.Text bold(String text) {
+			bolds.add(text);
+			return this;
+		}
+
+		/**
+		 * 斜体
+		 */
+		public StringManager.Text italic(String text) {
+			italics.add(text);
 			return this;
 		}
 
@@ -235,6 +257,22 @@ public class StringManager {
 				if (startIndex == -1) continue;
 				textLength = startIndex + background.first.length();
 				ss.setSpan(new BackgroundColorSpan(background.second), startIndex, textLength, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+			}
+
+			// bold
+			for (String bold : bolds) {
+				startIndex = text.indexOf(bold);
+				if (startIndex == -1) continue;
+				textLength = startIndex + bold.length();
+				ss.setSpan(new StyleSpan(BOLD), startIndex, textLength, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+			}
+
+			// italic
+			for (String italic : italics) {
+				startIndex = text.indexOf(italic);
+				if (startIndex == -1) continue;
+				textLength = startIndex + italic.length();
+				ss.setSpan(new StyleSpan(ITALIC), startIndex, textLength, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
 			}
 
 			// scale

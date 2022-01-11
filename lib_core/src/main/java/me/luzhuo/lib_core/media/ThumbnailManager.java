@@ -25,6 +25,7 @@ import android.text.TextUtils;
 import java.io.File;
 import java.io.IOException;
 
+import androidx.annotation.Nullable;
 import me.luzhuo.lib_file.FileManager;
 
 import static android.media.ThumbnailUtils.OPTIONS_RECYCLE_INPUT;
@@ -43,6 +44,7 @@ public class ThumbnailManager {
      * @param videoFilePath video path or video uri
      * @return Bitmap or null
      */
+    @Nullable
     public Bitmap getVideoThumbnail(Context context, String videoFilePath) {
         FileManager fileManager = new FileManager(context);
         if (context == null || TextUtils.isEmpty(videoFilePath) || !fileManager.exists(videoFilePath)) return null;
@@ -53,6 +55,7 @@ public class ThumbnailManager {
         return media.getFrameAtTime();
     }
 
+    @Nullable
     public Bitmap getVideoThumbnail(Context context, Uri videoFileUri) {
         return getVideoThumbnail(context, videoFileUri.toString());
     }
@@ -63,6 +66,7 @@ public class ThumbnailManager {
      * @param videoFile video path or video uri
      * @return primary image file. or null
      */
+    @Nullable
     public String getVideoThumbnail(Context context, String videoFile, String savePath) {
         try {
             Bitmap bitmap = getVideoThumbnail(context, videoFile);
@@ -76,6 +80,7 @@ public class ThumbnailManager {
         return null;
     }
 
+    @Nullable
     public String getVideoThumbnail(Context context, Uri videoFileUri, String savePath) {
         return getVideoThumbnail(context, videoFileUri.toString(), savePath);
     }
@@ -90,6 +95,7 @@ public class ThumbnailManager {
      * @param height targeted height
      * @return This value may be null
      */
+    @Nullable
     public Bitmap getImageThumbnail(String imageFilePath, int width, int height){
         if(imageFilePath == null || imageFilePath.isEmpty() || !new File(imageFilePath).exists()) return null;
 
@@ -105,6 +111,7 @@ public class ThumbnailManager {
      * @param height targeted height
      * @return This value may be null
      */
+    @Nullable
     public Bitmap getImageThumbnail(Context context, int resId, int width, int height){
         if(resId == 0) return null;
 
@@ -119,6 +126,7 @@ public class ThumbnailManager {
      * @param height targeted height
      * @return This value may be null
      */
+    @Nullable
     public Bitmap getImageThumbnail(Bitmap bitmap, int width, int height){
         if(bitmap == null) return null;
 

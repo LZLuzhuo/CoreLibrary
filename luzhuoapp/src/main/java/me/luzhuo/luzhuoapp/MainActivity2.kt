@@ -1,5 +1,6 @@
 package me.luzhuo.luzhuoapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,20 +14,14 @@ import org.json.JSONObject
 class MainActivity2 : CoreBaseActivity(){
     private val TAG = MainActivity2::class.java.simpleName
     private var isShow = true
+
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
         setContentView(R.layout.activity_second)
     }
 
     fun onClose(view: View) {
-        toast2("asdf")
-        Log.e(TAG, "" + 12.13124123.scale2());
-        Log.e(TAG, "" + 12.10.scale2());
-        Log.e(TAG, "" + 12.00.scale2());
-        Log.e(TAG, "" + 12.456.scale2());
-        Log.e(TAG, "" + 12.13124123.scale2(false));
-        Log.e(TAG, "" + 12.10.scale2(false));
-        Log.e(TAG, "" + 12.00.scale2(false));
-        Log.e(TAG, "" + 12.456.scale2(false));
+        val any = Any()
+        any.jsonArray.jsonObj(1).int("")
     }
 }

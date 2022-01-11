@@ -14,6 +14,7 @@
  */
 package me.luzhuo.lib_core.app.base;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -24,13 +25,14 @@ import android.text.TextUtils;
  * @Creation Date: 2021/3/14 15:05
  * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
  **/
+@SuppressLint("ApplySharedPref")
 public class BaseUserInfo {
     protected SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(CoreBaseApplication.appContext);
 
     protected String token;
 
     public void put(String name, String value) {
-        preferences.edit().putString(name, value).apply();
+        preferences.edit().putString(name, value).commit();
     }
 
     public String get(String name) {
@@ -38,7 +40,7 @@ public class BaseUserInfo {
     }
 
     public void put_bool(String name, boolean value) {
-        preferences.edit().putBoolean(name, value).apply();
+        preferences.edit().putBoolean(name, value).commit();
     }
 
     public boolean get_bool(String name) {
@@ -46,7 +48,7 @@ public class BaseUserInfo {
     }
 
     public void put_int(String name, int value) {
-        preferences.edit().putInt(name, value).apply();
+        preferences.edit().putInt(name, value).commit();
     }
 
     public int get_int(String name) {
@@ -54,7 +56,7 @@ public class BaseUserInfo {
     }
 
     public void put_long(String name, long value) {
-        preferences.edit().putLong(name, value).apply();
+        preferences.edit().putLong(name, value).commit();
     }
 
     public long get_long(String name) {
@@ -62,7 +64,7 @@ public class BaseUserInfo {
     }
 
     public void put_float(String name, float value) {
-        preferences.edit().putFloat(name, value).apply();
+        preferences.edit().putFloat(name, value).commit();
     }
 
     public float get_float(String name) {
@@ -71,7 +73,7 @@ public class BaseUserInfo {
 
     public void clear() {
         this.token = null;
-        preferences.edit().clear().apply();
+        preferences.edit().clear().commit();
     }
 
     // =====================================================

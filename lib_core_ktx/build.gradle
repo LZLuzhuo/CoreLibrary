@@ -25,10 +25,10 @@ android {
 
 dependencies {
     compileOnly 'androidx.constraintlayout:constraintlayout:2.0.4'
-    // compileOnly 'me.luzhuo.android:lib_core:2.2.1-SNAPSHOT'
+    compileOnly 'me.luzhuo.android:lib_core:2.2.18-SNAPSHOT'
     compileOnly 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    api project(path: ':lib_core')
+    // api project(path: ':lib_core')
 }
 apply from: 'maven.gradle'
 //apply from: 'jcenter.gradle'

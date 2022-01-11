@@ -22,9 +22,11 @@ import android.net.Uri;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import me.luzhuo.lib_core.app.pattern.PatternCheck;
 import me.luzhuo.lib_core.app.pattern.RegularType;
+import me.luzhuo.lib_core.app.phone.enums.Rom;
 import me.luzhuo.lib_core.ui.toast.ToastManager;
 
 /**
@@ -35,6 +37,7 @@ import me.luzhuo.lib_core.ui.toast.ToastManager;
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
 public class PhoneManager {
+    private RomUtils romUtils = new RomUtils();
 
     /**
      * 跳转到拨号盘界面
@@ -104,5 +107,13 @@ public class PhoneManager {
 
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return tm.getSimSerialNumber();
+    }
+
+    /**
+     * 获取手机Rom
+     * @return 手机Rom
+     */
+    public @Nullable Rom getPhoneRom() {
+        return romUtils.getPhoneRom();
     }
 }

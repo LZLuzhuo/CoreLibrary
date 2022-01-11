@@ -34,6 +34,8 @@ import androidx.annotation.Nullable;
  **/
 public class UICalculation {
     private Context context;
+    private StatusBarUtils statusBar = new StatusBarUtils();
+    private NavigationBarUtils navigationBar = new NavigationBarUtils();
 
     public UICalculation(@NonNull Context context){
         this.context = context.getApplicationContext();
@@ -119,44 +121,32 @@ public class UICalculation {
      * @return 必然会返回一个 StatusBar 的高度, 不能保证高度值准确, 但尽量准确
      */
     public int getStatusBarHeight(@Nullable View view) {
-        int statusBarHeight;
-        statusBarHeight = getStatusBarHeightByDimen();
-        if (statusBarHeight <= 0) getStatusBarHeightByView(view);
-        if (statusBarHeight <= 0) getStatusBarHeightByDefault();
-        return statusBarHeight;
+        return statusBar.getStatusBarHeight(context, view);
     }
 
     /**
-     * 从 android.R.dimen.status_bar_height 中获取 status bar 高度
+     * 获取 NavigationBar 高度, 并且要求沉浸式状态栏时对 NavigationBar 的值无影响
+     * 从 android.R.dimen.navigation_bar_height 中获取 status bar 高度
+     * @return 有则返回具体值, 没有则返回-1
      */
-    protected int getStatusBarHeightByDimen() {
-        int statusBarHeight = -1;
-        // 从系统未公开的 android.R.dimen.status_bar_height 中获取状态栏的高度
-        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
-
-        return statusBarHeight;
+    public int getNavigationBarHeight() {
+        return navigationBar.getNavigationBarHeight(context);
     }
 
     /**
-     * 获取不到时, 给的默认的24dp
-     * @return
+     * 判断现在是否有NavigationBar
+     * @return 有返回true, 没有返回false
      */
-    protected int getStatusBarHeightByDefault() {
-        return new UICalculation(context).dp2px(24f);
+    public boolean hasNavigationBar() {
+        return navigationBar.hasNavigationBar(context);
     }
 
     /**
-     * 获取 statusbar 高度
-     * get statusbar hieght
-     * @param v 任意View
-     * @return
+     * 获取当前NavigationBar的高度
+     * 如果有则返回NavigationBar的高度, 没有则返回0
+     * @return NavigationBar的高度, 或者0
      */
-    protected int getStatusBarHeightByView(View v) {
-        if (v == null) return -1;
-
-        Rect frame = new Rect();
-        v.getWindowVisibleDisplayFrame(frame);
-        return frame.top;
+    public int getCurrentNavigationBar() {
+        return navigationBar.getCurrentNavigationBar(context);
     }
 }

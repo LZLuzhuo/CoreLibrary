@@ -146,7 +146,7 @@ public class UriManager {
     public Uri getUri() {
         final Uri.Builder builder = new Uri.Builder();
         if (!TextUtils.isEmpty(this.scheme)) builder.scheme(this.scheme);
-        if (!TextUtils.isEmpty(this.authority)) builder.authority(this.authority);
+        if (!TextUtils.isEmpty(this.authority)) builder.encodedAuthority(this.authority);
         if (!TextUtils.isEmpty(this.paths)) builder.appendEncodedPath(this.paths);
         for (Pair<String, String> parameterPair : queryParameter) {
             builder.appendQueryParameter(parameterPair.first, parameterPair.second);
@@ -163,7 +163,8 @@ public class UriManager {
                 ", paths='" + paths + '\'' +
                 ", queryParameter=" + queryParameter +
                 ", fragment='" + fragment + '\'' +
-                '}';*/
+                '}';
+        Log.e(TAG, "" + log);*/
         return getUri().toString();
     }
 

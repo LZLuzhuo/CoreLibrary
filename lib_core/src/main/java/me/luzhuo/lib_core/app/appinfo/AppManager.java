@@ -15,6 +15,7 @@
 package me.luzhuo.lib_core.app.appinfo;
 
 import android.app.ActivityManager;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -33,6 +34,9 @@ import java.security.MessageDigest;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
 import me.luzhuo.lib_core.app.appinfo.bean.AppInfo;
+import me.luzhuo.lib_core.app.appinfo.callback.AppForegroundCallback;
+import me.luzhuo.lib_core.app.base.CoreBaseApplication;
+import me.luzhuo.lib_core.ui.toast.ToastManager;
 
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
@@ -48,12 +52,17 @@ import static androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode;
  **/
 public class AppManager {
     public final static String AUTHORITY = "me.luzhuo.fileprovider.";
+    private Context context;
+
+    public AppManager() {
+        this.context = CoreBaseApplication.appContext;
+    }
 
     /**
      * 检查当前应用的版本是否为 Debug 版本
      * @return 如果是Debug版本则返回true, 否则返回false
      */
-    public boolean isDebug(Context context){
+    public boolean isDebug(){
         try {
             ApplicationInfo info = context.getApplicationInfo();
             /*
@@ -69,7 +78,7 @@ public class AppManager {
      * 获取该应用的版本信息
      * @return AppInfo
      */
-    public AppInfo getAppInfo(Context context){
+    public AppInfo getAppInfo(){
         try {
             PackageManager pm = context.getPackageManager();
             PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
@@ -90,7 +99,7 @@ public class AppManager {
      * @param apkPath apk文件路径
      * @return AppInfo
      */
-    public AppInfo getAppInfo(Context context, String apkPath) {
+    public AppInfo getAppInfo(String apkPath) {
         try {
             PackageManager packageManager = context.getPackageManager();
             PackageInfo packageInfo = packageManager.getPackageArchiveInfo(apkPath, PackageManager.GET_ACTIVITIES);
@@ -108,10 +117,9 @@ public class AppManager {
 
     /**
      * 是否是深色主题
-     * @param context Context
      * @return boolean true:是, false:不是
      */
-    public boolean isDarkTheme(Context context) {
+    public boolean isDarkTheme() {
         int flag = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         return flag == Configuration.UI_MODE_NIGHT_YES;
     }
@@ -143,7 +151,7 @@ public class AppManager {
      * 获取该应用的签名 (MD5)
      * @return app sign; b032c61a30fd981a18aa6278c34b1e2a
      */
-    public String getSign(Context context) {
+    public String getSign() {
         try {
             final String pkgName = context.getPackageName();
             PackageInfo pis = context.getPackageManager().getPackageInfo(pkgName, PackageManager.GET_SIGNATURES);
@@ -159,7 +167,7 @@ public class AppManager {
      * 根据硬件信息生成, 不需要权限, 不随App卸载和设备恢复出厂设置而改变
      * @return 5F200783B117251F137FA19A365EFD932293E8D1
      */
-    public String getDeviceId(Context context) {
+    public String getDeviceId() {
         return new DeviceIdUtils().getDeviceId(context);
     }
 
@@ -208,7 +216,7 @@ public class AppManager {
      * 获得当前进程的名字
      * @return 进程名, 默认进程为报名 (com.jincai.myapplication)
      */
-    public String processName(Context context) {
+    public String processName() {
         int pid = android.os.Process.myPid();
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningAppProcessInfo appProcess : activityManager.getRunningAppProcesses()) {
@@ -279,5 +287,28 @@ public class AppManager {
         install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // 对目标应用临时授权该 Uri 所代表的文件
         install.setDataAndType(FileProvider.getUriForFile(context, AUTHORITY + context.getPackageName(), appFilePath), "application/vnd.android.package-archive");
         context.startActivity(install);
+    }
+
+    /**
+     * 跳转到应用市场
+     */
+    public void startAppStore(Context context) {
+        try {
+            Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            ToastManager.show(context, "未安装应用市场");
+        }
+    }
+
+    /**
+     * App前后台切换的监听
+     * 请在Application中调用
+     * @param callback 前后切换的回调接口
+     */
+    public void registerAppForegroundCallback(AppForegroundCallback callback) {
+        AppForeground.getInstance().registerAppForegroundCallback((Application) CoreBaseApplication.appContext, callback);
     }
 }

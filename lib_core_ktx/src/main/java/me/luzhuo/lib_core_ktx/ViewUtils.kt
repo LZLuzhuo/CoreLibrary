@@ -30,6 +30,35 @@ fun Group.setOnClickListeners(listener: (View) -> Unit) {
     }
 }
 
+// 单击时间间隔, 1秒 (单位纳秒)
+private const val singleLaunchInterval = 1 * 1000 * 1000 * 1000
+// 上次有效的运行时间
+private var lastLaunchTime: Long = 0
+// 上次有效的运行时间
+private var lastClickTime: Long = 0
+
+/**
+ * 防止重复运行
+ */
+fun launch2(function: () -> Unit) {
+    if (System.nanoTime() - lastLaunchTime >= singleLaunchInterval) {
+        function.invoke()
+        lastLaunchTime = System.nanoTime()
+    }
+}
+
+/**
+ * 防止重复点击的点击事件
+ */
+fun View.setOnClickListener2(listener: (View) -> Unit) {
+    this.setOnClickListener {
+        if (System.nanoTime() - lastClickTime >= singleLaunchInterval) {
+            listener.invoke(it)
+            lastClickTime = System.nanoTime()
+        }
+    }
+}
+
 fun Int.px2dp(): Int = UICalculation(CoreBaseApplication.appContext).px2dp(this.toFloat())
 fun Float.px2dp(): Int = UICalculation(CoreBaseApplication.appContext).px2dp(this)
 fun Int.dp2px(): Int = UICalculation(CoreBaseApplication.appContext).dp2px(this.toFloat())

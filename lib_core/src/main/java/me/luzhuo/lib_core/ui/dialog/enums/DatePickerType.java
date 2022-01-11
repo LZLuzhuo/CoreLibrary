@@ -38,8 +38,8 @@ public enum DatePickerType {
         this.themeResId_Dark = themeResId_Dark;
     }
 
-    public int themeResId(Context context){
-        if (new AppManager().isDarkTheme(context)) return themeResId_Dark;
+    public int themeResId(){
+        if (new AppManager().isDarkTheme()) return themeResId_Dark;
         return themeResId_Light;
     }
 }

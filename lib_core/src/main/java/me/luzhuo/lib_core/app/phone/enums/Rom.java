@@ -12,18 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.luzhuo.lib_core_ktx
-
-import android.graphics.Color
+package me.luzhuo.lib_core.app.phone.enums;
 
 /**
- * 解析颜色
- */
-fun String?.parseColor(): Int? {
-    if (this == null) return null
-    return try {
-        Color.parseColor(this)
-    } catch (e: Exception) {
-        null
-    }
+ * Description: 手机ROM
+ * @Author: Luzhuo
+ * @Creation Date: 2021/12/11 17:11
+ * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
+ **/
+public enum Rom {
+    Rom_Huawei, Rom_Miui, Rom_Meizu, Rom_360, Rom_Oppo, Rom_Vivo
 }

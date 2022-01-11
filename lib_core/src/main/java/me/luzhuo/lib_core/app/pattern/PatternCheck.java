@@ -14,6 +14,8 @@
  */
 package me.luzhuo.lib_core.app.pattern;
 
+import android.text.TextUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +43,8 @@ public class PatternCheck {
      * @return 符合正则返回true, 否则返回false
      */
     public boolean check(String regular, String data) {
+        if (TextUtils.isEmpty(data)) return false;
+
         Pattern pattern = Pattern.compile(regular);
         Matcher matcher = pattern.matcher(data);
         return matcher.matches();

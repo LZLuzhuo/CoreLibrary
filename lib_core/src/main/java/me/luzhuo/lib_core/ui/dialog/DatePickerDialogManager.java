@@ -59,7 +59,7 @@ public class DatePickerDialogManager {
             return;
         }
 
-        new DatePickerDialog(context, type.themeResId(context), new DatePickerDialog.OnDateSetListener() {
+        new DatePickerDialog(context, type.themeResId(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 if (callback != null) callback.onDatePicker(year, monthOfYear + 1, dayOfMonth);
@@ -92,7 +92,7 @@ public class DatePickerDialogManager {
             return;
         }
 
-        new TimePickerDialog(context, type.themeResId(context), new TimePickerDialog.OnTimeSetListener() {
+        new TimePickerDialog(context, type.themeResId(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 if (callback != null) callback.onTimePicker(hourOfDay, minute);
