@@ -34,10 +34,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
-//    implementation project(path: ':lib_core')
-//    implementation project(path: ':lib_core_ktx')
-    implementation 'me.luzhuo.android:lib_core:2.2.8-SNAPSHOT'
-    implementation 'me.luzhuo.android:lib_core_ktx:2.3.16-SNAPSHOT'
+    implementation project(path: ':lib_core')
+    implementation project(path: ':lib_core_ktx')
+//    implementation 'me.luzhuo.android:lib_core:2.2.8-SNAPSHOT'
+//    implementation 'me.luzhuo.android:lib_core_ktx:2.3.16-SNAPSHOT'
 
 //    implementation 'me.luzhuo.android:lib_core:2.0.1'
 //    implementation 'me.luzhuo.android:lib_core_ktx:2.0.2'

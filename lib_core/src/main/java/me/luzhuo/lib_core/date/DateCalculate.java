@@ -14,6 +14,8 @@
  */
 package me.luzhuo.lib_core.date;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -30,6 +32,7 @@ import me.luzhuo.lib_core.date.enums.TimeRule;
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
 public class DateCalculate {
+    private static final String TAG = DateCalculate.class.getSimpleName();
     private DateCalendar calendar = new DateCalendar();
 
     /**
@@ -145,7 +148,10 @@ public class DateCalculate {
      */
     public String conversationFormat(long previousTimesamp){
         long currentTimestamp = System.currentTimeMillis();
-        if(currentTimestamp / TimeRule.Minute.timeLength < previousTimesamp / TimeRule.Minute.timeLength) throw new IllegalArgumentException("must be previousTimesamp: " + previousTimesamp + " < " + " currentTimestamp: " + currentTimestamp);
+        if(currentTimestamp / TimeRule.Minute.timeLength < previousTimesamp / TimeRule.Minute.timeLength) {
+            Log.w(TAG, "must be previousTimesamp: " + previousTimesamp + " < " + " currentTimestamp: " + currentTimestamp);
+            return new SimpleDateFormat("HH:mm").format(previousTimesamp);
+        }
 
         Calendar calendar_old = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"), Locale.CHINA);
         calendar_old.setTimeInMillis(previousTimesamp);

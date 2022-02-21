@@ -151,20 +151,20 @@ public class UriManager {
         for (Pair<String, String> parameterPair : queryParameter) {
             builder.appendQueryParameter(parameterPair.first, parameterPair.second);
         }
-        if (!TextUtils.isEmpty(this.fragment)) builder.fragment(this.fragment);
+        if (!TextUtils.isEmpty(this.fragment)) builder.encodedFragment(this.fragment);
         return builder.build();
     }
 
     @Override
     public String toString() {
-        /*String log =  "UriManager{" +
+        String log =  "UriManager{" +
                 "scheme='" + scheme + '\'' +
                 ", authority='" + authority + '\'' +
                 ", paths='" + paths + '\'' +
                 ", queryParameter=" + queryParameter +
                 ", fragment='" + fragment + '\'' +
                 '}';
-        Log.e(TAG, "" + log);*/
+        Log.e(TAG, "" + log);
         return getUri().toString();
     }
 
@@ -223,6 +223,11 @@ public class UriManager {
             String childPath = pathSplit[i] + "/";
             tempPath += childPath;
             this.pathsLength += childPath.length();
+        }
+
+        // 处理 http://xxx/#/ 的特殊情况
+        if (pendingPath.endsWith("/#/")) {
+            tempPath += "#/";
         }
 
         if (pathSplit.length <= 0) {
@@ -289,8 +294,16 @@ public class UriManager {
         int ssi = findSSI();
         String pendingPath = uriString.substring(ssi);
         if (pendingPath.startsWith("#")) {
-            this.fragmentLength = pendingPath.length();
-            return pendingPath.substring(1);
+            String fragment = pendingPath.substring(1);
+
+            // 处理 http://xxx/#/ 的特殊情况
+            if (this.paths != null && this.paths.endsWith("#/") && fragment.equals("/")) {
+                this.fragmentLength = 0;
+                return null;
+            } else {
+                this.fragmentLength = pendingPath.length();
+                return pendingPath.substring(1);
+            }
         } else {
             this.fragmentLength = 0;
             return null;

@@ -38,8 +38,8 @@ public class MainActivity extends CoreBaseActivity {
     }
 
     public void onClick(View view) {
-        UriManager uri = new UriManager("http://klcrm.lkkjjt.com:8080?token=12321dsafsf&appid=诚聊通").removeQueryParameter("token").addQueryParameter("token", "asdfasdf");
-        Log.e(TAG, "uri: " + uri);
-        // startActivity(new Intent(this, MainActivity2.class));
+//        UriManager uri = new UriManager("http://qw.qiwangguanjia.cn/#/").removeQueryParameter("token").addQueryParameter("token", "asdfasdf");
+//        Log.e(TAG, "uri: " + uri);
+        startActivity(new Intent(this, MainActivity2.class));
     }
 }
