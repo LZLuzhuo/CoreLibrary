@@ -20,6 +20,8 @@ import android.view.View;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -63,26 +65,26 @@ public class RightMenuUtils {
     private RightMenuAdapter adapter;
     private OnOpenOrCloseCallback openOrCloseCallback;
 
-    public RightMenuUtils(Activity activity) {
+    public RightMenuUtils(@NonNull Activity activity) {
         this.context = activity;
         findView(activity);
         initView();
     }
 
-    public RightMenuUtils(Fragment fragment) {
+    public RightMenuUtils(@NonNull Fragment fragment) {
         this.context = fragment.getContext();
         findView(fragment.getView());
         initView();
     }
 
-    private void findView(Activity activity) {
+    private void findView(@NonNull Activity activity) {
         base_right_menu_open = activity.findViewById(R.id.base_right_menu_open);
         base_right_menu_drawer = activity.findViewById(R.id.base_right_menu_drawer);
         base_right_menu_close = activity.findViewById(R.id.base_right_menu_close);
         base_right_menu_rec = activity.findViewById(R.id.base_right_menu_rec);
     }
 
-    private void findView(View activity) {
+    private void findView(@NonNull View activity) {
         base_right_menu_open = activity.findViewById(R.id.base_right_menu_open);
         base_right_menu_drawer = activity.findViewById(R.id.base_right_menu_drawer);
         base_right_menu_close = activity.findViewById(R.id.base_right_menu_close);
@@ -120,7 +122,7 @@ public class RightMenuUtils {
     /**
      * 设置数据
      */
-    public void setData(List<String> menus, OnMenuCallback callback) {
+    public void setData(@NonNull List<String> menus, @Nullable OnMenuCallback callback) {
         adapter = new RightMenuAdapter(menus, callback);
         base_right_menu_rec.setAdapter(adapter);
     }
@@ -128,7 +130,7 @@ public class RightMenuUtils {
     /**
      * 设置新的菜案数据
      */
-    public void setNewData(List<String> menus) {
+    public void setNewData(@NonNull List<String> menus) {
         if (adapter == null) return;
         adapter.mDatas = menus;
         adapter.notifyDataSetChanged();
@@ -144,7 +146,7 @@ public class RightMenuUtils {
     /**
      * 设置点击了 打开 或 关闭 时的监听
      */
-    public void setOpenOrCloseCallback(OnOpenOrCloseCallback openOrCloseCallback) {
+    public void setOpenOrCloseCallback(@Nullable OnOpenOrCloseCallback openOrCloseCallback) {
         this.openOrCloseCallback = openOrCloseCallback;
     }
 }

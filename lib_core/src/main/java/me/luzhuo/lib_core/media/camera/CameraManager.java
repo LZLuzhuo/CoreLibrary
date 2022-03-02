@@ -17,6 +17,9 @@ package me.luzhuo.lib_core.media.camera;
 import android.Manifest;
 import android.content.pm.PackageManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -34,17 +37,18 @@ public class CameraManager {
     /**
      * 请在Activity的onCreate回调里创建该对象
      */
-    public CameraManager(FragmentActivity activity) {
+    public CameraManager(@NonNull FragmentActivity activity) {
         this.activity = activity;
     }
 
     /**
      * 请在Fragment的OnCreate回调里创建该对象
      */
-    public CameraManager(Fragment fragment) {
+    public CameraManager(@NonNull Fragment fragment) {
         this(fragment.requireActivity());
     }
 
+    @RequiresPermission(Manifest.permission.CAMERA)
     public void show() {
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ToastManager.show(activity, "请授予拍照权限");
@@ -65,7 +69,7 @@ public class CameraManager {
         fragment.show(cameraCallback);
     }
 
-    public CameraManager setCameraCallback(ICameraCallback cameraCallback) {
+    public CameraManager setCameraCallback(@Nullable ICameraCallback cameraCallback) {
         this.cameraCallback = cameraCallback;
         return this;
     }

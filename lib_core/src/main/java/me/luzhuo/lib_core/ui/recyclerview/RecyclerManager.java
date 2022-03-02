@@ -21,7 +21,9 @@ import android.view.View;
 
 import com.google.android.flexbox.FlexboxLayoutManager;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
@@ -45,7 +47,7 @@ public class RecyclerManager {
     private MathCalculation math = new MathCalculation();
     private final int LinearLayoutManagerType = 0x001, GridLayoutManagerType = 0x002, StaggeredGridLayoutManagerType = 0x003, FlexboxLayoutManagerType = 0x004;
 
-    public RecyclerManager(Context context) {
+    public RecyclerManager(@NonNull Context context) {
         if(context == null) throw new NullPointerException("Context is not null when creating RecyclerViewManager.");
         this.context = context;
         this.ui = new UICalculation(context);
@@ -101,7 +103,7 @@ public class RecyclerManager {
      * @param recyclerView androidx.recyclerview.widget.RecyclerView
      * @param dp Margins in dp.
      */
-    public void setItemDecorationOnLinearLayout(RecyclerView recyclerView, final float dp){
+    public void setItemDecorationOnLinearLayout(@Nullable RecyclerView recyclerView, final float dp){
         if(recyclerView == null || dp <= 0) return;
         final int margin = ui.dp2px(dp);
 
@@ -158,7 +160,7 @@ public class RecyclerManager {
      * @return return SpanceCount.
      *         return 0 if it is other type.
      */
-    private int getSpanceCount(RecyclerView.LayoutManager layoutManager) {
+    private int getSpanceCount(@NonNull RecyclerView.LayoutManager layoutManager) {
         int layoutMangerType = getLayoutMangerType(layoutManager);
         if(layoutMangerType == GridLayoutManagerType){
             return ((GridLayoutManager) layoutManager).getSpanCount();
@@ -173,7 +175,7 @@ public class RecyclerManager {
      * @param layoutManager RecyclerView's LayoutManager
      * @return return LinearLayoutManager or GridLayoutManager or StaggeredGridLayoutManager.
      */
-    private int getLayoutMangerType(RecyclerView.LayoutManager layoutManager) {
+    private int getLayoutMangerType(@NonNull RecyclerView.LayoutManager layoutManager) {
         if (layoutManager instanceof GridLayoutManager) {
             return GridLayoutManagerType;
         } else if(layoutManager instanceof StaggeredGridLayoutManager) {
@@ -209,7 +211,7 @@ public class RecyclerManager {
      * @param recyclerView androidx.recyclerview.widget.RecyclerView
      * @return Return true if the last View is displayed.
      */
-    public boolean isScrollBottom(RecyclerView recyclerView){
+    public boolean isScrollBottom(@NonNull RecyclerView recyclerView){
         return isScrollBottom(recyclerView, 0);
     }
 
@@ -225,7 +227,7 @@ public class RecyclerManager {
      * @param marginCount
      * @return Return true if the last View is displayed.
      */
-    public boolean isScrollBottom(RecyclerView recyclerView, int marginCount){
+    public boolean isScrollBottom(@NonNull RecyclerView recyclerView, int marginCount){
         if(recyclerView == null || marginCount < 0) return false;
 
         int lastVisibleItemPosition = 0;
@@ -287,7 +289,7 @@ public class RecyclerManager {
      * @param recyclerView RecyclerView
      */
     @Deprecated()
-    public void checkItemViewVisibility(final RecyclerView recyclerView, final LinearLayoutManager layoutManager, final int resId /* 资源id */, final OnItemViewVisibilityCallback callback) {
+    public void checkItemViewVisibility(@NonNull final RecyclerView recyclerView, @NonNull final LinearLayoutManager layoutManager, @IdRes final int resId /* 资源id */, @Nullable final OnItemViewVisibilityCallback callback) {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             private int visibleCount = 0;
 
@@ -367,7 +369,7 @@ public class RecyclerManager {
      * @param type ScrollType
      * @param position 滚动到指定位置
      */
-    public void scroll(RecyclerView recyclerView, final ScrollType type, int position) {
+    public void scroll(@NonNull RecyclerView recyclerView, @NonNull final ScrollType type, int position) {
         RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(context) {
             @Override protected int getVerticalSnapPreference() {
                 switch (type) {

@@ -14,6 +14,7 @@
  */
 package me.luzhuo.lib_core.data.hashcode;
 
+import android.text.TextUtils;
 import android.util.Base64;
 
 import java.io.FileNotFoundException;
@@ -25,6 +26,9 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Description: 哈希序列管理
@@ -41,12 +45,12 @@ public class HashManager {
     private static final String SHA384 = "SHA-384";
     private static final String SHA512 = "SHA-512";
 
-    private HashManager(){}
+    private HashManager() { }
     public static HashManager getInstance(){
         return Instance.instance;
     }
 
-    private static class Instance{
+    private static class Instance {
         private static final HashManager instance = new HashManager();
     }
 
@@ -55,11 +59,13 @@ public class HashManager {
      * UUID是世界唯一的随机码
      * @return 71771d258ac7494e8cc0f74739e44b88
      */
+    @NonNull
     public String getUuid() {
         return UUID.randomUUID().toString().replace("-","");
     }
 
-    public String getUuid(String name) {
+    @NonNull
+    public String getUuid(@NonNull String name) {
         try {
             return UUID.nameUUIDFromBytes(name.getBytes("UTF-8")).toString().replace("-","");
         } catch (UnsupportedEncodingException e) {
@@ -73,7 +79,10 @@ public class HashManager {
      * @param content 待转换的文本内容, 或者 Base64 内容
      * @return 转换后的文本内容, 或者 Base64 内容
      */
-    public String getBase64(HashAction action, String content) {
+    @Nullable
+    public String getBase64(@NonNull HashAction action, @Nullable String content) {
+        if (TextUtils.isEmpty(content)) return null;
+
         if (action == HashAction.Encode) {
             byte[] encode = Base64.encode(content.getBytes(Charset.defaultCharset()), Base64.DEFAULT);
             return new String(encode);
@@ -89,7 +98,8 @@ public class HashManager {
      * @param inputStream 文件输入流
      * @return Base64编码
      */
-    public String getFileToBase64(InputStream inputStream) {
+    @Nullable
+    public String getFileToBase64(@NonNull InputStream inputStream) {
         try {
             byte[] bytes = new byte[inputStream.available()];
             int length = inputStream.read(bytes);
@@ -107,7 +117,10 @@ public class HashManager {
      * @param base64Content Base64 文本内容
      * @return
      */
-    public byte[] getBase64ToFile(String base64Content) {
+    @Nullable
+    public byte[] getBase64ToFile(@Nullable String base64Content) {
+        if (TextUtils.isEmpty(base64Content)) return null;
+
         byte[] decode = Base64.decode(base64Content, Base64.DEFAULT);
         return decode;
     }
@@ -117,44 +130,59 @@ public class HashManager {
      * @param content 待摘要的文本内容
      * @return MD5消息摘要
      */
-    public String getMD5(String content) {
+    @NonNull
+    public String getMD5(@Nullable String content) {
         return messageDigest(MD5, content);
     }
-    public String getMD5(InputStream inputStream) {
+    @Nullable
+    public String getMD5(@Nullable InputStream inputStream) {
         return messageDigest(MD5, inputStream);
     }
-    public String getSHA1(String content) {
+    @Nullable
+    public String getSHA1(@Nullable String content) {
         return messageDigest(SHA1, content);
     }
-    public String getSHA1(InputStream inputStream) {
+    @Nullable
+    public String getSHA1(@Nullable InputStream inputStream) {
         return messageDigest(SHA1, inputStream);
     }
-    public String getSHA224(String content) {
+    @Nullable
+    public String getSHA224(@Nullable String content) {
         return messageDigest(SHA224, content);
     }
-    public String getSHA224(InputStream inputStream) {
+    @Nullable
+    public String getSHA224(@Nullable InputStream inputStream) {
         return messageDigest(SHA224, inputStream);
     }
-    public String getSHA256(String content) {
+    @Nullable
+    public String getSHA256(@Nullable String content) {
         return messageDigest(SHA256, content);
     }
-    public String getSHA256(InputStream inputStream) {
+    @Nullable
+    public String getSHA256(@Nullable InputStream inputStream) {
         return messageDigest(SHA256, inputStream);
     }
-    public String getSHA384(String content) {
+    @Nullable
+    public String getSHA384(@Nullable String content) {
         return messageDigest(SHA384, content);
     }
-    public String getSHA384(InputStream inputStream) {
+    @Nullable
+    public String getSHA384(@Nullable InputStream inputStream) {
         return messageDigest(SHA384, inputStream);
     }
-    public String getSHA512(String content) {
+    @Nullable
+    public String getSHA512(@Nullable String content) {
         return messageDigest(SHA512, content);
     }
-    public String getSHA512(InputStream inputStream) {
+    @Nullable
+    public String getSHA512(@Nullable InputStream inputStream) {
         return messageDigest(SHA512, inputStream);
     }
 
-    private String messageDigest(String algorithm, String content) {
+    @Nullable
+    private String messageDigest(@NonNull String algorithm, @Nullable String content) {
+        if (TextUtils.isEmpty(content)) return null;
+
         MessageDigest messageDigest = null;
         try {
             messageDigest = MessageDigest.getInstance(algorithm);
@@ -166,7 +194,10 @@ public class HashManager {
         return new BigInteger(1, digest).toString(16);
     }
 
-    private String messageDigest(String algorithm, InputStream inputStream) {
+    @Nullable
+    private String messageDigest(@NonNull String algorithm, @Nullable InputStream inputStream) {
+        if (inputStream == null) return null;
+
         MessageDigest messageDigest = null;
 
         try {
@@ -187,5 +218,27 @@ public class HashManager {
         byte[] digest = messageDigest.digest();
 
         return new BigInteger(1, digest).toString(16);
+    }
+
+    /**
+     * 使用公钥进行加密
+     * @param publicKey 公钥
+     * @param plainText 需要被加密的明文
+     * @return 加密后的密文
+     */
+    @Nullable
+    public String encrypt(@NonNull @RSAUtil.RAS_Transformation String transformation, @NonNull String publicKey, @NonNull String plainText) {
+        return new RSAUtil(transformation).encrypt(publicKey, plainText);
+    }
+
+    /**
+     * 使用私钥进行解密
+     * @param privateKey 私钥
+     * @param enStr 被加密的密文
+     * @return 解密后的明文
+     */
+    @Nullable
+    public String decrypt(@NonNull @RSAUtil.RAS_Transformation String transformation, @NonNull String privateKey, @NonNull String enStr) {
+        return new RSAUtil(transformation).decrypt(privateKey, enStr);
     }
 }

@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TimerTask;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -43,12 +44,12 @@ public class Timer implements LifecycleObserver {
     private static Handler mainThread;
     private List<CountDownTimer> countDownTimers = new LinkedList<>();
 
-    public Timer(FragmentActivity activity) {
+    public Timer(@NonNull FragmentActivity activity) {
         mainThread = new Handler(Looper.getMainLooper());
         activity.getLifecycle().addObserver(this);
     }
 
-    public Timer(Fragment fragment) {
+    public Timer(@NonNull Fragment fragment) {
         mainThread = new Handler(Looper.getMainLooper());
         fragment.getLifecycle().addObserver(this);
     }
@@ -58,7 +59,7 @@ public class Timer implements LifecycleObserver {
      * 可以同时开启多个
      * @param countSeconds 总时长, 单位s
      */
-    public @Nullable CountDownTimer countDownTimer(int countSeconds, final ICountDownCallback callback) {
+    public @Nullable CountDownTimer countDownTimer(int countSeconds, @Nullable final ICountDownCallback callback) {
         if(countSeconds <= 0) return null;
 
         CountDownTimer countDownTimer = new CountDownTimer(countSeconds * 1000, 1000) {
@@ -83,7 +84,8 @@ public class Timer implements LifecycleObserver {
      * 开始计时
      * 同时只能开启一个
      */
-    public TimerTask startTimer(final ITimerCallback callback) {
+    @NonNull
+    public TimerTask startTimer(@Nullable final ITimerCallback callback) {
         if (task != null) return task;
         final java.util.Timer timer = new java.util.Timer(true);
 
@@ -96,6 +98,8 @@ public class Timer implements LifecycleObserver {
                 mainThread.post(new Runnable() {
                     @Override
                     public void run() {
+                        if (task == null) return;
+
                         long time = (task.scheduledExecutionTime() - startTime) / 1000;
                         callback.onTask(time);
                         callback.onTask(String.format(" %02d:%02d", time / 60, time % 60));

@@ -32,6 +32,7 @@ import android.widget.ScrollView;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,7 +43,8 @@ import androidx.recyclerview.widget.RecyclerView;
  * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
  **/
 public class ScreenshotManager {
-    public static Bitmap screenshot(FragmentActivity activity) {
+    @Nullable
+    public static Bitmap screenshot(@Nullable FragmentActivity activity) {
         if (activity == null) return null;
 
         final View view = activity.getWindow().getDecorView();
@@ -54,7 +56,8 @@ public class ScreenshotManager {
         return bitmap;
     }
 
-    public static Bitmap screenshot(View view) {
+    @Nullable
+    public static Bitmap screenshot(@Nullable View view) {
         if (null == view) return null;
 
         view.setDrawingCacheEnabled(true);
@@ -72,7 +75,8 @@ public class ScreenshotManager {
         return bitmap;
     }
 
-    public static Bitmap screenshot(ScrollView scrollView) {
+    @Nullable
+    public static Bitmap screenshot(@Nullable ScrollView scrollView) {
         if (scrollView == null) return null;
         
         int height = 0;
@@ -86,7 +90,8 @@ public class ScreenshotManager {
         return bitmap;
     }
 
-    public static Bitmap screenshot(ListView listview) {
+    @Nullable
+    public static Bitmap screenshot(@Nullable ListView listview) {
         if (listview == null) return null;
 
         final ListAdapter adapter = listview.getAdapter();
@@ -115,7 +120,8 @@ public class ScreenshotManager {
         return bigBitmap;
     }
 
-    public static Bitmap screenshot(RecyclerView recyclerView) {
+    @Nullable
+    public static Bitmap screenshot(@Nullable RecyclerView recyclerView) {
         if (recyclerView == null) return null;
 
         final RecyclerView.Adapter adapter = recyclerView.getAdapter();
@@ -168,7 +174,8 @@ public class ScreenshotManager {
      * 对WebView进行截图
      * 在WebView还未创建之前, 请先调用 {@link ScreenshotManager#initWebViewScreenshot() }
      */
-    public static Bitmap screenshot(WebView webView) {
+    @Nullable
+    public static Bitmap screenshot(@Nullable WebView webView) {
         if (webView == null) return null;
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {

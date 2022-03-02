@@ -20,6 +20,7 @@ import android.util.TypedValue;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 import me.luzhuo.lib_core.R;
 import me.luzhuo.lib_core.app.base.CoreBaseApplication;
 
@@ -31,7 +32,7 @@ import me.luzhuo.lib_core.app.base.CoreBaseApplication;
  **/
 public class ColorManager {
     private Context context;
-    public ColorManager(Context context) {
+    public ColorManager(@NonNull Context context) {
         this.context = context;
     }
     public ColorManager() {
@@ -41,6 +42,7 @@ public class ColorManager {
     /**
      * <color name="colorAccent">#03DAC5</color>
      */
+    @ColorInt
     public int getColorAccent() {
         return getAttrColor(R.attr.colorAccent);
     }
@@ -48,6 +50,7 @@ public class ColorManager {
     /**
      * 30% 透明度的 ColorAccent
      */
+    @ColorInt
     public int getSecondColorAccent() {
         return getSecondColor(getColorAccent());
     }
@@ -55,6 +58,7 @@ public class ColorManager {
     /**
      * <color name="colorPrimary">#6200EE</color>
      */
+    @ColorInt
     public int getColorPrimary() {
         return getAttrColor(R.attr.colorPrimary);
     }
@@ -62,6 +66,7 @@ public class ColorManager {
     /**
      * <color name="colorPrimaryDark">#3700B3</color>
      */
+    @ColorInt
     public int getColorPrimaryDark() {
         return getAttrColor(R.attr.colorPrimaryDark);
     }
@@ -69,6 +74,7 @@ public class ColorManager {
     /**
      * TextView 的默认颜色 是三级文本色
      */
+    @ColorInt
     public int getTextColorDefault() {
         return getTextColorTertiary();
     }
@@ -77,6 +83,7 @@ public class ColorManager {
      * 文本一级颜色
      * ?android:attr/textColorPrimary
      */
+    @ColorInt
     public int getTextColorPrimary() {
         return getAndroidAttrColor(android.R.attr.textColorPrimary);
     }
@@ -85,6 +92,7 @@ public class ColorManager {
      * 文本二级颜色
      * ?android:attr/textColorSecondary
      */
+    @ColorInt
     public int getTextColorSecondary() {
         return getAndroidAttrColor(android.R.attr.textColorSecondary);
     }
@@ -93,6 +101,7 @@ public class ColorManager {
      * 文本三级颜色
      * ?android:attr/textColorTertiary
      */
+    @ColorInt
     public int getTextColorTertiary() {
         return getAndroidAttrColor(android.R.attr.textColorTertiary);
     }
@@ -100,6 +109,7 @@ public class ColorManager {
     /**
      * 背景的前景色
      */
+    @ColorInt
     public int getColorForeground() {
         return getColor(R.color.core_colorForeground);
     }
@@ -107,6 +117,7 @@ public class ColorManager {
     /**
      * 获取颜色值
      */
+    @ColorInt
     public int getColor(@ColorRes int colorId) {
         return context.getResources().getColor(colorId);
     }
@@ -114,6 +125,7 @@ public class ColorManager {
     /**
      * 30% 透明度的 Color
      */
+    @ColorInt
     public int getSecondColor(int color) {
         return (0x4D << 24) | (color & 0x00FFFFFF);
     }
@@ -121,6 +133,7 @@ public class ColorManager {
     /**
      * 获取 ?attr 的颜色值
      */
+    @ColorInt
     public int getAttrColor(@ColorInt int colorAttrId) {
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(colorAttrId, typedValue, true);
@@ -130,6 +143,7 @@ public class ColorManager {
     /**
      * 获取 ?android:attr 的颜色值
      */
+    @ColorInt
     public int getAndroidAttrColor(@ColorInt int androidColorAttrId) {
         TypedArray array = context.getTheme().obtainStyledAttributes(new int[]{ androidColorAttrId });
         int color = array.getColor(0, 0xDD000000);

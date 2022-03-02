@@ -25,7 +25,10 @@ import android.text.TextUtils;
 import java.io.File;
 import java.io.IOException;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 import me.luzhuo.lib_file.FileManager;
 
 import static android.media.ThumbnailUtils.OPTIONS_RECYCLE_INPUT;
@@ -41,33 +44,45 @@ public class ThumbnailManager {
 
     /**
      * 从Video中获取缩略图
+     * 耗时操作, 请执行在辅助线程中
      * @param videoFilePath video path or video uri
      * @return Bitmap or null
      */
     @Nullable
-    public Bitmap getVideoThumbnail(Context context, String videoFilePath) {
+    @WorkerThread
+    public Bitmap getVideoThumbnail(@Nullable Context context, @Nullable String videoFilePath) {
+        if (context == null) return null;
         FileManager fileManager = new FileManager(context);
-        if (context == null || TextUtils.isEmpty(videoFilePath) || !fileManager.exists(videoFilePath)) return null;
+        if (TextUtils.isEmpty(videoFilePath) || !fileManager.exists(videoFilePath)) return null;
 
         MediaMetadataRetriever media = new MediaMetadataRetriever();
         if (fileManager.isUriForFile(videoFilePath)) media.setDataSource(context, Uri.parse(videoFilePath));
         else media.setDataSource(videoFilePath);
+        // 处理大文件会出现了ANR现象, 且处理时间超长
         return media.getFrameAtTime();
     }
 
     @Nullable
-    public Bitmap getVideoThumbnail(Context context, Uri videoFileUri) {
+    @WorkerThread
+    public Bitmap getVideoThumbnail(@Nullable Context context, @Nullable Uri videoFileUri) {
         return getVideoThumbnail(context, videoFileUri.toString());
     }
 
     /**
-     * 从Video中获取忽略图, 并保存到指定路径
+     * 从Video中获取缩略图图, 并保存到指定路径
+     * 耗时操作, 请执行在辅助线程中
      * get primary image file from video
      * @param videoFile video path or video uri
      * @return primary image file. or null
      */
     @Nullable
-    public String getVideoThumbnail(Context context, String videoFile, String savePath) {
+    @WorkerThread
+    public String getVideoThumbnail(@Nullable Context context, @Nullable String videoFile, @Nullable String savePath) {
+        if (context == null) return null;
+        FileManager fileManager = new FileManager(context);
+        if (TextUtils.isEmpty(videoFile) || !fileManager.exists(videoFile)) return null;
+        if (TextUtils.isEmpty(savePath)) return null;
+
         try {
             Bitmap bitmap = getVideoThumbnail(context, videoFile);
             if(bitmap == null) return null;
@@ -81,7 +96,8 @@ public class ThumbnailManager {
     }
 
     @Nullable
-    public String getVideoThumbnail(Context context, Uri videoFileUri, String savePath) {
+    @WorkerThread
+    public String getVideoThumbnail(@Nullable Context context, @Nullable Uri videoFileUri, @Nullable String savePath) {
         return getVideoThumbnail(context, videoFileUri.toString(), savePath);
     }
 
@@ -96,7 +112,7 @@ public class ThumbnailManager {
      * @return This value may be null
      */
     @Nullable
-    public Bitmap getImageThumbnail(String imageFilePath, int width, int height){
+    public Bitmap getImageThumbnail(@Nullable String imageFilePath, int width, int height){
         if(imageFilePath == null || imageFilePath.isEmpty() || !new File(imageFilePath).exists()) return null;
 
         Bitmap bitmap = BitmapFactory.decodeFile(imageFilePath);
@@ -111,10 +127,8 @@ public class ThumbnailManager {
      * @param height targeted height
      * @return This value may be null
      */
-    @Nullable
-    public Bitmap getImageThumbnail(Context context, int resId, int width, int height){
-        if(resId == 0) return null;
-
+    @NonNull
+    public Bitmap getImageThumbnail(@NonNull Context context, @IdRes int resId, int width, int height) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
         return ThumbnailUtils.extractThumbnail(bitmap, width, height, OPTIONS_RECYCLE_INPUT);
     }
@@ -127,7 +141,7 @@ public class ThumbnailManager {
      * @return This value may be null
      */
     @Nullable
-    public Bitmap getImageThumbnail(Bitmap bitmap, int width, int height){
+    public Bitmap getImageThumbnail(@Nullable Bitmap bitmap, int width, int height){
         if(bitmap == null) return null;
 
         return ThumbnailUtils.extractThumbnail(bitmap, width, height, OPTIONS_RECYCLE_INPUT);

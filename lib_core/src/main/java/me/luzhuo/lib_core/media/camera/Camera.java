@@ -66,6 +66,7 @@ class Camera extends ActivityResultContract<Void, String> {
     }
 
     @Override
+    @Nullable
     public String parseResult(int resultCode, @Nullable Intent intent) {
         if (resultCode != Activity.RESULT_OK) return null;
 

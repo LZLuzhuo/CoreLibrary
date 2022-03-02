@@ -32,13 +32,13 @@ import androidx.fragment.app.FragmentPagerAdapter;
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     private List<ViewPagerBean> datas;
 
-    public ViewPagerAdapter(AppCompatActivity activity, List<ViewPagerBean> datas) {
+    public ViewPagerAdapter(@NonNull AppCompatActivity activity, @NonNull List<ViewPagerBean> datas) {
         this(activity.getSupportFragmentManager(), datas);
     }
-    public ViewPagerAdapter(Fragment fragment, List<ViewPagerBean> datas) {
+    public ViewPagerAdapter(@NonNull Fragment fragment, @NonNull List<ViewPagerBean> datas) {
         this(fragment.getChildFragmentManager(), datas);
     }
-    public ViewPagerAdapter(@NonNull FragmentManager fm, List<ViewPagerBean> datas) {
+    public ViewPagerAdapter(@NonNull FragmentManager fm, @NonNull List<ViewPagerBean> datas) {
         super(fm);
         this.datas = datas;
     }

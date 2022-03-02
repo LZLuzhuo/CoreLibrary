@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.ListPopupWindow;
 import me.luzhuo.lib_core.R;
 import me.luzhuo.lib_core.app.color.ColorManager;
@@ -78,12 +79,12 @@ public class SpinnerX extends ListPopupWindow {
         });
     }
 
-    public void setData(List<String> datas, int index) {
+    public void setData(@NonNull List<String> datas, int index) {
         this.index = index;
         setData(datas);
     }
 
-    public void setData(List<String> datas) {
+    public void setData(@NonNull List<String> datas) {
         this.datas.clear();
         this.datas.addAll(datas);
         if (adapter != null) adapter.notifyDataSetChanged();
@@ -94,7 +95,7 @@ public class SpinnerX extends ListPopupWindow {
         if (adapter != null) adapter.notifyDataSetChanged();
     }
 
-    public void setAnchorView(View view) {
+    public void setAnchorView(@NonNull View view) {
         final Resources res = context.getResources();
         int mPopupMaxWidth = Math.max(res.getDisplayMetrics().widthPixels / 2, res.getDimensionPixelSize(R.dimen.abc_config_prefDialogWidth));
         int individualMenuWidth = measureIndividualMenuWidth(adapter, null, context, mPopupMaxWidth);
@@ -120,7 +121,7 @@ public class SpinnerX extends ListPopupWindow {
     public interface OnSpinnerClickListener {
         public void onMenu(String context, int position);
     }
-    public void setOnSpinnerClickListener(OnSpinnerClickListener listener) {
+    public void setOnSpinnerClickListener(@Nullable OnSpinnerClickListener listener) {
         this.listener = listener;
     }
 

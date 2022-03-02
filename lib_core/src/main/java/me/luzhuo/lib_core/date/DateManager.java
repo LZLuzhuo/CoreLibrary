@@ -16,6 +16,7 @@ package me.luzhuo.lib_core.date;
 
 import java.text.ParseException;
 
+import androidx.annotation.NonNull;
 import me.luzhuo.lib_core.date.enums.CalendarRule;
 import me.luzhuo.lib_core.date.enums.FormatRule;
 
@@ -83,11 +84,11 @@ public class DateManager {
         return dateCalenda.addAmount(timestamp, calendarRule, amount);
     }
 
-    public long date2Timestamp(FormatRule rule, String date) throws ParseException {
+    public long date2Timestamp(@NonNull FormatRule rule, String date) throws ParseException {
         return dateTransform.date2Timestamp(rule, date);
     }
 
-    public String timestamp2Date(FormatRule rule, long timestamp) {
+    public String timestamp2Date(@NonNull FormatRule rule, long timestamp) {
         return dateTransform.timestamp2Date(rule, timestamp);
     }
 }

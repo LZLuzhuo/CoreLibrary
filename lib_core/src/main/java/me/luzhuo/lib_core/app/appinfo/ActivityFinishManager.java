@@ -19,6 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 /**
@@ -42,7 +43,7 @@ public class ActivityFinishManager {
         return Instance.instance;
     }
 
-    public void add(String tag, FragmentActivity activity) {
+    public void add(@NonNull String tag, @NonNull FragmentActivity activity) {
         List<FragmentActivity> fragmentActivities = activitys.get(tag);
         if (fragmentActivities == null) {
             List<FragmentActivity> activityList = new ArrayList<>();
@@ -53,8 +54,8 @@ public class ActivityFinishManager {
         }
     }
 
-    public void finish(String tag) {
-        List<FragmentActivity> fragmentActivities = activitys.get(tag);
+    public void finish(@NonNull String tag) {
+        List<FragmentActivity> fragmentActivities = activitys.remove(tag);
         if (fragmentActivities == null) return;
 
         for (FragmentActivity fragmentActivity : fragmentActivities) {

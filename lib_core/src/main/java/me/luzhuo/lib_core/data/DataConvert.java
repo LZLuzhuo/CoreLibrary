@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Description: 数据结构转换
  *
@@ -33,13 +36,14 @@ public class DataConvert {
      * 将 Cursor 转换成 HashMap 集合,
      * @param cursor 任意Cursor
      * @param closeCursor 是否关闭游标集,默认不关闭
-     * @return HashMap<String, String>/null
+     * @return HashMap<String, String>
      */
-    public ArrayList<HashMap<String, String>> cursor2HashMap(Cursor cursor, boolean closeCursor){
+    @Nullable
+    public ArrayList<HashMap<String, String>> cursor2HashMap(@Nullable Cursor cursor, boolean closeCursor){
         ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
-        if (cursor == null || cursor.getCount() <= 0) return null;
+        if (cursor == null || cursor.getCount() <= 0) return arrayList;
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             HashMap<String, String> hashmap = new HashMap<>();
             for (int i = 0; i < cursor.getColumnCount(); i++) {
                 String columnName = cursor.getColumnName(i);
@@ -48,14 +52,17 @@ public class DataConvert {
             }
             arrayList.add(hashmap);
         }
-        if(closeCursor) cursor.close();
+        if (closeCursor) cursor.close();
         return arrayList;
     }
 
     /**
      * 将 List<String> 转成 String[]
      */
-    public String[] list2Array(List<String> stringList) {
+    @NonNull
+    public String[] list2Array(@Nullable List<String> stringList) {
+        if (stringList == null) return new String[0];
+
         final String[] stringArray = new String[stringList.size()];
         for (int i = 0; i < stringList.size(); i++) {
             stringArray[i] = stringList.get(i);
@@ -66,8 +73,11 @@ public class DataConvert {
     /**
      * 将 String[] 转成 List<String>
      */
-    public List<String> array2List(String[] strs) {
+    @NonNull
+    public List<String> array2List(@Nullable String[] strs) {
         final List<String> stringList = new ArrayList();
+        if (strs == null) return stringList;
+
         for (String str : strs) {
             stringList.add(str);
         }
@@ -77,14 +87,16 @@ public class DataConvert {
     /**
      * 将 String 转成 String[]
      */
-    public String[] string2Array(String... str) {
+    @NonNull
+    public String[] string2Array(@Nullable String... str) {
         return str;
     }
 
     /**
      * 将 String 转成 List<String>
      */
-    public List<String> string2List(String... str) {
+    @NonNull
+    public List<String> string2List(@Nullable String... str) {
         return array2List(str);
     }
 }

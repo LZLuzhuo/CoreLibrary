@@ -23,6 +23,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import me.luzhuo.lib_core.R;
@@ -63,7 +66,8 @@ public class BottomDialog {
      * @param context Context
      * @param view View
      */
-    public BottomSheetDialog show(Context context, View view) {
+    @MainThread
+    public BottomSheetDialog show(@NonNull Context context, @NonNull View view) {
         if(Looper.myLooper() != Looper.getMainLooper()) throw new IllegalStateException("You must create it on the main thread.");
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.Core_BottomSheetDialogTheme);
@@ -102,7 +106,8 @@ public class BottomDialog {
      * @param onMenuItemClick MenuAdapter.OnMenuItemClick
      * @return BottomSheetDialog
      */
-    public BottomSheetDialog showMenu(Context context, List<String> menus, List<String> colors, OnMenuItemClick onMenuItemClick) {
+    @MainThread
+    public BottomSheetDialog showMenu(@NonNull Context context, @NonNull List<String> menus, @Nullable List<String> colors, @Nullable OnMenuItemClick onMenuItemClick) {
         // create view
         RecyclerView recyclerView = new RecyclerView(context);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -119,7 +124,8 @@ public class BottomDialog {
         return show(context, linearLayout);
     }
 
-    public BottomSheetDialog showMenu(Context context, List<String> menus, OnMenuItemClick onMenuItemClick) {
+    @MainThread
+    public BottomSheetDialog showMenu(@NonNull Context context, @NonNull List<String> menus, @Nullable OnMenuItemClick onMenuItemClick) {
         return showMenu(context, menus, null, onMenuItemClick);
     }
 

@@ -20,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import me.luzhuo.lib_core.R;
 import me.luzhuo.lib_core.ui.widget.rightmenu.OnMenuCallback;
@@ -35,11 +37,11 @@ public class DialogMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private int layout;
     private OnMenuCallback callback;
 
-    public DialogMenuAdapter(String[] menus, OnMenuCallback callback) {
+    public DialogMenuAdapter(@NonNull String[] menus, @Nullable OnMenuCallback callback) {
         this(R.layout.core_item_dialog_menu, menus, callback);
     }
 
-    public DialogMenuAdapter(@LayoutRes int itemLayout, String[] menus, OnMenuCallback callback) {
+    public DialogMenuAdapter(@LayoutRes int itemLayout, @NonNull String[] menus, @Nullable OnMenuCallback callback) {
         this.layout = itemLayout;
         this.mDatas = menus;
         this.callback = callback;

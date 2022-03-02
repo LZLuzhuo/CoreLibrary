@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import me.luzhuo.lib_core.R;
 import me.luzhuo.lib_core.ui.calculation.UICalculation;
 
@@ -35,7 +36,7 @@ public class BottomDialog2 {
     private Dialog dialog;
     private UICalculation ui;
 
-    public BottomDialog2(Context context, View layout) {
+    public BottomDialog2(@NonNull Context context, @NonNull View layout) {
         this(context, true, layout);
     }
 
@@ -44,7 +45,7 @@ public class BottomDialog2 {
      * @param cancelable 是否将外部的点击视为取消操作
      * @param layout 自定义布局
      */
-    public BottomDialog2(Context context, boolean cancelable, View layout) {
+    public BottomDialog2(@NonNull Context context, boolean cancelable, @NonNull View layout) {
         this.ui = new UICalculation(context);
         this.context = context;
         this.dialog = new Dialog(context, R.style.Core_Bottom_Dialog);

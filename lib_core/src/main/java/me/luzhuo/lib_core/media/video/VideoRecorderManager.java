@@ -17,6 +17,9 @@ package me.luzhuo.lib_core.media.video;
 import android.Manifest;
 import android.content.pm.PackageManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -40,21 +43,21 @@ public class VideoRecorderManager {
     /**
      * 请在Activity的onCreate回调里创建该对象
      */
-    public VideoRecorderManager(FragmentActivity activity) {
+    public VideoRecorderManager(@NonNull FragmentActivity activity) {
         this.activity = activity;
     }
 
     /**
      * 请在Fragment的OnCreate回调里创建该对象
      */
-    public VideoRecorderManager(Fragment fragment) {
+    public VideoRecorderManager(@NonNull Fragment fragment) {
         this(fragment.requireActivity());
     }
 
     /**
      * 设置视频质量
      */
-    public VideoRecorderManager setVideoQuality(VideoQuality quality) {
+    public VideoRecorderManager setVideoQuality(@NonNull VideoQuality quality) {
         this.quality = quality;
         return this;
     }
@@ -67,6 +70,7 @@ public class VideoRecorderManager {
         return this;
     }
 
+    @RequiresPermission(Manifest.permission.CAMERA)
     public void show() {
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ToastManager.show(activity, "请授予录像权限");
@@ -87,7 +91,8 @@ public class VideoRecorderManager {
         fragment.show(videoRecorderCallback);
     }
 
-    public VideoRecorderManager setVideoRecorderCallback(IVideoRecorderCallback videoRecorderCallback) {
+    @NonNull
+    public VideoRecorderManager setVideoRecorderCallback(@NonNull IVideoRecorderCallback videoRecorderCallback) {
         this.videoRecorderCallback = videoRecorderCallback;
         return this;
     }

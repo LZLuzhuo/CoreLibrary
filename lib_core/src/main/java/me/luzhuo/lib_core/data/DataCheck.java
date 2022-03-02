@@ -14,6 +14,8 @@
  */
 package me.luzhuo.lib_core.data;
 
+import androidx.annotation.Nullable;
+
 /**
  * Description: 可空数据监测
  * 用于解决Java中基本数据类型为null时, 不会智能转换, 并且拆箱时报空指针异常
@@ -23,27 +25,27 @@ package me.luzhuo.lib_core.data;
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
 public class DataCheck {
-	public static boolean check(Boolean bool) {
+	public static boolean check(@Nullable Boolean bool) {
 		if (bool == null) return false;
 		return bool;
 	}
 
-	public static long check(Long lon) {
+	public static long check(@Nullable Long lon) {
 		if (lon == null) return 0;
 		return lon;
 	}
 	
-	public static int check(Integer inte) {
+	public static int check(@Nullable Integer inte) {
 		if (inte == null) return 0;
 		return inte;
 	}
 	
-	public static float check(Float flo) {
+	public static float check(@Nullable Float flo) {
 		if (flo == null) return 0f;
 		return flo;
 	}
 	
-	public static double check(Double doub) {
+	public static double check(@Nullable Double doub) {
 		if (doub == null) return 0;
 		return doub;
 	}

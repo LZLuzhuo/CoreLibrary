@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import me.luzhuo.lib_core.ui.dialog.BottomDialog.OnMenuItemClick;
 
 import androidx.annotation.LayoutRes;
@@ -40,11 +42,11 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<String> colors;
     private OnMenuItemClick onMenuItemClick;
 
-    public BottomMenuAdapter(@LayoutRes int layoutId, List<String> menus, OnMenuItemClick onMenuItemClick) {
+    public BottomMenuAdapter(@LayoutRes int layoutId, @NonNull List<String> menus, @Nullable OnMenuItemClick onMenuItemClick) {
         this(layoutId, menus, null, onMenuItemClick);
     }
 
-    public BottomMenuAdapter(@LayoutRes int layoutId, List<String> menus, List<String> colors, OnMenuItemClick onMenuItemClick) {
+    public BottomMenuAdapter(@LayoutRes int layoutId, @NonNull List<String> menus, @Nullable List<String> colors, @Nullable OnMenuItemClick onMenuItemClick) {
         this.layoutId = layoutId;
         this.menus = menus;
         this.colors = colors;

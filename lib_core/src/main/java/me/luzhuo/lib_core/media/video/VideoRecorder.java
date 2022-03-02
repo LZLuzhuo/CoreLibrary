@@ -50,7 +50,7 @@ class VideoRecorder extends ActivityResultContract<Void, Pair<Uri, File>> {
      * @param quality 视频录制质量
      * @param durationLimit 限制录制时长, 单位s
      */
-    public VideoRecorder(VideoQuality quality, int durationLimit) {
+    public VideoRecorder(@NonNull VideoQuality quality, int durationLimit) {
         this.quality = quality;
         this.durationLimit = durationLimit;
     }

@@ -39,7 +39,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import me.luzhuo.lib_core.app.base.CoreBaseApplication;
 
@@ -59,7 +62,7 @@ public class StringManager {
 	 * @param str 字符串
 	 * @return true含有, false不含有
 	 */
-	public static boolean isContainChinese(String str) {
+	public static boolean isContainChinese(@Nullable String str) {
 		if (TextUtils.isEmpty(str)) return false;
 
         Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
@@ -92,7 +95,8 @@ public class StringManager {
 		/**
 		 * 对第一个匹配到的字符设置颜色
 		 */
-		public StringManager.Text firstColor(String text, int color) {
+		@NonNull
+		public StringManager.Text firstColor(@Nullable String text, @ColorInt int color) {
 			if (TextUtils.isEmpty(text)) return this;
 
 			firstColors.add(new Pair<>(text, color));
@@ -102,7 +106,8 @@ public class StringManager {
 		/**
 		 * 对所有匹配到的字符设置颜色
 		 */
-		public StringManager.Text color(String text, int color) {
+		@NonNull
+		public StringManager.Text color(@Nullable String text, @ColorInt int color) {
 			if (TextUtils.isEmpty(text)) return this;
 
 			colors.add(new Pair<>(text, color));
@@ -112,7 +117,8 @@ public class StringManager {
 		/**
 		 * 字符的背景颜色
 		 */
-		public StringManager.Text background(String text, int background) {
+		@NonNull
+		public StringManager.Text background(@Nullable String text, @ColorInt int background) {
 			if (TextUtils.isEmpty(text)) return this;
 
 			backgrounds.add(new Pair<>(text, background));
@@ -122,7 +128,8 @@ public class StringManager {
 		/**
 		 * 字体加粗
 		 */
-		public StringManager.Text bold(String text) {
+		@NonNull
+		public StringManager.Text bold(@Nullable String text) {
 			bolds.add(text);
 			return this;
 		}
@@ -130,7 +137,8 @@ public class StringManager {
 		/**
 		 * 斜体
 		 */
-		public StringManager.Text italic(String text) {
+		@NonNull
+		public StringManager.Text italic(@Nullable String text) {
 			italics.add(text);
 			return this;
 		}
@@ -139,7 +147,8 @@ public class StringManager {
 		 * 字体的相对大小
 		 * @param scale 放大比例
 		 */
-		public StringManager.Text scale(String text, float scale) {
+		@NonNull
+		public StringManager.Text scale(@Nullable String text, float scale) {
 			if (TextUtils.isEmpty(text)) return this;
 
 			scales.add(new Pair<>(text, scale));
@@ -149,7 +158,8 @@ public class StringManager {
 		/**
 		 * 字体的绝对大小
 		 */
-		public StringManager.Text size(String text, int sp) {
+		@NonNull
+		public StringManager.Text size(@Nullable String text, int sp) {
 			if (TextUtils.isEmpty(text)) return this;
 
 			sizes.add(new Pair<>(text, sp));
@@ -159,7 +169,8 @@ public class StringManager {
 		/**
 		 * 上标
 		 */
-		public StringManager.Text supper(String text) {
+		@NonNull
+		public StringManager.Text supper(@Nullable String text) {
 			if (TextUtils.isEmpty(text)) return this;
 
 			suppers.add(text);
@@ -169,7 +180,8 @@ public class StringManager {
 		/**
 		 * 下标
 		 */
-		public StringManager.Text sub(String text) {
+		@NonNull
+		public StringManager.Text sub(@Nullable String text) {
 			if (TextUtils.isEmpty(text)) return this;
 
 			subs.add(text);
@@ -180,7 +192,8 @@ public class StringManager {
 		 * 图片
 		 * 根据图片的实际大小添加到内容中
 		 */
-		public StringManager.Text image(String text, int image) {
+		@NonNull
+		public StringManager.Text image(@Nullable String text, @IdRes int image) {
 			if (TextUtils.isEmpty(text)) return this;
 
 			images.add(new Pair<>(text, image));
@@ -190,7 +203,8 @@ public class StringManager {
 		/**
 		 * 下划线
 		 */
-		public StringManager.Text underLine(String text) {
+		@NonNull
+		public StringManager.Text underLine(@Nullable String text) {
 			if (TextUtils.isEmpty(text)) return this;
 
 			underLines.add(text);
@@ -200,7 +214,8 @@ public class StringManager {
 		/**
 		 * 删除线
 		 */
-		public StringManager.Text deleteLine(String text) {
+		@NonNull
+		public StringManager.Text deleteLine(@Nullable String text) {
 			if (TextUtils.isEmpty(text)) return this;
 
 			deleteLines.add(text);
@@ -211,7 +226,8 @@ public class StringManager {
 		 * 点击事件回调
 		 * 需要调用 {@link #setTextClickable(TextView)} } 才能实现回调事件
 		 */
-		public StringManager.Text click(String text, OnClickListener callback) {
+		@NonNull
+		public StringManager.Text click(@Nullable String text, @NonNull OnClickListener callback) {
 			if (TextUtils.isEmpty(text)) return this;
 
 			callbacks.add(new Pair<>(text, callback));
@@ -221,7 +237,8 @@ public class StringManager {
 		/**
 		 * URL路径跳转
 		 */
-		public StringManager.Text url(String text, String url) {
+		@NonNull
+		public StringManager.Text url(@Nullable String text, @NonNull String url) {
 			if (TextUtils.isEmpty(text)) return this;
 
 			urls.add(new Pair<>(text, url));
@@ -350,10 +367,15 @@ public class StringManager {
 			return ss;
 		}
 
+		@Override
+		public String toString() {
+			return this.build().toString();
+		}
+
 		/**
 		 * 设置 TextView 为可点击
 		 */
-		public static void setTextClickable(TextView textView) {
+		public static void setTextClickable(@Nullable TextView textView) {
 			if (textView == null) return;
 
 			textView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -361,13 +383,13 @@ public class StringManager {
 		}
 
 		public interface OnClickListener {
-			void onClick(String text);
+			void onClick(@Nullable String text);
 		}
 
 		public static class OnClickSpan extends ClickableSpan {
 			private String text;
 			private OnClickListener onClickListener;
-			public OnClickSpan(String text, OnClickListener onClickListener) {
+			public OnClickSpan(@Nullable String text, @Nullable OnClickListener onClickListener) {
 				this.text = text;
 				this.onClickListener = onClickListener;
 			}

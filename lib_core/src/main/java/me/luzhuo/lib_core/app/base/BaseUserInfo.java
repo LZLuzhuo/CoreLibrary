@@ -19,6 +19,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Description: 用户信息管理
  * @Author: Luzhuo
@@ -31,43 +34,44 @@ public class BaseUserInfo {
 
     protected String token;
 
-    public void put(String name, String value) {
+    public void put(@NonNull String name, @Nullable String value) {
         preferences.edit().putString(name, value).commit();
     }
 
-    public String get(String name) {
+    @NonNull
+    public String get(@NonNull String name) {
         return preferences.getString(name, "");
     }
 
-    public void put_bool(String name, boolean value) {
+    public void put_bool(@NonNull String name, boolean value) {
         preferences.edit().putBoolean(name, value).commit();
     }
 
-    public boolean get_bool(String name) {
+    public boolean get_bool(@NonNull String name) {
         return preferences.getBoolean(name, false);
     }
 
-    public void put_int(String name, int value) {
+    public void put_int(@NonNull String name, int value) {
         preferences.edit().putInt(name, value).commit();
     }
 
-    public int get_int(String name) {
+    public int get_int(@NonNull String name) {
         return preferences.getInt(name, -1);
     }
 
-    public void put_long(String name, long value) {
+    public void put_long(@NonNull String name, long value) {
         preferences.edit().putLong(name, value).commit();
     }
 
-    public long get_long(String name) {
+    public long get_long(@NonNull String name) {
         return preferences.getLong(name, -1);
     }
 
-    public void put_float(String name, float value) {
+    public void put_float(@NonNull String name, float value) {
         preferences.edit().putFloat(name, value).commit();
     }
 
-    public float get_float(String name) {
+    public float get_float(@NonNull String name) {
         return preferences.getFloat(name, -1F);
     }
 

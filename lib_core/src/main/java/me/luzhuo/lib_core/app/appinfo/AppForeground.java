@@ -32,7 +32,7 @@ class AppForeground {
     private int count = 0;
 
     private AppForeground(){ }
-    private static AppForeground instance = new AppForeground();
+    private static final AppForeground instance = new AppForeground();
     public static AppForeground getInstance() {
         return instance;
     }
@@ -41,7 +41,7 @@ class AppForeground {
      * App前后台进程切换的监听
      * @param context Application的上下文
      */
-    public void registerAppForegroundCallback(Application context, final AppForegroundCallback callback) {
+    public void registerAppForegroundCallback(@NonNull Application context, @Nullable final AppForegroundCallback callback) {
         // 注册监听器
         context.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override

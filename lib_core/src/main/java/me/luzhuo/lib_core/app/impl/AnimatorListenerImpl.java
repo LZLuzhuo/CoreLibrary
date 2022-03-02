@@ -1,4 +1,4 @@
-/* Copyright 2021 Luzhuo. All rights reserved.
+/* Copyright 2022 Luzhuo. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,22 +12,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.luzhuo.lib_core.media.audio;
+package me.luzhuo.lib_core.app.impl;
 
-import android.net.Uri;
+import android.animation.Animator;
 
-import androidx.annotation.NonNull;
+public class AnimatorListenerImpl implements Animator.AnimatorListener {
+    @Override
+    public void onAnimationStart(Animator animation) {
 
-/**
- * Description: 录音结果的回调
- * @Author: Luzhuo
- * @Creation Date: 2021/9/8 1:05
- * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
- **/
-public interface IAudioCallback {
-    /**
-     * 录音结果
-     * @param fileUri 只支持Uri路径
-     */
-    public void onAudioCallback(@NonNull Uri fileUri);
+    }
+
+    @Override
+    public void onAnimationEnd(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationCancel(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animator animation) {
+
+    }
 }

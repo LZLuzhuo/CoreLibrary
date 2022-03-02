@@ -23,6 +23,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import me.luzhuo.lib_core.ui.notification.bean.ChannelBean;
 import me.luzhuo.lib_core.ui.notification.bean.NotificationBean;
@@ -51,7 +53,7 @@ public class NotificationManager {
     private android.app.NotificationManager manager;
     private Context context;
 
-    public NotificationManager(Context context, ChannelBean... channels) {
+    public NotificationManager(@NonNull Context context, @NonNull ChannelBean... channels) {
         this.context = context;
         manager = (android.app.NotificationManager) context.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -71,7 +73,7 @@ public class NotificationManager {
      * @param notificationBean 通知
      * @param intent 点击通知后的跳转intent
      */
-    public Notification createNotification(ChannelBean channelBean, NotificationBean notificationBean, PendingIntent intent) {
+    public Notification createNotification(@NonNull ChannelBean channelBean, @NonNull NotificationBean notificationBean, @NonNull PendingIntent intent) {
         // 创建一个通知
         Notification notification = new NotificationCompat.Builder(context, channelBean.channelID)
                 .setContentTitle(notificationBean.title)
@@ -84,11 +86,11 @@ public class NotificationManager {
         return notification;
     }
 
-    public Notification createNotification(ChannelBean channelBean, NotificationBean notificationBean) {
+    public Notification createNotification(@NonNull ChannelBean channelBean, @NonNull NotificationBean notificationBean) {
         return createNotification(channelBean, notificationBean, createIntent_Activity(notificationBean.intent));
     }
 
-    public Notification createNotification_BigText(ChannelBean channelBean, NotificationBean notificationBean, PendingIntent intent) {
+    public Notification createNotification_BigText(@NonNull ChannelBean channelBean, @NonNull NotificationBean notificationBean, @NonNull PendingIntent intent) {
         Notification notification = new NotificationCompat.Builder(context, channelBean.channelID)
                 .setContentTitle(notificationBean.title)
                 .setContentText(notificationBean.content)
@@ -101,7 +103,7 @@ public class NotificationManager {
         return notification;
     }
 
-    public Notification createNotification_BigImage(ChannelBean channelBean, NotificationBean notificationBean, Bitmap bitmap, PendingIntent intent) {
+    public Notification createNotification_BigImage(@NonNull ChannelBean channelBean, @NonNull NotificationBean notificationBean, @NonNull Bitmap bitmap, @NonNull PendingIntent intent) {
         Notification notification = new NotificationCompat.Builder(context, channelBean.channelID)
                 .setContentTitle(notificationBean.title)
                 .setContentText(notificationBean.content)
@@ -117,31 +119,25 @@ public class NotificationManager {
     /**
      * 显示通知
      */
-    public void show(Notification notification) {
+    public void show(@NonNull Notification notification) {
         show((int)(Math.random() * 100D), notification);
     }
 
-    public void show(int id, Notification notification) {
+    public void show(int id, @NonNull Notification notification) {
         manager.notify(id, notification);
     }
 
-    public PendingIntent createIntent_Activity(Intent intent) {
-        if (intent == null) return null;
-
+    public PendingIntent createIntent_Activity(@NonNull Intent intent) {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         return pendingIntent;
     }
 
-    public PendingIntent createIntent_Service(Intent intent) {
-        if (intent == null) return null;
-
+    public PendingIntent createIntent_Service(@NonNull Intent intent) {
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
         return pendingIntent;
     }
 
-    public PendingIntent createIntent_Broadcast(Intent intent) {
-        if (intent == null) return null;
-
+    public PendingIntent createIntent_Broadcast(@NonNull Intent intent) {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         return pendingIntent;
     }

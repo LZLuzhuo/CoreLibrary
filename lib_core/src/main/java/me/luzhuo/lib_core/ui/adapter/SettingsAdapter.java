@@ -25,6 +25,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import me.luzhuo.lib_core.R;
 
@@ -45,7 +47,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this(callback, data, R.layout.core_item_setting, R.layout.core_item_line);
     }
 
-    public SettingsAdapter(OnSettingCallback callback, List<SettingBean> data, @LayoutRes int dataRes, @LayoutRes int lineRes) {
+    public SettingsAdapter(@Nullable OnSettingCallback callback, @NonNull List<SettingBean> data, @LayoutRes int dataRes, @LayoutRes int lineRes) {
         this.callback = callback;
         this.mDatas = data;
         this.dataLayout = dataRes;

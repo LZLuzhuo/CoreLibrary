@@ -86,7 +86,8 @@ public class UICalculation {
      * @param heightScale 0.5f(50％) or null(MATCH_PARENT), [0f,1f]
      * @return
      */
-    public LinearLayout.LayoutParams getParamsScale(Float widthScale, Float heightScale) {
+    @NonNull
+    public LinearLayout.LayoutParams getParamsScale(@Nullable Float widthScale, @Nullable Float heightScale) {
         int[] wh = getDisplay();
         int width = wh[0];
         int height = wh[1];
@@ -106,7 +107,7 @@ public class UICalculation {
      * @param textView
      * @return
      */
-    public int getFontHeight(TextView textView) {
+    public int getFontHeight(@Nullable TextView textView) {
         if (textView == null) return -1;
 
         Paint paint = new Paint();

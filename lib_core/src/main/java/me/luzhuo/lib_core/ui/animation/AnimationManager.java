@@ -23,7 +23,9 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
 import androidx.annotation.AnimRes;
+import androidx.annotation.NonNull;
 import me.luzhuo.lib_core.R;
+import me.luzhuo.lib_core.app.base.CoreBaseApplication;
 
 /**
  * Description: 动画管理
@@ -35,39 +37,52 @@ import me.luzhuo.lib_core.R;
 public class AnimationManager {
     private Context context;
 
-    public AnimationManager(Context context) {
-        this.context = context.getApplicationContext();
+    public AnimationManager() {
+        this.context = CoreBaseApplication.appContext;
     }
 
     /**
-     * 开始旋转
+     * 开始旋转 (一直旋转, 直到调用stopRotate())
      */
-    public void startRotate(View view, @AnimRes int anim) {
+    public void startRotate(@NonNull View view, @AnimRes int anim) {
         if (view.getAnimation() != null) return;
 
         Animation aa = AnimationUtils.loadAnimation(context, anim);
         view.startAnimation(aa);
     }
 
-    public void startRotate(View view) {
+    public void startRotate(@NonNull View view) {
         startRotate(view, R.anim.core_anim_rotate);
     }
 
     /**
      * 停止旋转
      */
-    public void stopRotate(View view) {
+    public void stopRotate(@NonNull View view) {
         view.clearAnimation();
     }
 
-    public void fadeInAnimation(View view) {
+    /**
+     * 箭头指向动画
+     * 每次调用, 旋转180°角
+     */
+    private int rotateArrowCount = 0;
+    public void rotateArrow(View view) {
+        rotateArrowCount++;
+        view.animate()
+                .rotation(180f * rotateArrowCount)
+                .setDuration(300)
+                .start();
+    }
+
+    public void fadeInAnimation(@NonNull View view) {
         fadeInAnimation(view, 1300);
     }
     /**
      * 淡入动画
      * 前提View需要时 GONE 或者 INVISIBLE 状态
      */
-    public void fadeInAnimation(View view, long duration) {
+    public void fadeInAnimation(@NonNull View view, long duration) {
         if (view.getVisibility() == View.VISIBLE) return;
 
         final ObjectAnimator translationAnim = ObjectAnimator.ofFloat(view, "translationX", -120f, 0f);

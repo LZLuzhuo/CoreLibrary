@@ -18,6 +18,8 @@ import android.net.Uri;
 
 import java.io.File;
 
+import androidx.annotation.NonNull;
+
 /**
  * Description: 录像回调接口
  * @Author: Luzhuo
@@ -30,5 +32,5 @@ public interface IVideoRecorderCallback {
      * @param fileUri Uri类型的路径
      * @param filePath file类型的路径
      */
-    public void onVideoRecorderCallback(Uri fileUri, File filePath);
+    public void onVideoRecorderCallback(@NonNull Uri fileUri, @NonNull File filePath);
 }

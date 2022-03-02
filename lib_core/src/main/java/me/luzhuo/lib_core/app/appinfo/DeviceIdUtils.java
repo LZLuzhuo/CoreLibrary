@@ -23,6 +23,9 @@ import java.security.MessageDigest;
 import java.util.Locale;
 import java.util.UUID;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Description: 设备唯一ID获取工具
  *
@@ -31,6 +34,7 @@ import java.util.UUID;
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
 class DeviceIdUtils {
+    @Nullable
     public String getDeviceId(Context context) {
         StringBuilder stringBuilder = new StringBuilder();
         String androidId = getAndroidId(context);
@@ -99,7 +103,8 @@ class DeviceIdUtils {
      * @param data 数据
      * @return 16进制字符串
      */
-    private String bytesToHex(byte[] data) {
+    @NonNull
+    private String bytesToHex(@NonNull byte[] data) {
         StringBuilder sb = new StringBuilder();
         String stmp;
         for (int n = 0; n < data.length; n++) {
@@ -117,7 +122,8 @@ class DeviceIdUtils {
      * @param data 数据
      * @return 对应的hash值
      */
-    private static byte[] getHashByString(String data) {
+    @NonNull
+    private static byte[] getHashByString(@NonNull String data) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA1");
             messageDigest.reset();

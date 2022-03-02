@@ -26,6 +26,9 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
@@ -58,9 +61,12 @@ public class SMSManager {
      * @param smsContent 短信的文本内容
      * @param contains 必须包含该内容 // "aaa" 被匹配的短信内容
      * @param continuous 验证码的位数 // 5 连续的位数 （连续5位）
-     * @return 成功匹配出来的字符串 / ""
+     * @return 成功匹配出来的字符串 / null
      */
-    public String match(String smsContent, String contains, int continuous){
+    @Nullable
+    public String match(@Nullable String smsContent, @NonNull String contains, int continuous){
+        if (TextUtils.isEmpty(smsContent)) return "";
+
         final String regex = "[\\d]{" + continuous + ",}"; // 匹配正则 (连续5个的数字)
         if (smsContent.contains(contains)) {
             Pattern pattern = Pattern.compile(regex);
@@ -70,14 +76,15 @@ public class SMSManager {
                 if (MatcherText.length() == continuous) return MatcherText;
             }
         }
-        return "";
+        return null;
     }
 
     /**
      * 监听短信信息
      * 需要权限 android.permission.RECEIVE_SMS
      */
-    public void setSMSListener(final FragmentActivity activity, final SMSReceiveCallback callback){
+    @RequiresPermission(Manifest.permission.RECEIVE_SMS)
+    public void setSMSListener(@NonNull final FragmentActivity activity, @Nullable final SMSReceiveCallback callback){
         if (activity == null) return;
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
             ToastManager.show(activity, "请授予短信接收权限!");
@@ -124,7 +131,10 @@ public class SMSManager {
      * @param phone 手机号码
      * @param content 短信内容
      */
-    public void send(Context context, String phone, String content) {
+    @RequiresPermission(Manifest.permission.SEND_SMS)
+    public void send(@Nullable Context context, @Nullable String phone, @Nullable String content) {
+        if (context == null || TextUtils.isEmpty(phone) || TextUtils.isEmpty(content)) return;
+
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             ToastManager.show(context, "请授予短信发送权限!");
             return;
@@ -143,8 +153,9 @@ public class SMSManager {
      * @param phone 短信接收者的号码, 必填
      * @param smsContent 短信内容, 可不填
      */
-    public void send2Box(Context context, String phone, String smsContent) {
+    public void send2Box(@NonNull Context context, @Nullable String phone, @Nullable String smsContent) {
         if (TextUtils.isEmpty(phone)) return;
+        if (smsContent == null) smsContent = "";
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SENDTO);

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Description: 列表相关计算
@@ -37,8 +38,8 @@ public class ListCalculation {
      * @param b List B
      * @return 新的List
      */
-    @NonNull
-    public List difference(List a, List b) {
+    @Nullable
+    public List difference(@Nullable List a, @Nullable List b) {
         if (a == null || a.size() <= 0) return a;
         if (b == null || b.size() <= 0) return a;
 
@@ -49,13 +50,13 @@ public class ListCalculation {
         return tempA;
     }
 
-    @NonNull
-    public List chaji(List a, List b) {
+    @Nullable
+    public List chaji(@Nullable List a, @Nullable List b) {
         return difference(a, b);
     }
 
-    @NonNull
-    public Set difference(Set a, Set b) {
+    @Nullable
+    public Set difference(@Nullable Set a, @Nullable Set b) {
         if (a == null || a.size() <= 0) return a;
         if (b == null || b.size() <= 0) return a;
 
@@ -65,8 +66,8 @@ public class ListCalculation {
         return tempA;
     }
 
-    @NonNull
-    public Set chaji(Set a, Set b) {
+    @Nullable
+    public Set chaji(@Nullable Set a, @Nullable Set b) {
         return difference(a, b);
     }
 
@@ -77,8 +78,8 @@ public class ListCalculation {
      * @param b List B
      * @return 新的List
      */
-    @NonNull
-    public List intersection(List a, List b) {
+    @Nullable
+    public List intersection(@Nullable List a, @Nullable List b) {
         if (a == null || a.size() <= 0) return a;
         if (b == null || b.size() <= 0) return a;
 
@@ -88,13 +89,13 @@ public class ListCalculation {
         return tempA;
     }
 
-    @NonNull
-    public List jiaoji(List a, List b) {
+    @Nullable
+    public List jiaoji(@Nullable List a, @Nullable List b) {
         return intersection(a, b);
     }
 
-    @NonNull
-    public Set intersection(Set a, Set b) {
+    @Nullable
+    public Set intersection(@Nullable Set a, @Nullable Set b) {
         if (a == null || a.size() <= 0) return a;
         if (b == null || b.size() <= 0) return a;
 
@@ -104,8 +105,8 @@ public class ListCalculation {
         return tempA;
     }
 
-    @NonNull
-    public Set jiaoji(Set a, Set b) {
+    @Nullable
+    public Set jiaoji(@Nullable Set a, @Nullable Set b) {
         return intersection(a, b);
     }
 
@@ -116,8 +117,8 @@ public class ListCalculation {
      * @param b List B
      * @return 新的List
      */
-    @NonNull
-    public List union(List a, List b) {
+    @Nullable
+    public List union(@Nullable List a, @Nullable List b) {
         if (a == null || a.size() <= 0) return a;
         if (b == null || b.size() <= 0) return a;
 
@@ -128,13 +129,13 @@ public class ListCalculation {
         return tempA;
     }
 
-    @NonNull
-    public List binji(List a, List b) {
+    @Nullable
+    public List binji(@Nullable List a, @Nullable List b) {
         return union(a, b);
     }
 
-    @NonNull
-    public Set union(Set a, Set b) {
+    @Nullable
+    public Set union(@Nullable Set a, @Nullable Set b) {
         if (a == null || a.size() <= 0) return a;
         if (b == null || b.size() <= 0) return a;
 
@@ -145,8 +146,8 @@ public class ListCalculation {
         return tempA;
     }
 
-    @NonNull
-    public Set binji(Set a, Set b) {
+    @Nullable
+    public Set binji(@Nullable Set a, @Nullable Set b) {
         return union(a, b);
     }
 

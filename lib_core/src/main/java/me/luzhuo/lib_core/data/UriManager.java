@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 
 /**
@@ -57,7 +59,7 @@ public class UriManager {
 
     public UriManager() { }
 
-    public UriManager(String uri) {
+    public UriManager(@Nullable String uri) {
         if (uri == null) uri = "";
         this.uriString = uri;
 
@@ -76,7 +78,8 @@ public class UriManager {
     /**
      * 设置命名空间
      */
-    public UriManager setScheme(String scheme) {
+    @NonNull
+    public UriManager setScheme(@Nullable String scheme) {
         this.scheme = scheme;
         return this;
     }
@@ -84,7 +87,8 @@ public class UriManager {
     /**
      * 设置主机名
      */
-    public UriManager setAuthority(String authority) {
+    @NonNull
+    public UriManager setAuthority(@Nullable String authority) {
         this.authority = authority;
         return this;
     }
@@ -92,7 +96,8 @@ public class UriManager {
     /**
      * 设置路径
      */
-    public UriManager setPaths(String paths) {
+    @NonNull
+    public UriManager setPaths(@Nullable String paths) {
         if (!TextUtils.isEmpty(paths) && paths.startsWith("/")) paths = paths.substring(1);
         this.paths = paths;
         return this;
@@ -101,18 +106,21 @@ public class UriManager {
     /**
      * 设置参数
      */
-    public UriManager setQueryParameters(List<Pair<String, String>> parameters) {
+    @NonNull
+    public UriManager setQueryParameters(@NonNull List<Pair<String, String>> parameters) {
         this.queryParameter.clear();
         this.queryParameter.addAll(parameters);
         return this;
     }
 
-    public UriManager addQueryParameter(String key, String value) {
+    @NonNull
+    public UriManager addQueryParameter(@NonNull String key, @NonNull String value) {
         this.queryParameter.add(new Pair(key, value));
         return this;
     }
 
-    public UriManager addQueryParameter(List<Pair<String, String>> parameters) {
+    @NonNull
+    public UriManager addQueryParameter(@NonNull List<Pair<String, String>> parameters) {
         this.queryParameter.addAll(parameters);
         return this;
     }
@@ -120,12 +128,14 @@ public class UriManager {
     /**
      * 删除指定参数
      */
-    public UriManager removeQueryParameter(String key, String value) {
+    @NonNull
+    public UriManager removeQueryParameter(@Nullable String key, @Nullable String value) {
         queryParameter.remove(new Pair(key, value));
         return this;
     }
 
-    public UriManager removeQueryParameter(String... keys) {
+    @NonNull
+    public UriManager removeQueryParameter(@Nullable String... keys) {
         for (String key : keys) {
             final ListIterator<Pair<String, String>> lit = this.queryParameter.listIterator();
             while(lit.hasNext()) {
@@ -138,11 +148,13 @@ public class UriManager {
     /**
      * 设置标签
      */
-    public UriManager setFragment(String fragment) {
+    @NonNull
+    public UriManager setFragment(@Nullable String fragment) {
         this.fragment = fragment;
         return this;
     }
 
+    @NonNull
     public Uri getUri() {
         final Uri.Builder builder = new Uri.Builder();
         if (!TextUtils.isEmpty(this.scheme)) builder.scheme(this.scheme);
@@ -168,6 +180,7 @@ public class UriManager {
         return getUri().toString();
     }
 
+    @Nullable
     protected String getScheme() {
         int ssi = uriString.indexOf(':');
         if (ssi < 0) {
@@ -180,6 +193,7 @@ public class UriManager {
         return scheme;
     }
 
+    @Nullable
     protected String getAuthority() {
         String pendingPath = uriString.substring(schemeLength);
         int length = pendingPath.length();
@@ -208,6 +222,7 @@ public class UriManager {
         return schemeLength + authorityLength + pathsLength + queryParameterLength + fragmentLength;
     }
 
+    @Nullable
     protected String getPath() {
         int ssi = findSSI();
 
@@ -290,6 +305,7 @@ public class UriManager {
         }
     }
 
+    @Nullable
     protected String getFragment() {
         int ssi = findSSI();
         String pendingPath = uriString.substring(ssi);
@@ -310,22 +326,27 @@ public class UriManager {
         }
     }
 
+    @Nullable
     public String scheme() {
         return this.scheme;
     }
 
+    @Nullable
     public String authority() {
         return this.authority;
     }
 
+    @Nullable
     public String paths() {
         return this.paths;
     }
 
+    @NonNull
     public List<Pair<String, String>> queryParameters() {
         return this.queryParameter;
     }
 
+    @NonNull
     public List<String> queryParameter(String key) {
         List<String> parameterFilter = new ArrayList<>();
         for (Pair<String, String> parameter : this.queryParameter) {
@@ -338,6 +359,7 @@ public class UriManager {
         return queryParameter(key).size() > 0;
     }
 
+    @Nullable
     public String fragment() {
         return this.fragment;
     }

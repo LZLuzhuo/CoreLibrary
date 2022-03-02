@@ -18,6 +18,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 
 /**
@@ -37,7 +38,8 @@ public class ConnectManager {
      * 需要添加权限: android.permission.ACCESS_NETWORK_STATE
      */
     @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
-    public ConnectType checkConnectType(Context context) {
+    @NonNull
+    public ConnectType checkConnectType(@NonNull Context context) {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mobileWorkInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         if (mobileWorkInfo != null) {

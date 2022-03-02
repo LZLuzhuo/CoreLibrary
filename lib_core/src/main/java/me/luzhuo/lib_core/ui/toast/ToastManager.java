@@ -21,6 +21,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import me.luzhuo.lib_core.ui.calculation.UICalculation;
 
 /**
@@ -46,7 +47,7 @@ public class ToastManager {
     /**
      * 默认的吐司显示方式
      */
-    public static void show(final Context context, final String content){
+    public static void show(@NonNull final Context context, @NonNull final String content){
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override
@@ -66,12 +67,12 @@ public class ToastManager {
      * Android 11 (API30) 及以上不再允许自定义Toast的位置
      */
     @Deprecated
-    public static void show2(final Context context, final String content) {
+    public static void show2(@NonNull final Context context, @NonNull final String content) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    show(context, content);
+                    show2(context, content);
                 }
             });
             return;
@@ -88,7 +89,7 @@ public class ToastManager {
      * BUG: 如果连续不断的执行, 会导致一段时间后的吐司不显示
      */
     @Deprecated
-    public static void showQuick(final Context context, final String content) {
+    public static void showQuick(@NonNull final Context context, @NonNull final String content) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override
@@ -109,7 +110,7 @@ public class ToastManager {
      * toast.showViewToast(this, LayoutInflater.from(this).inflate(R.layout.view_toast, null, false))
      * Android 11 (API30) 及以上不再允许自定义Toast
      */
-    public static void showView(final Context context, final View view) {
+    public static void showView(@NonNull final Context context, @NonNull final View view) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override

@@ -16,7 +16,10 @@ package me.luzhuo.lib_core.data.clipboard;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -39,16 +42,16 @@ public class ClipboardManager implements LifecycleObserver {
     /**
      * 如果需要监听剪贴板, 请使用 ClipboardManager(AppCompatActivity) 或 ClipboardManager(Fragment) 构造函数.
      */
-    public ClipboardManager(Context context) {
+    public ClipboardManager(@NonNull Context context) {
         clipboardManager = (android.content.ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
     }
 
-    public ClipboardManager(FragmentActivity activity) {
+    public ClipboardManager(@NonNull FragmentActivity activity) {
         this(activity.getApplicationContext());
         activity.getLifecycle().addObserver(this);
     }
 
-    public ClipboardManager(Fragment fragment) {
+    public ClipboardManager(@NonNull Fragment fragment) {
         this(fragment.requireContext());
         fragment.getLifecycle().addObserver(this);
     }
@@ -57,7 +60,9 @@ public class ClipboardManager implements LifecycleObserver {
      * 拷贝内容到剪贴板
      * @param content String
      */
-    public void copy(CharSequence content) {
+    public void copy(@Nullable CharSequence content) {
+        if (TextUtils.isEmpty(content)) return;
+
         ClipData clipData = ClipData.newPlainText("copy", content);
         clipboardManager.setPrimaryClip(clipData);
     }
@@ -65,6 +70,7 @@ public class ClipboardManager implements LifecycleObserver {
     /**
      * 从剪贴板获取内容
      */
+    @Nullable
     public CharSequence getContent() {
         if (clipboardManager.hasPrimaryClip() && clipboardManager.getPrimaryClip().getItemCount() > 0) {
             return clipboardManager.getPrimaryClip().getItemAt(0).getText();
@@ -75,7 +81,7 @@ public class ClipboardManager implements LifecycleObserver {
      * 添加剪贴事件监听
      * @param clipChangedListener 剪贴版监听接口
      */
-    public void setClipListener(android.content.ClipboardManager.OnPrimaryClipChangedListener clipChangedListener) {
+    public void setClipListener(@NonNull android.content.ClipboardManager.OnPrimaryClipChangedListener clipChangedListener) {
         this.clipChangedListener = clipChangedListener;
         clipboardManager.addPrimaryClipChangedListener(clipChangedListener);
     }

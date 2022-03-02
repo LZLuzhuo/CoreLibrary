@@ -21,9 +21,13 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import me.luzhuo.lib_core.R;
 import me.luzhuo.lib_core.app.color.ColorManager;
@@ -42,6 +46,10 @@ public class MoreListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static final int TYPE_One = 1, TYPE_Two = 2, TYPE_Tree = 3;
     private MoreListListener listener;
 
+    @IntDef({TYPE_One, TYPE_Two, TYPE_Tree})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface MoreListAdapterType {}
+
     private static final int OneBackgroudColorNormal = 0xFFF0F0F0;
     private static final int OneBackgroudColorChecked = 0xFFF8F8F8;
     private static final int OneTextColorNormal = 0xFF333333;
@@ -57,7 +65,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TreeTextColorNormal = OneTextColorNormal;
     private static int TreeTextColorChecked;
 
-    public MoreListAdapter(Context context, int type, boolean haveDefaultChecked) {
+    public MoreListAdapter(@NonNull Context context, @MoreListAdapterType int type, boolean haveDefaultChecked) {
         this.context = context;
         this.type = type;
         this.haveDefaultChecked = haveDefaultChecked;
@@ -70,7 +78,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public MoreListAdapter(Context context) {
+    public MoreListAdapter(@NonNull Context context) {
         this(context, TYPE_Tree, false);
     }
 
@@ -96,7 +104,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    public void setMoreListListener(MoreListListener listener) {
+    public void setMoreListListener(@NonNull MoreListListener listener) {
         this.listener = listener;
     }
 

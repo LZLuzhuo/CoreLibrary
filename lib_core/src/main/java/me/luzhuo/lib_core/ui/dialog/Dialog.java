@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AlertDialog;
@@ -80,7 +81,7 @@ public class Dialog {
      * @param listener OnClickListener or null
      * @param post String int bean or null
      */
-    public void show(final Context context, final String title, final String content, final String okName, final String cancelMame, final boolean isCancelable, final OnClickListener listener, final Object post){
+    public void show(@NonNull final Context context, @Nullable final String title, @Nullable final String content, @Nullable final String okName, @Nullable final String cancelMame, final boolean isCancelable, @Nullable final OnClickListener listener, @Nullable final Object post){
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override
@@ -126,7 +127,7 @@ public class Dialog {
      * @param listener OnSingleChoice
      * @param post String int bean or null
      */
-    public void show(final Context context, final String title, final String[] items, final int checkedItem, final boolean isCancelable, final OnSingleChoice listener, final Object post){
+    public void show(@NonNull final Context context, @Nullable final String title, @NonNull final String[] items, final int checkedItem, final boolean isCancelable, @Nullable final OnSingleChoice listener, @Nullable final Object post){
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override
@@ -168,7 +169,7 @@ public class Dialog {
      * @param listener OnMultiChoice
      * @param post String int bean or null
      */
-    public void show(final Context context, final String title, final String[] items, final boolean[] checkeds, final String okName, final boolean isCancelable, final OnMultiChoice listener, final Object post){
+    public void show(@NonNull final Context context, @Nullable final String title, @NonNull final String[] items, @NonNull final boolean[] checkeds, @NonNull final String okName, final boolean isCancelable, @Nullable final OnMultiChoice listener, @Nullable final Object post){
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override
@@ -223,7 +224,7 @@ public class Dialog {
      * @param max max progress
      * @return ProgressDialog
      */
-    public ProgressDialog show(Context context, String title, int max){
+    public ProgressDialog show(@NonNull Context context, @Nullable String title, int max){
         if (Looper.myLooper() != Looper.getMainLooper()) {
             throw new IllegalStateException("You must create it on the main thread.");
         }
@@ -257,7 +258,7 @@ public class Dialog {
      * @param listener OnClickListener
      * @param post String int bean or null
      */
-    public void show(final Context context, final String title, final View view, @Nullable final String okName, @Nullable final String cancelMame, final boolean isCancelable, final OnClickListener listener, final Object post){
+    public void show(@NonNull final Context context, @Nullable final String title, @NonNull final View view, @Nullable final String okName, @Nullable final String cancelMame, final boolean isCancelable, @Nullable final OnClickListener listener, @Nullable final Object post){
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override
@@ -312,7 +313,7 @@ public class Dialog {
      *
      * @see #show(Context, String, View, String, String, boolean, OnClickListener, Object)
      */
-    public AlertDialog buildDialog(Context context, @StyleRes int style, View view, boolean isCancelable){
+    public AlertDialog buildDialog(@NonNull Context context, @StyleRes int style, @NonNull View view, boolean isCancelable){
         if (Looper.myLooper() != Looper.getMainLooper()) {
             throw new IllegalStateException("You must create it on the main thread.");
         }
@@ -325,7 +326,7 @@ public class Dialog {
         return dialog;
     }
 
-    public AlertDialog buildDialog(Context context, View view, boolean isCancelable){
+    public AlertDialog buildDialog(@NonNull Context context, @NonNull View view, boolean isCancelable){
         return buildDialog(context, 0, view, isCancelable);
     }
 
@@ -336,7 +337,7 @@ public class Dialog {
      * @param listener OnSingleChoice
      * @param post Object
      */
-    public void showMenu(final Context context, final String[] menus, final Dialog.OnSingleChoice listener, final Object post) {
+    public void showMenu(@NonNull final Context context, @NonNull final String[] menus, @Nullable final Dialog.OnSingleChoice listener, @Nullable final Object post) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 public void run() {

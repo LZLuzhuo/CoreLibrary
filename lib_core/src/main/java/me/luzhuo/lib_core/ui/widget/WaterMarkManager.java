@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import me.luzhuo.lib_core.R;
 
 /**
@@ -43,7 +44,7 @@ public class WaterMarkManager {
      * 添加水印到 Activity 界面
      * @param waterMarkContent 水印文本
      */
-    public void addWatermark2Activity(Activity activity, String waterMarkContent, @LayoutRes int layout) {
+    public void addWatermark2Activity(@NonNull Activity activity, @NonNull String waterMarkContent, @LayoutRes int layout) {
         if (TextUtils.isEmpty(waterMarkContent)) return;
 
         View view = LayoutInflater.from(activity).inflate(layout, null, false);
@@ -55,7 +56,7 @@ public class WaterMarkManager {
         activity.addContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
-    public void addWatermark2Activity(Activity activity, String waterMarkContent) {
+    public void addWatermark2Activity(@NonNull Activity activity, @NonNull String waterMarkContent) {
         this.addWatermark2Activity(activity, waterMarkContent, R.layout.core_layout_watermark);
     }
 }

@@ -26,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import me.luzhuo.lib_core.R;
 import me.luzhuo.lib_core.ui.calculation.UICalculation;
@@ -48,7 +49,7 @@ public class PopWindowManager extends PopupWindow {
      * @param view 用于展示的View
      * @param from 方向
      */
-    public PopWindowManager(Context context, View view, From from, int maxDp) {
+    public PopWindowManager(@Nullable Context context, @Nullable View view, @Nullable From from, int maxDp) {
         if (context == null || view == null || from == null) return;
 
         this.context = context;
@@ -87,7 +88,7 @@ public class PopWindowManager extends PopupWindow {
         });
     }
 
-    public PopWindowManager(Context context, @LayoutRes int id, From from) {
+    public PopWindowManager(@Nullable Context context, @LayoutRes int id, @Nullable From from) {
         this(context, LayoutInflater.from(context).inflate(id, null, false), from, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
@@ -95,7 +96,7 @@ public class PopWindowManager extends PopupWindow {
         setAnchorView(LayoutInflater.from(context).inflate(parentId, null, false));
     }
 
-    public void setAnchorView(View parentView) {
+    public void setAnchorView(@Nullable View parentView) {
         this.parentView = parentView;
     }
 
@@ -124,7 +125,7 @@ public class PopWindowManager extends PopupWindow {
     /**
      * 设置屏幕的透明背景
      */
-    public void setAlphaBackgroud(FragmentActivity activity) {
+    public void setAlphaBackgroud(@Nullable FragmentActivity activity) {
         this.activity = activity;
     }
 

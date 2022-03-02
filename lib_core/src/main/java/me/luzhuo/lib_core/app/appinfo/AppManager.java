@@ -14,6 +14,8 @@
  */
 package me.luzhuo.lib_core.app.appinfo;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
@@ -31,6 +33,9 @@ import android.widget.Toast;
 import java.io.File;
 import java.security.MessageDigest;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
 import me.luzhuo.lib_core.app.appinfo.bean.AppInfo;
@@ -62,7 +67,7 @@ public class AppManager {
      * 检查当前应用的版本是否为 Debug 版本
      * @return 如果是Debug版本则返回true, 否则返回false
      */
-    public boolean isDebug(){
+    public boolean isDebug() {
         try {
             ApplicationInfo info = context.getApplicationInfo();
             /*
@@ -78,7 +83,8 @@ public class AppManager {
      * 获取该应用的版本信息
      * @return AppInfo
      */
-    public AppInfo getAppInfo(){
+    @Nullable
+    public AppInfo getAppInfo() {
         try {
             PackageManager pm = context.getPackageManager();
             PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
@@ -99,7 +105,8 @@ public class AppManager {
      * @param apkPath apk文件路径
      * @return AppInfo
      */
-    public AppInfo getAppInfo(String apkPath) {
+    @Nullable
+    public AppInfo getAppInfo(@NonNull String apkPath) {
         try {
             PackageManager packageManager = context.getPackageManager();
             PackageInfo packageInfo = packageManager.getPackageArchiveInfo(apkPath, PackageManager.GET_ACTIVITIES);
@@ -133,7 +140,7 @@ public class AppManager {
      * 1. 设置夜间模式后, 应用结束也会失效
      * 2. 成功切换模式后, Activity会销毁重建
      */
-    public void setDarkMode(DarkMode mode) {
+    public void setDarkMode(@NonNull DarkMode mode) {
         switch (mode) {
             case Day:
                 setDefaultNightMode(MODE_NIGHT_NO);
@@ -151,6 +158,7 @@ public class AppManager {
      * 获取该应用的签名 (MD5)
      * @return app sign; b032c61a30fd981a18aa6278c34b1e2a
      */
+    @Nullable
     public String getSign() {
         try {
             final String pkgName = context.getPackageName();
@@ -158,8 +166,8 @@ public class AppManager {
             return hexdigest(pis.signatures[0].toByteArray());
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
+            return null;
         }
-        return "";
     }
 
     /**
@@ -167,6 +175,7 @@ public class AppManager {
      * 根据硬件信息生成, 不需要权限, 不随App卸载和设备恢复出厂设置而改变
      * @return 5F200783B117251F137FA19A365EFD932293E8D1
      */
+    @Nullable
     public String getDeviceId() {
         return new DeviceIdUtils().getDeviceId(context);
     }
@@ -206,7 +215,8 @@ public class AppManager {
      * @param view 指定的View
      * @return 截频返回的Bitmap
      */
-    public Bitmap screenshot(View view) {
+    @Nullable
+    public Bitmap screenshot(@NonNull View view) {
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
         return view.getDrawingCache();
@@ -216,13 +226,14 @@ public class AppManager {
      * 获得当前进程的名字
      * @return 进程名, 默认进程为报名 (com.jincai.myapplication)
      */
+    @Nullable
     public String processName() {
         int pid = android.os.Process.myPid();
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningAppProcessInfo appProcess : activityManager.getRunningAppProcesses()) {
             if (appProcess.pid == pid) { return appProcess.processName; }
         }
-        return "";
+        return null;
     }
 
     /**
@@ -241,7 +252,7 @@ public class AppManager {
     /**
      * 再按一次退出应用
      */
-    public void onBackPressed(FragmentActivity activity) {
+    public void onBackPressed(@NonNull FragmentActivity activity) {
         long secondTime = System.currentTimeMillis();
         if (secondTime - firstTime > 2000) {
             Toast.makeText(activity.getBaseContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
@@ -256,7 +267,9 @@ public class AppManager {
      * @param context Context
      * @param appFilePath app file path
      */
-    public void installApk(Context context, File appFilePath) {
+    @SuppressLint("InlinedApi")
+    @RequiresPermission(Manifest.permission.REQUEST_INSTALL_PACKAGES)
+    public void installApk(@Nullable Context context, @Nullable File appFilePath) {
         if (context == null || appFilePath == null || !appFilePath.exists()) return;
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) { // <= android6.0
@@ -292,7 +305,7 @@ public class AppManager {
     /**
      * 跳转到应用市场
      */
-    public void startAppStore(Context context) {
+    public void startAppStore(@NonNull Context context) {
         try {
             Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -308,7 +321,7 @@ public class AppManager {
      * 请在Application中调用
      * @param callback 前后切换的回调接口
      */
-    public void registerAppForegroundCallback(AppForegroundCallback callback) {
+    public void registerAppForegroundCallback(@Nullable AppForegroundCallback callback) {
         AppForeground.getInstance().registerAppForegroundCallback((Application) CoreBaseApplication.appContext, callback);
     }
 }

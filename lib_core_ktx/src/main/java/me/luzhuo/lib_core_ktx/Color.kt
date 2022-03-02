@@ -15,10 +15,12 @@
 package me.luzhuo.lib_core_ktx
 
 import android.graphics.Color
+import androidx.annotation.ColorInt
 
 /**
  * 解析颜色
  */
+@ColorInt
 fun String?.parseColor(): Int? {
     if (this == null) return null
     return try {

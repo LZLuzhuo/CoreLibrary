@@ -39,6 +39,7 @@ class Audio extends ActivityResultContract<Void, Uri> {
     }
 
     @Override
+    @Nullable
     public Uri parseResult(int resultCode, @Nullable Intent intent) {
         if (resultCode != Activity.RESULT_OK) return null;
 

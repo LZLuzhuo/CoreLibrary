@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+
 /**
  * Description: 软键盘工具
  * @Author: Luzhuo
@@ -31,13 +33,13 @@ public class KeyBoardManager {
     private InputMethodManager manager;
     private final static int flags = 0;
 
-    private KeyBoardManager(Context context) {
+    private KeyBoardManager(@NonNull Context context) {
         manager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
-    public static KeyBoardManager getInstance(Context context){
-        if (instance == null){
-            synchronized (KeyBoardManager.class){
+    public static KeyBoardManager getInstance(@NonNull Context context) {
+        if (instance == null) {
+            synchronized (KeyBoardManager.class) {
                 if (instance == null) instance = new KeyBoardManager(context.getApplicationContext());
             }
         }
@@ -48,7 +50,7 @@ public class KeyBoardManager {
      * 显示键盘
      * 弹出的键盘类型与editText的配置有关
      */
-    public void show(EditText editText) {
+    public void show(@NonNull EditText editText) {
         if (editText == null) return;
 
         editText.requestFocus(); // 请求获取焦点
@@ -58,7 +60,7 @@ public class KeyBoardManager {
     /**
      * 隐藏软键盘
      */
-    public void hide(View view) {
+    public void hide(@NonNull View view) {
         if (view == null) return;
 
         try {
@@ -69,7 +71,7 @@ public class KeyBoardManager {
     /**
      * 隐藏软键盘
      */
-    public void hide(Activity activity) {
+    public void hide(@NonNull Activity activity) {
         if (activity == null) return;
 
         try {

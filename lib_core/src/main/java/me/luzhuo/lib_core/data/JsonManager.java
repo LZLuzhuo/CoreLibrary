@@ -22,6 +22,9 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * =================================================
  * 
@@ -48,7 +51,8 @@ public class JsonManager {
 	 * @param object Bean
 	 * @return jsonString
 	 */
-	public String bean2Json(Object object) {
+	@Nullable
+	public String bean2Json(@Nullable Object object) {
 		if (object == null) return null;
 
 		String gsonString = gson.toJson(object);
@@ -61,7 +65,8 @@ public class JsonManager {
 	 * @param cls Bean.class
 	 * @return Bean
 	 */
-	public <T> T json2Bean(String json, Class<T> cls) {
+	@Nullable
+	public <T> T json2Bean(@Nullable String json, @NonNull Class<T> cls) {
 		if (TextUtils.isEmpty(json)) return null;
 
 		T t = gson.fromJson(json, cls);
@@ -73,7 +78,8 @@ public class JsonManager {
 	 * @param list List
 	 * @return jsonString
 	 */
-	public String list2Json(List list){
+	@Nullable
+	public String list2Json(@Nullable List list){
 		if (list == null) return null;
 
 		return bean2Json(list);
@@ -84,7 +90,8 @@ public class JsonManager {
 	 * @param json jsonString
 	 * @return List<Bean>
 	 */
-	public <T> List<T> json2List(String json) {
+	@Nullable
+	public <T> List<T> json2List(@Nullable String json) {
 		if (TextUtils.isEmpty(json)) return null;
 
 		List<T> list = gson.fromJson(json, new TypeToken<List<T>>() {}.getType());
@@ -96,7 +103,8 @@ public class JsonManager {
 	 * @param map Map
 	 * @return jsonString
 	 */
-	public String map2Json(Map map){
+	@NonNull
+	public String map2Json(@NonNull Map map){
 		String json = gson.toJson(map);
 		return json;
 	}
@@ -106,7 +114,10 @@ public class JsonManager {
 	 * @param json jsonString
 	 * @return Map<String, T> T: String会被转成String类型, Int会被转成Double类型
 	 */
-	public <T> Map<String, T> json2Map(String json) {
+	@Nullable
+	public <T> Map<String, T> json2Map(@Nullable String json) {
+		if (TextUtils.isEmpty(json)) return null;
+
 		Map<String, T> map = gson.fromJson(json, new TypeToken<Map<String, T>>() {}.getType());
 		return map;
 	}

@@ -19,6 +19,9 @@ import android.text.TextUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Description: 金钱计算
  *
@@ -29,7 +32,7 @@ import java.math.RoundingMode;
 public class MoneyCalculation {
     private BigDecimal defaultValue;
 
-    public MoneyCalculation(String money){
+    public MoneyCalculation(@Nullable String money) {
         if (TextUtils.isEmpty(money)) money = "0";
         defaultValue = new BigDecimal(money);
     }
@@ -55,7 +58,7 @@ public class MoneyCalculation {
      * 参与计算的数据类型必须转为String类型, 才能参与计算
      * Data of type float will be converted to type String, and then calculated
      */
-    public MoneyCalculation add(String money) {
+    public MoneyCalculation add(@Nullable String money) {
         if (TextUtils.isEmpty(money)) money = "0";
         defaultValue = defaultValue.add(new BigDecimal(money));
         return this;
@@ -84,7 +87,7 @@ public class MoneyCalculation {
     /**
      * 减法运算
      */
-    public MoneyCalculation subtract(String money) {
+    public MoneyCalculation subtract(@Nullable String money) {
         if (TextUtils.isEmpty(money)) money = "0";
         defaultValue = defaultValue.subtract(new BigDecimal(money));
         return this;
@@ -113,7 +116,7 @@ public class MoneyCalculation {
     /**
      * 乘法运算
      */
-    public MoneyCalculation multiply(String money) {
+    public MoneyCalculation multiply(@Nullable String money) {
         if (TextUtils.isEmpty(money)) money = "0";
         defaultValue = defaultValue.multiply(new BigDecimal(money));
         return this;
@@ -142,7 +145,7 @@ public class MoneyCalculation {
     /**
      * 除法运算
      */
-    public MoneyCalculation divide(String money) {
+    public MoneyCalculation divide(@Nullable String money) {
         if (TextUtils.isEmpty(money)) money = "1";
         defaultValue = defaultValue.divide(new BigDecimal(money), 2, RoundingMode.HALF_UP);
         return this;
@@ -172,6 +175,7 @@ public class MoneyCalculation {
      * 返回保留两位小数的String类型数字
      * return calculation result with two decimal places
      */
+    @NonNull
     public String toString() {
         return defaultValue.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
     }

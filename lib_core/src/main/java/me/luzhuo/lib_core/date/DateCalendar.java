@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import androidx.annotation.NonNull;
 import me.luzhuo.lib_core.date.enums.CalendarRule;
 
 /**
@@ -29,6 +30,7 @@ import me.luzhuo.lib_core.date.enums.CalendarRule;
  **/
 public class DateCalendar {
 
+    @NonNull
     private Calendar getCalendar(){
         /**
          * This Calendar must be rebuild each time it is used.

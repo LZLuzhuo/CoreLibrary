@@ -21,8 +21,13 @@ import java.io.File;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 
 /**
  * Description: 实现原理见 权限请求库
@@ -30,13 +35,15 @@ import androidx.fragment.app.Fragment;
  * @Creation Date: 2021/10/20 21:39
  * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
  **/
+@RestrictTo(LIBRARY)
 public class VideoFragment extends Fragment {
     private IVideoRecorderCallback videoRecorderCallback;
     private ActivityResultLauncher<Void> takeVideo;
 
     private VideoFragment() { }
 
-    public static VideoFragment instance(VideoQuality quality, int durationLimit) {
+    @RestrictTo(LIBRARY)
+    public static VideoFragment instance(@NonNull VideoQuality quality, int durationLimit) {
         final VideoFragment fragment = new VideoFragment();
         Bundle args = new Bundle();
         args.putSerializable("quality", quality);
@@ -61,7 +68,8 @@ public class VideoFragment extends Fragment {
         });
     }
 
-    public void show(IVideoRecorderCallback videoRecorderCallback) {
+    @RestrictTo(LIBRARY)
+    public void show(@Nullable IVideoRecorderCallback videoRecorderCallback) {
         this.videoRecorderCallback = videoRecorderCallback;
         takeVideo.launch(null);
     }

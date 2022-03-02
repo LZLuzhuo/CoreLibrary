@@ -25,6 +25,9 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 import java.util.Locale;
 
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import me.luzhuo.lib_core.app.appinfo.AppManager;
 import me.luzhuo.lib_core.ui.dialog.enums.DatePickerType;
 
@@ -48,7 +51,8 @@ public class DatePickerDialogManager {
      * @param day 日
      * @param callback OnDatePickerCallback
      */
-    public void show(final Context context, final DatePickerType type, final int year, final int month, final int day, final OnDatePickerCallback callback){
+    @MainThread
+    public void show(@NonNull final Context context, @NonNull final DatePickerType type, final int year, final int month, final int day, @Nullable final OnDatePickerCallback callback){
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override
@@ -67,7 +71,8 @@ public class DatePickerDialogManager {
         }, year, month - 1, day).show();
     }
 
-    public void show(Context context, DatePickerType type, final OnDatePickerCallback callback){
+    @MainThread
+    public void show(@NonNull Context context, @NonNull DatePickerType type, @Nullable final OnDatePickerCallback callback){
         show(context, type, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH), callback);
     }
 
@@ -81,7 +86,8 @@ public class DatePickerDialogManager {
      * @param minute 分
      * @param callback OnTimePickerCallback
      */
-    public void show(final Context context, final DatePickerType type, final int hour, final int minute, final OnTimePickerCallback callback) {
+    @MainThread
+    public void show(@NonNull final Context context, @NonNull final DatePickerType type, final int hour, final int minute, @Nullable final OnTimePickerCallback callback) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override
@@ -100,7 +106,8 @@ public class DatePickerDialogManager {
         }, hour, minute, true).show();
     }
 
-    public void show(Context context, DatePickerType type, final OnTimePickerCallback callback) {
+    @MainThread
+    public void show(@NonNull Context context, @NonNull DatePickerType type, @Nullable final OnTimePickerCallback callback) {
         show(context, type, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), callback);
     }
 

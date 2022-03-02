@@ -23,6 +23,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import androidx.annotation.Nullable;
+
 /**
  * =================================================
  * <p>
@@ -49,7 +51,7 @@ public class AppManager {
      * 添加activity
      * @param activity
      */
-    public static void addActivity(Activity activity) {
+    public static void addActivity(@Nullable Activity activity) {
         activitys.add(activity);
     }
 
@@ -57,7 +59,7 @@ public class AppManager {
      * 移除指定activity
      * @param activity
      */
-    public static void removeActivity(Activity activity) {
+    public static void removeActivity(@Nullable Activity activity) {
         activitys.remove(activity);
     }
 

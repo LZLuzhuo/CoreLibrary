@@ -16,10 +16,14 @@ package me.luzhuo.lib_core.math.money;
 
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.RelativeSizeSpan;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Description: 金钱格式化
@@ -40,7 +44,8 @@ public class MoneyFormat {
      * @param money Support formats: xxx0.00 , ￥0.00 ， 0.00
      * @return
      */
-    public SpannableString getCamelCase(String money) {
+    @NonNull
+    public SpannableString getCamelCase(@NonNull String money) {
         SpannableString spannableString = new SpannableString(money);
         if (money.contains(".")) {
             spannableString.setSpan(new RelativeSizeSpan(0.7f), money.indexOf("."), money.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -55,7 +60,8 @@ public class MoneyFormat {
      * @param num 数字
      * @return 格式化后的数字
      */
-    public String formatMoney(Object num) {
+    @NonNull
+    public String formatMoney(@NonNull Object num) {
         NumberFormat currency = NumberFormat.getCurrencyInstance(Locale.CHINA);
         return currency.format(num);
     }
@@ -67,7 +73,8 @@ public class MoneyFormat {
      * @param num    数字
      * @return 格式化后的数字
      */
-    public String formatMoney(Locale locale, Object num) {
+    @NonNull
+    public String formatMoney(@NonNull Locale locale, @NonNull Object num) {
         NumberFormat currency = NumberFormat.getCurrencyInstance(locale);
         return currency.format(num);
     }
@@ -89,12 +96,15 @@ public class MoneyFormat {
      *
      * @return 壹拾伍万零壹元整 / 不支持的格式
      */
-    public String formatCapital(String money) {
+    @Nullable
+    public String formatCapital(@Nullable String money) {
+        if (TextUtils.isEmpty(money)) return null;
+
         try {
             return chineseFormatter.format(Double.parseDouble(money), true, true);
         } catch (Exception e) {
             e.printStackTrace();
-            return "不支持的格式";
+            return null;
         }
     }
 }

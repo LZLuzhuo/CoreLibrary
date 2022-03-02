@@ -22,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+
 /**
  * Description: 显示在View上方的Tip弹窗
  * 一般用于:
@@ -33,14 +35,14 @@ import android.view.WindowManager;
  **/
 public class TipPopWindow extends PopWindowManager {
     protected int padding = 0;
-    public TipPopWindow(Context context, View view) {
+    public TipPopWindow(@NonNull Context context, @NonNull View view) {
         super(context, view, From.TOP, ViewGroup.LayoutParams.WRAP_CONTENT);
         setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         setPadding(5);
     }
 
-    public TipPopWindow(Context context, int id) {
+    public TipPopWindow(@NonNull Context context, int id) {
         this(context, LayoutInflater.from(context).inflate(id, null, false));
     }
 

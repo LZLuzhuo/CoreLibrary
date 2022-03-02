@@ -22,6 +22,7 @@ import android.provider.ContactsContract;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import me.luzhuo.lib_core.app.cantacts.bean.ContactsBean;
 
 /**
@@ -36,7 +37,8 @@ public class ContactsManager {
      * 获取手机联系人信息
      * 需要权限 android.permission.READ_CONTACTS
      */
-    public List<ContactsBean> getContacts(Context context) {
+    @NonNull
+    public List<ContactsBean> getContacts(@NonNull Context context) {
         List<ContactsBean> list = new ArrayList();
 
         ContentResolver resolver = context.getContentResolver();

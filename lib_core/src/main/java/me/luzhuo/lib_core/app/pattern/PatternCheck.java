@@ -19,6 +19,9 @@ import android.text.TextUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Description: 常见的正则检测
  * @Author: Luzhuo
@@ -32,7 +35,7 @@ public class PatternCheck {
      * @param data 被检查的数据
      * @return 符合正则返回true, 否则返回false
      */
-    public boolean check(RegularType type, String data){
+    public boolean check(@NonNull RegularType type, @Nullable String data){
         return this.check(type.value(), data);
     }
 
@@ -42,7 +45,7 @@ public class PatternCheck {
      * @param data 被检查的数据
      * @return 符合正则返回true, 否则返回false
      */
-    public boolean check(String regular, String data) {
+    public boolean check(@NonNull String regular, @Nullable String data) {
         if (TextUtils.isEmpty(data)) return false;
 
         Pattern pattern = Pattern.compile(regular);

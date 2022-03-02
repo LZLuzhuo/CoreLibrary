@@ -18,7 +18,11 @@ import android.text.TextUtils;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 import androidx.fragment.app.Fragment;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 
 /**
  * Description: 实现原理见 权限请求库
@@ -26,17 +30,22 @@ import androidx.fragment.app.Fragment;
  * @Creation Date: 2021/10/20 21:29
  * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
  **/
+@RestrictTo(LIBRARY)
 public class CameraFragment extends Fragment {
     private ICameraCallback cameraCallback;
 
     private ActivityResultLauncher<Void> takePicture = registerForActivityResult(new Camera(), new ActivityResultCallback<String>() {
         @Override
-        public void onActivityResult(String result) {
+        public void onActivityResult(@Nullable String result) {
             if(cameraCallback != null && !TextUtils.isEmpty(result)) cameraCallback.onCameraCallback(result);
         }
     });
 
-    public void show(ICameraCallback cameraCallback) {
+    @RestrictTo(LIBRARY)
+    public CameraFragment() { }
+
+    @RestrictTo(LIBRARY)
+    public void show(@Nullable ICameraCallback cameraCallback) {
         this.cameraCallback = cameraCallback;
         takePicture.launch(null);
     }

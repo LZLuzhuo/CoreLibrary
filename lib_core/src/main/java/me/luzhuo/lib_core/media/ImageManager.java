@@ -16,9 +16,17 @@ package me.luzhuo.lib_core.media;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
+import android.net.Uri;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+
+import androidx.annotation.NonNull;
+import androidx.exifinterface.media.ExifInterface;
+import me.luzhuo.lib_core.app.base.CoreBaseApplication;
 
 /**
  * Description: 图片媒体管理类
@@ -35,7 +43,14 @@ public class ImageManager {
      * @param bitmap Bitmap照片对象
      * @param photoPath Bitmap对应的本地文件
      */
-    public Bitmap rotateIfRequired(Bitmap bitmap, String photoPath) {
+    public Bitmap rotateIfRequired(@NonNull Bitmap bitmap, @NonNull String photoPath) {
+        int degree = getDegreeFromPhotoFile(photoPath);
+        if (degree == 0) return bitmap;
+
+        return rotateBitmap(bitmap, degree);
+    }
+
+    public Bitmap rotateIfRequired(@NonNull Bitmap bitmap, @NonNull InputStream photoPath) {
         int degree = getDegreeFromPhotoFile(photoPath);
         if (degree == 0) return bitmap;
 
@@ -44,12 +59,29 @@ public class ImageManager {
 
     /**
      * 获取照片文件的旋转角度
-     * @param photoPath 照片我恩建路径
+     * @param photoPathOrUri 照片本地路径, 或Uri路径
      * @return 旋转角度, 0表示未旋转
      */
-    public int getDegreeFromPhotoFile(String photoPath) {
+    public int getDegreeFromPhotoFile(@NonNull String photoPathOrUri) {
         try {
-            ExifInterface exifInterface = new ExifInterface(photoPath);
+            if (photoPathOrUri.startsWith("content://")) {
+                return getDegreeFromPhotoFile(CoreBaseApplication.appContext.getContentResolver().openInputStream(Uri.parse(photoPathOrUri)));
+            } else {
+                return getDegreeFromPhotoFile(new FileInputStream(new File(photoPathOrUri)));
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int getDegreeFromPhotoFile(@NonNull Uri photoUri) {
+        return getDegreeFromPhotoFile(photoUri.toString());
+    }
+
+    public int getDegreeFromPhotoFile(@NonNull InputStream inputStream) {
+        try {
+            ExifInterface exifInterface = new ExifInterface(inputStream);
             int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
             switch (orientation) {
                 case ExifInterface.ORIENTATION_ROTATE_90: return 90;
@@ -60,6 +92,8 @@ public class ImageManager {
         } catch (IOException e) {
             e.printStackTrace();
             return 0;
+        } finally {
+            try { inputStream.close(); } catch (IOException ioException) { ioException.printStackTrace(); }
         }
     }
 
@@ -70,7 +104,8 @@ public class ImageManager {
      * @param recycler 是否对原Bitmap进行回收
      * @return 旋转之后的图片
      */
-    public Bitmap rotateBitmap(Bitmap bitmap, int degree, final boolean recycler) {
+    @NonNull
+    public Bitmap rotateBitmap(@NonNull Bitmap bitmap, int degree, final boolean recycler) {
         Matrix matrix = new Matrix();
         matrix.postRotate(degree);
         Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
@@ -78,7 +113,8 @@ public class ImageManager {
         return rotatedBitmap;
     }
 
-    public Bitmap rotateBitmap(Bitmap bitmap, int degree) {
+    @NonNull
+    public Bitmap rotateBitmap(@NonNull Bitmap bitmap, int degree) {
         return rotateBitmap(bitmap, degree, true);
     }
 }

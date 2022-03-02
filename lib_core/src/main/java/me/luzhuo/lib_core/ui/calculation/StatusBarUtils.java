@@ -18,6 +18,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 class StatusBarUtils {
@@ -27,7 +28,7 @@ class StatusBarUtils {
      * @param view 任意View
      * @return 必然会返回一个 StatusBar 的高度, 不能保证高度值准确, 但尽量准确
      */
-    public int getStatusBarHeight(Context context, @Nullable View view) {
+    public int getStatusBarHeight(@NonNull Context context, @Nullable View view) {
         int statusBarHeight;
         statusBarHeight = getStatusBarHeightByDimen(context);
         if (statusBarHeight <= 0) getStatusBarHeightByView(view);
@@ -38,7 +39,7 @@ class StatusBarUtils {
     /**
      * 从 android.R.dimen.status_bar_height 中获取 status bar 高度
      */
-    protected int getStatusBarHeightByDimen(Context context) {
+    protected int getStatusBarHeightByDimen(@NonNull Context context) {
         int statusBarHeight = -1;
         // 从系统未公开的 android.R.dimen.status_bar_height 中获取状态栏的高度
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -51,7 +52,7 @@ class StatusBarUtils {
      * 获取不到时, 给的默认的24dp
      * @return
      */
-    protected int getStatusBarHeightByDefault(Context context) {
+    protected int getStatusBarHeightByDefault(@NonNull Context context) {
         return new UICalculation(context).dp2px(24f);
     }
 

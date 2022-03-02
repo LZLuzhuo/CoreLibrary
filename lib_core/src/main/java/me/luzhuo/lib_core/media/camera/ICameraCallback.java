@@ -14,6 +14,8 @@
  */
 package me.luzhuo.lib_core.media.camera;
 
+import androidx.annotation.NonNull;
+
 public interface ICameraCallback {
-    public void onCameraCallback(String filePath);
+    public void onCameraCallback(@NonNull String filePath);
 }

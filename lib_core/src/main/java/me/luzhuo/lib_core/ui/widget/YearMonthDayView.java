@@ -222,7 +222,7 @@ public class YearMonthDayView extends LinearLayoutCompat implements View.OnClick
     }
 
     public interface OnDateChangeCallback extends DatePickerDialogManager.OnDatePickerCallback, DatePickerDialogManager.OnTimePickerCallback { }
-    public void setDateChangeCallback(OnDateChangeCallback callback) {
+    public void setDateChangeCallback(@Nullable OnDateChangeCallback callback) {
         this.callback = callback;
     }
 }

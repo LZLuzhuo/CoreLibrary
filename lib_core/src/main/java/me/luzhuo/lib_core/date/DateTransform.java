@@ -21,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import me.luzhuo.lib_core.date.enums.FormatRule;
 
 /**
@@ -51,9 +53,9 @@ public class DateTransform {
      *
      * @param rule {@link FormatRule}
      * @param date exmaple: 2020-02-24 11:41:56
-     * @return exmaple: 1582515716000
+     * @return exmaple: 1582515716000 / -1
      */
-    public long date2Timestamp(FormatRule rule, String date) throws ParseException {
+    public long date2Timestamp(@NonNull FormatRule rule, @Nullable String date) throws ParseException {
         if (TextUtils.isEmpty(date)) return -1;
 
         return getFormat(rule).parse(date).getTime();
@@ -70,7 +72,8 @@ public class DateTransform {
      * @param timestamp exmaple: 1582515716000
      * @return exmaple: 2020-02-24 11:41:56
      */
-    public String timestamp2Date(FormatRule rule, long timestamp) {
+    @NonNull
+    public String timestamp2Date(@NonNull FormatRule rule, long timestamp) {
         if (timestamp == -1) return "";
 
         return getFormat(rule).format(timestamp);

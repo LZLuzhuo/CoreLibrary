@@ -14,13 +14,13 @@
  */
 package me.luzhuo.lib_core.date;
 
-import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import me.luzhuo.lib_core.date.enums.CalendarRule;
 import me.luzhuo.lib_core.date.enums.TimeRule;
 
@@ -94,6 +94,7 @@ public class DateCalculate {
      * @param previousTimesamp example: 1582515716000
      * @return xxx天x小时x分, return 0分 if currentTimestamp < previousTimesamp
      */
+    @NonNull
     public String timeDuration(long currentTimestamp, long previousTimesamp){
         long timeDiffer = Math.abs(currentTimestamp - previousTimesamp);
         if(timeDiffer / TimeRule.Minute.timeLength <= 0) return "0分";
@@ -118,11 +119,11 @@ public class DateCalculate {
      * 1<x<60s 刚刚
      * @return
      */
+    @NonNull
     public String postFormat(long previousTimesamp){
         long currentTimestamp = System.currentTimeMillis();
-        if(currentTimestamp / TimeRule.Minute.timeLength < previousTimesamp / TimeRule.Minute.timeLength) throw new IllegalArgumentException("must be previousTimesamp: " + previousTimesamp + " < " + " currentTimestamp: " + currentTimestamp);
 
-        long timesamp = currentTimestamp - previousTimesamp;
+        long timesamp = Math.abs(currentTimestamp - previousTimesamp);
         if (timesamp <= TimeRule.Minute.timeLength)
             return "刚刚";
         else if (timesamp > TimeRule.Minute.timeLength && timesamp <= TimeRule.Hour.timeLength)
@@ -146,12 +147,9 @@ public class DateCalculate {
      * Outside year 2019年12月24日
      * @return
      */
+    @Nullable
     public String conversationFormat(long previousTimesamp){
         long currentTimestamp = System.currentTimeMillis();
-        if(currentTimestamp / TimeRule.Minute.timeLength < previousTimesamp / TimeRule.Minute.timeLength) {
-            Log.w(TAG, "must be previousTimesamp: " + previousTimesamp + " < " + " currentTimestamp: " + currentTimestamp);
-            return new SimpleDateFormat("HH:mm").format(previousTimesamp);
-        }
 
         Calendar calendar_old = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"), Locale.CHINA);
         calendar_old.setTimeInMillis(previousTimesamp);

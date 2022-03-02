@@ -41,15 +41,15 @@ public class LottieThreeAnimation {
     private LottieAnimationView animationView;
 
     // Frames played by default (infinite loop)
-    private int nomalStart, nomalEnd;
+    private int normalStart, normalEnd;
     // Frames between forward and reverse sequence (only executed once)
     private int sequenceStart, sequenceEnd;
     private LottieAnimationState state;
 
-    public LottieThreeAnimation(LottieAnimationView animationView, int nomalStart, int nomalEnd, int sequenceStart, int sequenceEnd){
+    public LottieThreeAnimation(LottieAnimationView animationView, int normalStart, int normalEnd, int sequenceStart, int sequenceEnd){
         this.animationView = animationView;
-        this.nomalStart = nomalStart;
-        this.nomalEnd = nomalEnd;
+        this.normalStart = normalStart;
+        this.normalEnd = normalEnd;
         this.sequenceStart = sequenceStart;
         this.sequenceEnd = sequenceEnd;
 
@@ -74,7 +74,7 @@ public class LottieThreeAnimation {
         if(state == LottieAnimationState.Default) return;
 
         state = LottieAnimationState.Default;
-        animationView.setMinAndMaxFrame(nomalStart, nomalEnd);
+        animationView.setMinAndMaxFrame(normalStart, normalEnd);
         animationView.setRepeatCount(-1);
         animationView.playAnimation();
     }

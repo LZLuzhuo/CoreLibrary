@@ -21,6 +21,7 @@ import java.util.Set;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -63,15 +64,15 @@ public class FragmentManager {
 		this.containerId = containerId;
 	}
 	
-	public void replaceFragment(Fragment target){
+	public void replaceFragment(@NonNull Fragment target){
 		replaceFragment(target, false, null);
 	}
 	
-	public void replaceFragment(Fragment target, boolean isAddStack){
+	public void replaceFragment(@NonNull Fragment target, boolean isAddStack){
 		replaceFragment(target, isAddStack, null);
 	}
 	
-	public void replaceFragment(Fragment target, Bundle bundle){
+	public void replaceFragment(@NonNull Fragment target, @Nullable Bundle bundle){
 		replaceFragment(target, false, bundle);
 	}
 	
@@ -81,8 +82,8 @@ public class FragmentManager {
 	 * @param isAddStack 是否添加到栈里面,如果添加到栈里面可以使用返回键;不建议将第一个Fragment添加到栈里
 	 * @param bundle / null;存储要传输的数据,getBundle(Fragment)获取数据
 	 */
-	public void replaceFragment(Fragment target, boolean isAddStack, Bundle bundle){
-		if(bundle != null){
+	public void replaceFragment(@NonNull Fragment target, boolean isAddStack, @Nullable Bundle bundle){
+		if (bundle != null) {
 			// 存储要传输的数据
 			target.setArguments(bundle);
 		}
@@ -90,7 +91,7 @@ public class FragmentManager {
 		FragmentTransaction replace = fragmentManager.beginTransaction().replace(containerId, target);
 		if(isAddStack) // 是否添加到栈里面,如果添加到栈里面可以使用返回键
 			replace = replace.addToBackStack(null);
-		replace.commit();
+		replace.commitAllowingStateLoss();
 
 		oldFragment = target;
 	}
@@ -100,19 +101,19 @@ public class FragmentManager {
 	 * @param fragment 与存入Bundle相对应的Fragment
 	 * @return Bundle
 	 */
-	public Bundle getBundle(Fragment fragment){
+	public Bundle getBundle(@NonNull Fragment fragment){
 		return fragment.getArguments();
 	}
 	
-	public void addFragment(Fragment target){
+	public void addFragment(@NonNull Fragment target){
 		addFragment(target, false, null);
 	}
 	
-	public void addFragment(Fragment target, boolean isAddStack){
+	public void addFragment(@NonNull Fragment target, boolean isAddStack){
 		addFragment(target, isAddStack, null);
 	}
 	
-	public void addFragment(Fragment target, Bundle bundle){
+	public void addFragment(@NonNull Fragment target, @Nullable Bundle bundle){
 		addFragment(target, false, bundle);
 	}
 	
@@ -122,7 +123,7 @@ public class FragmentManager {
 	 * @param isAddStack 是否添加到栈里面,如果添加到栈里面可以使用返回键;不建议将第一个Fragment添加到栈里
 	 * @param bundle / null;存储要传输的数据,getBundle(Fragment)获取数据
 	 */
-	public void addFragment(Fragment target, boolean isAddStack, Bundle bundle){
+	public void addFragment(@NonNull Fragment target, boolean isAddStack, @Nullable Bundle bundle){
 		if(bundle != null){
 			// 存储要传输的数据
 			target.setArguments(bundle);
@@ -131,7 +132,7 @@ public class FragmentManager {
 		FragmentTransaction add = fragmentManager.beginTransaction().replace(containerId, target);
 		if(isAddStack) //是否添加到栈里面,如果添加到栈里面可以使用返回键
 			add = add.addToBackStack(null);
-		add.commit();
+		add.commitAllowingStateLoss();
 
 		oldFragment = target;
 	}
@@ -142,7 +143,7 @@ public class FragmentManager {
 	 * <br>不支持传递数据
 	 * @param newFragment 切换的Fragment
 	 */
-	public void changeFragment(Fragment newFragment){
+	public void changeFragment(@NonNull Fragment newFragment){
 		if(newFragment == oldFragment || oldFragment == null) return;
 		
 		FragmentTransaction transaction = fragmentManager.beginTransaction();

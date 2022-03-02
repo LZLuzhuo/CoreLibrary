@@ -19,6 +19,9 @@ import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.SuperscriptSpan;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Description: 数学计算
  *
@@ -33,7 +36,7 @@ public class MathCalculation {
      * @param nums int类型数组
      * @return 最大的数
      */
-    public int max(int[] nums){
+    public int max(@NonNull int[] nums){
         int max_num = 0;
         for (int num : nums) {
             max_num = max_num > num ? max_num : num;
@@ -45,7 +48,8 @@ public class MathCalculation {
      * 上标数字
      * @param number m^2
      */
-    public SpannableString getSuperCase(String number) {
+    @NonNull
+    public SpannableString getSuperCase(@NonNull String number) {
         SpannableString spannableString = new SpannableString(number);
 
         if (number.contains("^")) {

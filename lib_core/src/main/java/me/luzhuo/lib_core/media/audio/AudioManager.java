@@ -19,6 +19,8 @@ import android.net.Uri;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
@@ -36,13 +38,13 @@ public class AudioManager {
     /**
      * 请在Activity的onCreate回调里创建该对象
      */
-    public AudioManager(FragmentActivity activity) {
+    public AudioManager(@NonNull FragmentActivity activity) {
         this.context = activity;
 
         takeAudio = activity.registerForActivityResult(new Audio(), new ActivityResultCallback<Uri>() {
             @Override
             public void onActivityResult(Uri result) {
-                if(audioCallback != null && result != null) audioCallback.onCameraCallback(result);
+                if(audioCallback != null && result != null) audioCallback.onAudioCallback(result);
             }
         });
     }
@@ -50,13 +52,13 @@ public class AudioManager {
     /**
      * 请在Fragment的OnCreate回调里创建该对象
      */
-    public AudioManager(Fragment fragment) {
+    public AudioManager(@NonNull Fragment fragment) {
         this.context = fragment.getContext();
 
         takeAudio = fragment.registerForActivityResult(new Audio(), new ActivityResultCallback<Uri>() {
             @Override
-            public void onActivityResult(Uri result) {
-                if(audioCallback != null && result != null) audioCallback.onCameraCallback(result);
+            public void onActivityResult(@Nullable Uri result) {
+                if(audioCallback != null && result != null) audioCallback.onAudioCallback(result);
             }
         });
     }

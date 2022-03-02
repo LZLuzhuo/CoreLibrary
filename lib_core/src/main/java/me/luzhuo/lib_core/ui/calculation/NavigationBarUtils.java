@@ -22,6 +22,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import me.luzhuo.lib_core.app.phone.PhoneManager;
 import me.luzhuo.lib_core.app.phone.enums.Rom;
 
@@ -39,7 +40,7 @@ class NavigationBarUtils {
      * 126px
      * @return 有则返回具体值, 没有则返回-1
      */
-    public int getNavigationBarHeight(Context context) {
+    public int getNavigationBarHeight(@NonNull Context context) {
         int statusBarHeight = -1;
         // 从系统未公开的 android.R.dimen.navigation_bar_height 中获取状态栏的高度
         int resourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
@@ -52,7 +53,7 @@ class NavigationBarUtils {
      * 判断现在是否有NavigationBar
      * @return 有返回true, 没有返回false
      */
-    public boolean hasNavigationBar(Context context) {
+    public boolean hasNavigationBar(@NonNull Context context) {
         if (getNavigationBarHeight(context) <= 0) return false; // 没有则必然没有, 有则未必有
         Rom rom = new PhoneManager().getPhoneRom();
         if (rom == Rom.Rom_Huawei && isHuaWeiHideNav(context)) return false;
@@ -66,7 +67,7 @@ class NavigationBarUtils {
      * 如果有则返回NavigationBar的高度, 没有则返回0
      * @return NavigationBar的高度, 或者0
      */
-    public int getCurrentNavigationBar(Context context) {
+    public int getCurrentNavigationBar(@NonNull Context context) {
         if (hasNavigationBar(context)) {
             return getNavigationBarHeight(context);
         } else return 0;
@@ -76,7 +77,7 @@ class NavigationBarUtils {
      * 华为手机是否隐藏了虚拟导航栏
      * @return true隐藏了, false未隐藏
      */
-    private boolean isHuaWeiHideNav(Context context) {
+    private boolean isHuaWeiHideNav(@NonNull Context context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return Settings.System.getInt(context.getContentResolver(), "navigationbar_is_min", 0) != 0;
         } else {
@@ -88,7 +89,7 @@ class NavigationBarUtils {
      * 小米手机是否开启手势操作
      * @return false 表示使用的是NavigationBar, true表示使用的是手势, 默认false
      */
-    private boolean isMiuiFullScreen(Context context) {
+    private boolean isMiuiFullScreen(@NonNull Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             return Settings.Global.getInt(context.getContentResolver(), "force_fsg_nav_bar", 0) != 0;
         } return false;
@@ -98,14 +99,14 @@ class NavigationBarUtils {
      * Vivo手机是否开启手势操作
      * @return false 表示使用的是NavigationBar, true表示使用的是手势, 默认flase
      */
-    private boolean isVivoFullScreen(Context context) {
+    private boolean isVivoFullScreen(@NonNull Context context) {
         return Settings.Secure.getInt(context.getContentResolver(), "navigation_gesture_on", 0) != 0;
     }
 
     /**
      * 其他手机根据屏幕真实高度与显示高度是否相同来判断
      */
-    private boolean isHasNavigationBar(Context context) {
+    private boolean isHasNavigationBar(@NonNull Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(Service.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
 

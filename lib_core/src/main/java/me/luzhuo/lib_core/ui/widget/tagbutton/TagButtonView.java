@@ -82,14 +82,15 @@ public class TagButtonView extends RecyclerView {
         this.setAdapter(adapter);
     }
 
-    public void setTagButtonListener(TagButtonListener listener) {
+    public void setTagButtonListener(@Nullable TagButtonListener listener) {
         adapter.setTagButtonListener(listener);
     }
 
-    public void setDatas(List<TagButton> datas) {
+    public void setDatas(@NonNull List<TagButton> datas) {
         adapter.setData(datas);
     }
 
+    @NonNull
     public List<TagButton> getData() {
         return adapter.getData();
     }

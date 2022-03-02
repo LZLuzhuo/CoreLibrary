@@ -28,6 +28,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import me.luzhuo.lib_core.app.email.bean.EmailContent;
 import me.luzhuo.lib_core.app.email.bean.EmailUser;
@@ -48,7 +49,7 @@ public class EmailManager {
      * 1. 如果没有附件, 则通过发送邮件的方式方法
      * 2. 如果有附件, 则通过分享的方式发送, 需要用户主动选择邮件作为发送目标
      */
-    public void sendEmail(Context context, EmailUser user, EmailContent content) {
+    public void sendEmail(@NonNull Context context, @NonNull EmailUser user, @NonNull EmailContent content) {
         if (content.getEmailAttachment().size() <= 0) {
             sendEmailNoFile(context, user, content);
         } else {
@@ -61,7 +62,7 @@ public class EmailManager {
      * 发送带有附件的邮件, 不会弹出选择框
      * 通过过滤 Intent.ACTION_SENDTO 的 Intent, 去构建一个新的 createChooser 的方式实现调到写邮件界面
      */
-    protected void sendEmailHaveFile(Context context, EmailUser user, EmailContent content) {
+    protected void sendEmailHaveFile(@NonNull Context context, @NonNull EmailUser user, @NonNull EmailContent content) {
         try {
             /*
             所有邮件信息的Intent
@@ -121,7 +122,7 @@ public class EmailManager {
      * 会弹出一个选择框让用户进行选择, 用户的选择对象除了Email之外, 还有其他的选项
      */
     @Deprecated
-    protected void sendEmailShareFile(Context context, EmailUser user, EmailContent content) {
+    protected void sendEmailShareFile(@NonNull Context context, @NonNull EmailUser user, @NonNull EmailContent content) {
         try {
             Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
             intent.setData(Uri.parse("mailto:"));
@@ -151,7 +152,7 @@ public class EmailManager {
     /**
      * 没有附件, 直接跳到写邮件页面
      */
-    protected void sendEmailNoFile(Context context, EmailUser user, EmailContent content) {
+    protected void sendEmailNoFile(@NonNull Context context, @NonNull EmailUser user, @NonNull EmailContent content) {
         try {
 
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:"));

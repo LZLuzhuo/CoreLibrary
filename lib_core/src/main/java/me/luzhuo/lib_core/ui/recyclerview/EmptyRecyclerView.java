@@ -19,6 +19,7 @@ import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -30,7 +31,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class EmptyRecyclerView extends RecyclerView {
     private Adapter adapter;
     public Adapter emptyAdapter = new EmptyAdapter();
+    public final LayoutManager emptyLayoutManager;
     private OnEmptyListener listener;
+    private LayoutManager layoutManager;
 
     public EmptyRecyclerView(@NonNull Context context) {
         this(context, null);
@@ -44,9 +47,14 @@ public class EmptyRecyclerView extends RecyclerView {
         super(context, attrs, defStyleAttr);
     }
 
+    {
+        emptyLayoutManager = new LinearLayoutManager(getContext());
+    }
+
     @Override
     public void setAdapter(Adapter adapter) {
         this.adapter = adapter;
+        this.layoutManager = getLayoutManager();
         adapter.registerAdapterDataObserver(new AdapterDataObserver() {
             @Override
             public void onChanged() {
@@ -68,8 +76,10 @@ public class EmptyRecyclerView extends RecyclerView {
         final int count = adapter.getItemCount();
         if (listener == null) {
             if (count > 0) {
+                if (super.getLayoutManager() != layoutManager) setLayoutManager(layoutManager);
                 if (super.getAdapter() != adapter) super.setAdapter(adapter);
             } else {
+                if (super.getLayoutManager() != emptyLayoutManager) setLayoutManager(emptyLayoutManager);
                 if (super.getAdapter() != emptyAdapter) super.setAdapter(emptyAdapter);
             }
         } else {
