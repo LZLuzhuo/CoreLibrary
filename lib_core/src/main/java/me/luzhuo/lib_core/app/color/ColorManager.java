@@ -20,6 +20,7 @@ import android.util.TypedValue;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import me.luzhuo.lib_core.R;
 import me.luzhuo.lib_core.app.base.CoreBaseApplication;
@@ -149,5 +150,16 @@ public class ColorManager {
         int color = array.getColor(0, 0xDD000000);
         array.recycle();
         return color;
+    }
+
+    /**
+     * 修改颜色的透明度
+     * @param alpha 透明度 [0, 1]
+     * @param color 颜色
+     * @return 修改透明度之后的颜色
+     */
+    @ColorInt
+    public int alpha(@FloatRange(from = 0f, to = 1f) float alpha, @ColorInt int color) {
+        return ((int)(alpha * 255) << 24) | (color & 0x00FFFFFF);
     }
 }

@@ -76,7 +76,7 @@ public class TagButtonView extends RecyclerView {
         this.setOverScrollMode(OVER_SCROLL_NEVER);
         GridLayoutManager layoutManager = new GridLayoutManager(context, span_count);
         this.setLayoutManager(layoutManager);
-        recManager.setItemDecorationOnLinearLayout(this, interval == -1 ? 8 : ui.px2dp(interval));
+        recManager.setItemDecoration(this, interval == -1 ? 8 : ui.px2dp(interval));
 
         adapter = new TagButtonAdapter(context, single, cancelable);
         this.setAdapter(adapter);

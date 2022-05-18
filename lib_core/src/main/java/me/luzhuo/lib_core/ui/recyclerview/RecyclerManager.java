@@ -45,7 +45,10 @@ public class RecyclerManager {
     private Context context;
     private UICalculation ui;
     private MathCalculation math = new MathCalculation();
-    private final int LinearLayoutManagerType = 0x001, GridLayoutManagerType = 0x002, StaggeredGridLayoutManagerType = 0x003, FlexboxLayoutManagerType = 0x004;
+    private final int
+            OtherLayoutManagerType = 0x001,
+            LinearLayoutManagerTypeVertical = 0x101, GridLayoutManagerType = 0x102, StaggeredGridLayoutManagerType = 0x103, FlexboxLayoutManagerType = 0x104,
+            LinearLayoutManagerTypeHorizontal = 0x201;
 
     public RecyclerManager(@NonNull Context context) {
         if(context == null) throw new NullPointerException("Context is not null when creating RecyclerViewManager.");
@@ -82,28 +85,28 @@ public class RecyclerManager {
      * 1.LinearLayoutManager
      * recyclerView.setLayoutManager(new LinearLayoutManager(this));
      * recyclerView.setAdapter(new Adapter(this));
-     * recyclerViewManager.setItemDecorationOnLinearLayout(recyclerView, 10);
+     * recyclerViewManager.setItemDecoration(recyclerView, 10);
      *
      * 2.GridLayoutManager
      * recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
      * recyclerView.setAdapter(new Adapter(this));
-     * recyclerViewManager.setItemDecorationOnLinearLayout(recyclerView, 10);
+     * recyclerViewManager.setItemDecoration(recyclerView, 10);
      *
      * 3.StaggeredGridLayoutManager
      * recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, RecyclerView.VERTICAL));
      * recyclerView.setAdapter(new Adapter(this));
-     * recyclerViewManager.setItemDecorationOnLinearLayout(recyclerView, 10);
+     * recyclerViewManager.setItemDecoration(recyclerView, 10);
      *
      * 4.FlexboxLayoutManager
      * recyclerView.setLayoutManager(new FlexboxLayoutManager(this));
      * recyclerView.setAdapter(new Adapter(this));
-     * recyclerViewManager.setItemDecorationOnLinearLayout(recyclerView, 10);
+     * recyclerViewManager.setItemDecoration(recyclerView, 10);
      * </pre>
      *
      * @param recyclerView androidx.recyclerview.widget.RecyclerView
      * @param dp Margins in dp.
      */
-    public void setItemDecorationOnLinearLayout(@Nullable RecyclerView recyclerView, final float dp){
+    public void setItemDecoration(@Nullable RecyclerView recyclerView, final float dp){
         if(recyclerView == null || dp <= 0) return;
         final int margin = ui.dp2px(dp);
 
@@ -137,13 +140,17 @@ public class RecyclerManager {
                     } else {
                         outRect.set(margin, 0, 0, margin);
                     }
-                } else {
-                    // If it is LinearLayoutManagerType or other type.
+                } else if (layoutManagerType == LinearLayoutManagerTypeVertical || layoutManagerType == LinearLayoutManagerTypeHorizontal) {
+
                     if (childPosition == 0) {
-                        /*
-                        the first child view
-                        int left, int top, int right, int bottom
-                        */
+                        outRect.set(margin, margin, margin, margin);
+                    } else {
+                        if (layoutManagerType == LinearLayoutManagerTypeVertical) outRect.set(margin, 0, margin, margin);
+                        else outRect.set(0, margin, margin, margin);
+                    }
+                } else {
+
+                    if (childPosition == 0) {
                         outRect.set(margin, margin, margin, margin);
                     } else {
                         outRect.set(margin, 0, margin, margin);
@@ -180,13 +187,14 @@ public class RecyclerManager {
             return GridLayoutManagerType;
         } else if(layoutManager instanceof StaggeredGridLayoutManager) {
             return StaggeredGridLayoutManagerType;
-        } else if(layoutManager instanceof LinearLayoutManager){
-            return LinearLayoutManagerType;
+        } else if(layoutManager instanceof LinearLayoutManager) {
+            int orientation = ((LinearLayoutManager) layoutManager).getOrientation();
+            return orientation == LinearLayoutManager.HORIZONTAL ? LinearLayoutManagerTypeHorizontal : LinearLayoutManagerTypeVertical;
         } else if (layoutManager instanceof FlexboxLayoutManager) {
             return FlexboxLayoutManagerType;
         }
         // if it is LinearLayoutManager or other type.
-        return LinearLayoutManagerType;
+        return OtherLayoutManagerType;
     }
 
     /**

@@ -32,7 +32,7 @@ import androidx.fragment.app.Fragment;
  * <p>
  * Creation Date: 2016/11/6 13:56
  * <p>
- * Description:
+ * Description: 请使用 {@link CoreLazyFragment}
  * <p>
  * Revision History:
  * <p>
@@ -40,6 +40,7 @@ import androidx.fragment.app.Fragment;
  * <p>
  * =================================================
  **/
+@Deprecated
 public abstract class CoreBaseFragment extends Fragment {
 	protected View view;
 	protected Context context;

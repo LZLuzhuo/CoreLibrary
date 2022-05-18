@@ -18,7 +18,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -149,5 +151,39 @@ public class UICalculation {
      */
     public int getCurrentNavigationBar() {
         return navigationBar.getCurrentNavigationBar(context);
+    }
+
+    /**
+     * 设置View的高度
+     */
+    public void height(@NonNull View view, int height) {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        layoutParams.height = height;
+    }
+
+    /**
+     * 设置View的宽度
+     */
+    public void width(@NonNull View view, int width) {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        layoutParams.width = width;
+    }
+
+    /**
+     * 设置View的Margin值
+     */
+    public void margin(@NonNull View viewGroup, int leftMargin, int topMargin, int rightMargin, int bottomMargin) {
+        ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) viewGroup.getLayoutParams();
+        marginLayoutParams.leftMargin = leftMargin;
+        marginLayoutParams.topMargin = topMargin;
+        marginLayoutParams.rightMargin = rightMargin;
+        marginLayoutParams.bottomMargin = bottomMargin;
+    }
+
+    /**
+     * 设置View的Padding值
+     */
+    public void padding(@NonNull View view, int leftPadding, int topPadding, int rightPadding, int bottomPadding) {
+        view.setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
     }
 }

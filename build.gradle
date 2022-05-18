@@ -8,7 +8,6 @@ buildscript {
         google()
         jcenter()
         maven{ url 'http://code.luzhuo.me:8081/repository/luzhuo-public/' }
-
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.2'
