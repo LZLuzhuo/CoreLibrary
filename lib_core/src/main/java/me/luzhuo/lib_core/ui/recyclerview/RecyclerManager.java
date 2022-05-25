@@ -16,7 +16,6 @@ package me.luzhuo.lib_core.ui.recyclerview;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.flexbox.FlexboxLayoutManager;
@@ -26,8 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import me.luzhuo.lib_core.math.calculation.MathCalculation;
 import me.luzhuo.lib_core.ui.calculation.UICalculation;
@@ -356,41 +355,29 @@ public class RecyclerManager {
         public void onItemViewVisibility(boolean isVisible, View view);
     }
 
-    public enum ScrollType {
-        /**
-         * 每次都滚动到顶部
-         */
-        Start,
-        /**
-         * 每次到滚动到底部
-         */
-        End,
-        /**
-         * 在视野范围内不滚动
-         * 不在视野范围内, 将其移到视野范围内, 位置可能在顶部页可能在底部, 有原来的位置在上方还是在下方决定的
-         */
-        Any
-    }
-
+    public static final float DefaultSpeed = 25f;
+    public static final float TabSpeed = 100f;
     /**
-     * 垂直方向的滚动
+     * 滚动到指定位置时, item的位置
      * @param type ScrollType
      * @param position 滚动到指定位置
      */
-    public void scroll(@NonNull RecyclerView recyclerView, @NonNull final ScrollType type, int position) {
-        RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(context) {
-            @Override protected int getVerticalSnapPreference() {
-                switch (type) {
-                    case Start:
-                        return LinearSmoothScroller.SNAP_TO_START;
-                    case End:
-                        return LinearSmoothScroller.SNAP_TO_END;
-                    default:
-                        return LinearSmoothScroller.SNAP_TO_ANY;
-                }
-            }
-        };
+    public void scroll(@NonNull RecyclerView recyclerView, @NonNull ScrollType type, int position, float speed) {
+        RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller2(context, type, speed);
         smoothScroller.setTargetPosition(position);
         recyclerView.getLayoutManager().startSmoothScroll(smoothScroller);
+    }
+
+    public void scroll(@NonNull RecyclerView recyclerView, @NonNull ScrollType type, int position) {
+        this.scroll(recyclerView, type, position, DefaultSpeed);
+    }
+
+    /**
+     * RecyclerView滚动时, item完全显示的位置
+     * @param type ScrollType
+     */
+    public void scroll(@NonNull RecyclerView recyclerView, @NonNull ScrollType type) {
+        SnapHelper snapHelperCenter = new LinearSnapHelper2(type);
+        snapHelperCenter.attachToRecyclerView(recyclerView);
     }
 }

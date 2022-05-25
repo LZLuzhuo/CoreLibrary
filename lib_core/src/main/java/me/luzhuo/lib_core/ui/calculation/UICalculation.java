@@ -64,6 +64,22 @@ public class UICalculation {
     }
 
     /**
+     * sp to dp
+     */
+    public int sp2px(float sp) {
+        final float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (sp * scaledDensity + 0.5f);
+    }
+
+    /**
+     * px to sp
+     */
+    public int px2sp(float px) {
+        final float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (px / scaledDensity + 0.5f);
+    }
+
+    /**
      * 获取屏幕宽高
      * get width and height form phone display
      * @return wh [width, height]
