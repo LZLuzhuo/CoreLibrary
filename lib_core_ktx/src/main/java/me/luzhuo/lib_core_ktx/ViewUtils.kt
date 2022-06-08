@@ -16,6 +16,7 @@ package me.luzhuo.lib_core_ktx
 
 import android.text.InputType
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import androidx.constraintlayout.widget.Group
 import me.luzhuo.lib_core.app.base.CoreBaseApplication
@@ -92,3 +93,22 @@ fun EditText?.passwordHideNumber() {
 fun EditText?.passwordShowNumber() {
     this?.inputType = InputType.TYPE_CLASS_NUMBER + InputType.TYPE_NUMBER_FLAG_DECIMAL
 }
+
+/**
+ * View 的 margin 值
+ */
+var View.marginTop: Int
+    get() = (this.layoutParams as? ViewGroup.MarginLayoutParams)?.topMargin ?: 0
+    set(value) { (this.layoutParams as? ViewGroup.MarginLayoutParams)?.topMargin = value }
+
+var View.marginBottom: Int
+    get() = (this.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin ?: 0
+    set(value) { (this.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = value }
+
+var View.marginLeft: Int
+    get() = (this.layoutParams as? ViewGroup.MarginLayoutParams)?.leftMargin ?: 0
+    set(value) { (this.layoutParams as? ViewGroup.MarginLayoutParams)?.leftMargin = value }
+
+var View.marginRight: Int
+    get() = (this.layoutParams as? ViewGroup.MarginLayoutParams)?.rightMargin ?: 0
+    set(value) { (this.layoutParams as? ViewGroup.MarginLayoutParams)?.rightMargin = value }

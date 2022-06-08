@@ -17,12 +17,12 @@ package me.luzhuo.lib_core.ui.dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
@@ -44,10 +44,8 @@ import me.luzhuo.lib_core.ui.widget.rightmenu.OnMenuCallback;
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
 public class Dialog {
-    private static Handler mainThread;
     private Dialog(){}
     public static Dialog instance(){
-        mainThread = new Handler(Looper.getMainLooper());
         return Instance.instance;
     }
     private static class Instance{
@@ -81,15 +79,9 @@ public class Dialog {
      * @param listener OnClickListener or null
      * @param post String int bean or null
      */
-    public void show(@NonNull final Context context, @Nullable final String title, @Nullable final String content, @Nullable final String okName, @Nullable final String cancelMame, final boolean isCancelable, @Nullable final OnClickListener listener, @Nullable final Object post){
+    public AlertDialog build(@NonNull final Context context, @Nullable final String title, @Nullable final String content, @Nullable final String okName, @Nullable final String cancelMame, final boolean isCancelable, @Nullable final OnClickListener listener, @Nullable final Object post){
         if (Looper.myLooper() != Looper.getMainLooper()) {
-            mainThread.post(new Runnable() {
-                @Override
-                public void run() {
-                    show(context, title, content, okName, cancelMame, isCancelable, listener, post);
-                }
-            });
-            return;
+            throw new IllegalStateException("You must create it on the main thread.");
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -114,12 +106,18 @@ public class Dialog {
                 // 点了取消按钮
                 if (listener != null) listener.onCancel(post);
             }});
-        builder.show();
+        return builder.create();
+    }
+
+    public AlertDialog show(@NonNull final Context context, @Nullable final String title, @Nullable final String content, @Nullable final String okName, @Nullable final String cancelMame, final boolean isCancelable, @Nullable final OnClickListener listener, @Nullable final Object post){
+        AlertDialog build = build(context, title, content, okName, cancelMame, isCancelable, listener, post);
+        build.show();
+        return build;
     }
 
     /**
      * 单选的Dialog
-     * @param context Acitivity Context
+     * @param context Activity Context
      * @param title title
      * @param items String[]
      * @param checkedItem no select -1
@@ -127,15 +125,9 @@ public class Dialog {
      * @param listener OnSingleChoice
      * @param post String int bean or null
      */
-    public void show(@NonNull final Context context, @Nullable final String title, @NonNull final String[] items, final int checkedItem, final boolean isCancelable, @Nullable final OnSingleChoice listener, @Nullable final Object post){
+    public AlertDialog build(@NonNull final Context context, @Nullable final String title, @NonNull final String[] items, final int checkedItem, final boolean isCancelable, @Nullable final OnSingleChoice listener, @Nullable final Object post){
         if (Looper.myLooper() != Looper.getMainLooper()) {
-            mainThread.post(new Runnable() {
-                @Override
-                public void run() {
-                    show(context, title, items, checkedItem, isCancelable, listener, post);
-                }
-            });
-            return;
+            throw new IllegalStateException("You must create it on the main thread.");
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -155,7 +147,13 @@ public class Dialog {
 
                 if (listener != null) listener.onOk(which, item, items, post);
             }});
-        builder.show();
+        return builder.create();
+    }
+
+    public AlertDialog show(@NonNull final Context context, @Nullable final String title, @NonNull final String[] items, final int checkedItem, final boolean isCancelable, @Nullable final OnSingleChoice listener, @Nullable final Object post){
+        AlertDialog build = build(context, title, items, checkedItem, isCancelable, listener, post);
+        build.show();
+        return build;
     }
 
     /**
@@ -169,15 +167,9 @@ public class Dialog {
      * @param listener OnMultiChoice
      * @param post String int bean or null
      */
-    public void show(@NonNull final Context context, @Nullable final String title, @NonNull final String[] items, @NonNull final boolean[] checkeds, @NonNull final String okName, final boolean isCancelable, @Nullable final OnMultiChoice listener, @Nullable final Object post){
+    public AlertDialog build(@NonNull final Context context, @Nullable final String title, @NonNull final String[] items, @NonNull final boolean[] checkeds, @NonNull final String okName, final boolean isCancelable, @Nullable final OnMultiChoice listener, @Nullable final Object post){
         if (Looper.myLooper() != Looper.getMainLooper()) {
-            mainThread.post(new Runnable() {
-                @Override
-                public void run() {
-                    show(context, title, items, checkeds, okName, isCancelable, listener, post);
-                }
-            });
-            return;
+            throw new IllegalStateException("You must create it on the main thread.");
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -200,7 +192,13 @@ public class Dialog {
             public void onClick(DialogInterface dialog, int which) {
                 if (listener != null) listener.onOk(which, items, checkeds, post);
             }});
-        builder.show();
+        return builder.create();
+    }
+
+    public AlertDialog show(@NonNull final Context context, @Nullable final String title, @NonNull final String[] items, @NonNull final boolean[] checkeds, @NonNull final String okName, final boolean isCancelable, @Nullable final OnMultiChoice listener, @Nullable final Object post){
+        AlertDialog build = build(context, title, items, checkeds, okName, isCancelable, listener, post);
+        build.show();
+        return build;
     }
 
     /**
@@ -224,17 +222,24 @@ public class Dialog {
      * @param max max progress
      * @return ProgressDialog
      */
-    public ProgressDialog show(@NonNull Context context, @Nullable String title, int max){
+    public ProgressDialog build(@NonNull Context context, @Nullable String title, @Nullable final String content, final boolean isCancelable, int max) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             throw new IllegalStateException("You must create it on the main thread.");
         }
 
         ProgressDialog dialog = new ProgressDialog(context);
+        dialog.setCancelable(isCancelable);
         dialog.setTitle(title);
+        dialog.setMessage(content);
         dialog.setMax(max);
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        dialog.show();
         return dialog;
+    }
+
+    public ProgressDialog show(@NonNull Context context, @Nullable String title, @Nullable final String content, final boolean isCancelable, int max) {
+        ProgressDialog build = build(context, title, content, isCancelable, max);
+        build.show();
+        return build;
     }
 
     /**
@@ -258,15 +263,9 @@ public class Dialog {
      * @param listener OnClickListener
      * @param post String int bean or null
      */
-    public void show(@NonNull final Context context, @Nullable final String title, @NonNull final View view, @Nullable final String okName, @Nullable final String cancelMame, final boolean isCancelable, @Nullable final OnClickListener listener, @Nullable final Object post){
+    public AlertDialog build(@NonNull final Context context, @Nullable final String title, @NonNull final View view, @Nullable final String okName, @Nullable final String cancelMame, final boolean isCancelable, @Nullable final OnClickListener listener, @Nullable final Object post){
         if (Looper.myLooper() != Looper.getMainLooper()) {
-            mainThread.post(new Runnable() {
-                @Override
-                public void run() {
-                    show(context, title, view, okName, cancelMame, isCancelable, listener, post);
-                }
-            });
-            return;
+            throw new IllegalStateException("You must create it on the main thread.");
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -291,7 +290,13 @@ public class Dialog {
                 // 点了取消按钮
                 if (listener != null) listener.onCancel(post);
             }});
-        builder.show();
+        return builder.create();
+    }
+
+    public AlertDialog show(@NonNull final Context context, @Nullable final String title, @NonNull final View view, @Nullable final String okName, @Nullable final String cancelMame, final boolean isCancelable, @Nullable final OnClickListener listener, @Nullable final Object post){
+        AlertDialog build = build(context, title, view, okName, cancelMame, isCancelable, listener, post);
+        build.show();
+        return build;
     }
 
     /**
@@ -311,9 +316,9 @@ public class Dialog {
      * @param isCancelable whether it can be cancelled, return or click outside the control.
      * @return AlertDialog
      *
-     * @see #show(Context, String, View, String, String, boolean, OnClickListener, Object)
+     * @see #build(Context, String, View, String, String, boolean, OnClickListener, Object)
      */
-    public AlertDialog buildDialog(@NonNull Context context, @StyleRes int style, @NonNull View view, boolean isCancelable){
+    public AlertDialog build(@NonNull Context context, @StyleRes int style, @NonNull View view, boolean isCancelable) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             throw new IllegalStateException("You must create it on the main thread.");
         }
@@ -322,12 +327,23 @@ public class Dialog {
         builder.setCancelable(isCancelable);
         AlertDialog dialog = builder.create();
         dialog.setView(view, 0, 0, 0, 0);
-        dialog.show();
         return dialog;
     }
 
-    public AlertDialog buildDialog(@NonNull Context context, @NonNull View view, boolean isCancelable){
-        return buildDialog(context, 0, view, isCancelable);
+    public AlertDialog build(@NonNull Context context, @NonNull View view, boolean isCancelable) {
+        return build(context, 0, view, isCancelable);
+    }
+
+    public AlertDialog show(@NonNull Context context, @StyleRes int style, @NonNull View view, boolean isCancelable) {
+        AlertDialog build = build(context, style, view, isCancelable);
+        build.show();
+        return build;
+    }
+
+    public AlertDialog show(@NonNull Context context, @NonNull View view, boolean isCancelable) {
+        AlertDialog build = build(context, view, isCancelable);
+        build.show();
+        return build;
     }
 
     /**
@@ -337,14 +353,9 @@ public class Dialog {
      * @param listener OnSingleChoice
      * @param post Object
      */
-    public void showMenu(@NonNull final Context context, @NonNull final String[] menus, @Nullable final Dialog.OnSingleChoice listener, @Nullable final Object post) {
+    public AlertDialog buildMenu(@NonNull final Context context, @NonNull final String[] menus, @Nullable final Dialog.OnSingleChoice listener, @Nullable final Object post) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
-            mainThread.post(new Runnable() {
-                public void run() {
-                    showMenu(context, menus, listener, post);
-                }
-            });
-            return;
+            throw new IllegalStateException("You must create it on the main thread.");
         }
 
         final AlertDialog builder = new AlertDialog.Builder(context).create();
@@ -367,9 +378,54 @@ public class Dialog {
                 if (listener != null) listener.onCancel(-1, menus, post);
             }
         });
+        return builder;
+    }
 
-        builder.show();
-        int[] display = new UICalculation(context).getDisplay();
-        builder.getWindow().setLayout((int) (0.5 * display[0]), WindowManager.LayoutParams.WRAP_CONTENT);
+    public AlertDialog showMenu(@NonNull final Context context, @NonNull final String[] menus, @Nullable final Dialog.OnSingleChoice listener, @Nullable final Object post) {
+        AlertDialog build = buildMenu(context, menus, listener, post);
+        return show(build, 0.5f, WindowManager.LayoutParams.WRAP_CONTENT);
+    }
+
+    /**
+     * 显示 AlertDialog, 并设定其宽高
+     * @param dialog AlertDialog
+     * @param width 宽度
+     *              10dp, 实际宽度
+     *              {@link WindowManager.LayoutParams#MATCH_PARENT} 或 -1, 宽度占满
+     *              {@link WindowManager.LayoutParams#WRAP_CONTENT} 或 -2, 宽度包裹内容
+     * @param height 高度
+     */
+    public static AlertDialog show(@NonNull AlertDialog dialog, int width, int height) {
+        dialog.show();
+        dialog.getWindow().setLayout(width, height);
+        return dialog;
+    }
+
+    public static AlertDialog show(@NonNull AlertDialog dialog, @FloatRange(from = 0.0, to = 1.0) float widthPercent, @FloatRange(from = 0.0, to = 1.0) float heightPercent) {
+        int[] display = new UICalculation(dialog.getContext()).getDisplay();
+        return show(dialog, (int) (widthPercent * display[0]), (int) (heightPercent * display[1]));
+    }
+
+    public static AlertDialog show(@NonNull AlertDialog dialog, int width, @FloatRange(from = 0.0, to = 1.0) float heightPercent) {
+        int[] display = new UICalculation(dialog.getContext()).getDisplay();
+        return show(dialog, width, (int) (heightPercent * display[1]));
+    }
+
+    public static AlertDialog show(@NonNull AlertDialog dialog, @FloatRange(from = 0.0, to = 1.0) float widthPercent, int width) {
+        int[] display = new UICalculation(dialog.getContext()).getDisplay();
+        return show(dialog, (int) (widthPercent * display[0]), width);
+    }
+
+    /**
+     * 默认的 确定 和 取消 点击后会自动关闭Dialog,
+     * 如果不想自动关闭, 可以使用该方式显示; 即使Dialog已显示, 也可调用该函数
+     * @param dialog AlterDialog
+     * @param okClick 如果为null, 则系统默认方式; 如果不为null, 则覆盖系统默认方式
+     * @param cancelClick 如果为null, 则系统默认方式; 如果不为null, 则覆盖系统默认方式
+     */
+    public static void show(AlertDialog dialog, View.OnClickListener okClick, View.OnClickListener cancelClick) {
+        dialog.show();
+        if (okClick != null) dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(okClick);
+        if (cancelClick != null) dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(cancelClick);
     }
 }

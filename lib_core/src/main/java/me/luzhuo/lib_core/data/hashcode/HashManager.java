@@ -227,7 +227,7 @@ public class HashManager {
      * @return 加密后的密文
      */
     @Nullable
-    public String encrypt(@NonNull @RSAUtil.RAS_Transformation String transformation, @NonNull String publicKey, @NonNull String plainText) {
+    public String RSAEncrypt(@NonNull @RSAUtil.RAS_Transformation String transformation, @NonNull String publicKey, @NonNull String plainText) {
         return new RSAUtil(transformation).encrypt(publicKey, plainText);
     }
 
@@ -238,7 +238,7 @@ public class HashManager {
      * @return 解密后的明文
      */
     @Nullable
-    public String decrypt(@NonNull @RSAUtil.RAS_Transformation String transformation, @NonNull String privateKey, @NonNull String enStr) {
+    public String RSADecrypt(@NonNull @RSAUtil.RAS_Transformation String transformation, @NonNull String privateKey, @NonNull String enStr) {
         return new RSAUtil(transformation).decrypt(privateKey, enStr);
     }
 }
