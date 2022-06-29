@@ -67,13 +67,20 @@ public class BottomDialog {
      * @param view View
      */
     @MainThread
-    public BottomSheetDialog show(@NonNull Context context, @NonNull View view) {
+    public BottomSheetDialog build(@NonNull Context context, @NonNull View view) {
         if(Looper.myLooper() != Looper.getMainLooper()) throw new IllegalStateException("You must create it on the main thread.");
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.Core_BottomSheetDialogTheme);
         bottomSheetDialog.setContentView(view);
         bottomSheetDialog.show();
         return bottomSheetDialog;
+    }
+
+    @MainThread
+    public BottomSheetDialog show(@NonNull Context context, @NonNull View view) {
+        BottomSheetDialog build = build(context, view);
+        build.show();
+        return build;
     }
 
     /**
@@ -107,7 +114,7 @@ public class BottomDialog {
      * @return BottomSheetDialog
      */
     @MainThread
-    public BottomSheetDialog showMenu(@NonNull Context context, @NonNull List<String> menus, @Nullable List<String> colors, @Nullable OnMenuItemClick onMenuItemClick) {
+    public BottomSheetDialog buildMenu(@NonNull Context context, @NonNull List<String> menus, @Nullable List<String> colors, @Nullable OnMenuItemClick onMenuItemClick) {
         // create view
         RecyclerView recyclerView = new RecyclerView(context);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -121,12 +128,26 @@ public class BottomDialog {
         linearLayout.addView(recyclerView);
 
         // show dialog
-        return show(context, linearLayout);
+        return build(context, linearLayout);
+    }
+
+    @MainThread
+    public BottomSheetDialog showMenu(@NonNull Context context, @NonNull List<String> menus, @Nullable List<String> colors, @Nullable OnMenuItemClick onMenuItemClick) {
+        BottomSheetDialog buildMenu = buildMenu(context, menus, colors, onMenuItemClick);
+        buildMenu.show();
+        return buildMenu;
+    }
+
+    @MainThread
+    public BottomSheetDialog buildMenu(@NonNull Context context, @NonNull List<String> menus, @Nullable OnMenuItemClick onMenuItemClick) {
+        return showMenu(context, menus, null, onMenuItemClick);
     }
 
     @MainThread
     public BottomSheetDialog showMenu(@NonNull Context context, @NonNull List<String> menus, @Nullable OnMenuItemClick onMenuItemClick) {
-        return showMenu(context, menus, null, onMenuItemClick);
+        BottomSheetDialog buildMenu = buildMenu(context, menus, onMenuItemClick);
+        buildMenu.show();
+        return buildMenu;
     }
 
     public interface OnMenuItemClick {

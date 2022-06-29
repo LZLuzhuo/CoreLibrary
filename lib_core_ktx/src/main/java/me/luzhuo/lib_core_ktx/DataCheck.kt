@@ -47,3 +47,4 @@ val Double?.double: Double get() = this ?: 0.0
 val Float?.float: Float get() = this ?: 0.0f
 val String?.string: String get() = this ?: ""
 val Boolean?.bool: Boolean get() = this ?: false
+val Long.int: Int get() = this.toInt()

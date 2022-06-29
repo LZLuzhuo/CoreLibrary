@@ -8,6 +8,5 @@
     <color name="core_list_popup_window_text_color">#FF202020</color>
 
     <color name="core_watermark_text">#20999999</color>
-    <color name="core_check_button_default">#D2D2D2</color>
     <color name="core_transparent_gray">#10000000</color>
 </resources>

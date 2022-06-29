@@ -7,6 +7,8 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -43,6 +45,7 @@ public class RSAUtil {
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     @StringDef({RAS, RSA_PKCS1})
+    @Retention(RetentionPolicy.SOURCE)
     public @interface RAS_Transformation {
     }
 

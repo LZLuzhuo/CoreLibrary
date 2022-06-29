@@ -1,26 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <declare-styleable name="YearMonthDayView">
-        <attr name="core_style" format="integer"/>
-        <attr name="core_mode" format="flags">
-            <flag name="year" value="1"/>
-            <flag name="month" value="2"/>
-            <flag name="day" value="4"/>
-            <flag name="hour" value="8"/>
-            <flag name="minute" value="16"/>
-            <flag name="second" value="32"/>
-        </attr>
-    </declare-styleable>
-
-    <declare-styleable name="TagButtonView">
-        <attr name="core_span_count" format="integer"/>
-        <attr name="core_interval" format="dimension"/>
-        <attr name="core_single" format="boolean"/>
-        <attr name="core_cancelable" format="boolean"/>
-    </declare-styleable>
-
-    <declare-styleable name="CheckButton">
-        <attr name="core_checkable" format="boolean"/>
-        <attr name="core_check" format="boolean"/>
-    </declare-styleable>
-</resources>
+<resources></resources>

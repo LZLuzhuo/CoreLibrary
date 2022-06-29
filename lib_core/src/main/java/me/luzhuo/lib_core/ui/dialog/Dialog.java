@@ -31,7 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import me.luzhuo.lib_core.ui.calculation.UICalculation;
 import me.luzhuo.lib_core.ui.dialog.adapter.DialogMenuAdapter;
-import me.luzhuo.lib_core.ui.widget.rightmenu.OnMenuCallback;
+import me.luzhuo.lib_core.ui.dialog.callback.OnMenuCallback;
 
 /**
  * Description: 弹窗

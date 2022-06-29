@@ -12,26 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.luzhuo.lib_core.ui.widget.orderbuttons;
+package me.luzhuo.lib_core.ui.dialog.callback;
 
 /**
  * Description:
  *
  * @Author: Luzhuo
- * @Creation Date: 2020/11/25 22:13
+ * @Creation Date: 2020/11/11 10:32
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
-public enum  OrderButtonState {
-    /**
-     * 未开始
-     */
-    Ready,
-    /**
-     * 进行中
-     */
-    Doing,
-    /**
-     * 已完成
-     */
-    Did
+public interface OnMenuCallback {
+    public void onMenu(int position, String menu);
 }

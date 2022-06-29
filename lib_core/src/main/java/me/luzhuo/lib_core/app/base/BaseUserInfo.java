@@ -18,6 +18,13 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Base64;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -73,6 +80,52 @@ public class BaseUserInfo {
 
     public float get_float(@NonNull String name) {
         return preferences.getFloat(name, -1F);
+    }
+
+    public void put_obj(@NonNull String name, @Nullable Serializable value) {
+        if (value == null) {
+            put(name, null);
+            return;
+        }
+
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(value);
+            // 将对象转为Base64
+            String base64 = Byte2Base64(baos.toByteArray());
+            put(name, base64);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Nullable
+    public Object get_obj(@NonNull String name) {
+        try {
+            String base64 = get(name);
+            if (TextUtils.isEmpty(base64)) return null;
+            // 将base64转为对象
+            byte[] bytes = Base642Byte(base64);
+            ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            Object obj = ois.readObject();
+            ois.close();
+            return obj;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String Byte2Base64(@NonNull byte[] bytes) {
+        byte[] encode = Base64.encode(bytes, 0, bytes.length, 0);
+        return new String(encode);
+    }
+
+    private byte[] Base642Byte(@NonNull String base64) {
+        byte[] decode = Base64.decode(base64, 0);
+        return decode;
     }
 
     public void clear() {

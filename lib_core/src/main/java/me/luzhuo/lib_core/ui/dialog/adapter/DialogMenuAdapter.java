@@ -24,7 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import me.luzhuo.lib_core.R;
-import me.luzhuo.lib_core.ui.widget.rightmenu.OnMenuCallback;
+import me.luzhuo.lib_core.ui.dialog.callback.OnMenuCallback;
 
 /**
  * Description: 从中间弹出的 Dialog Menu 适配器

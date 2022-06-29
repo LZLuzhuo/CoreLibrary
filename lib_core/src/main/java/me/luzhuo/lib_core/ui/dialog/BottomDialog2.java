@@ -32,9 +32,9 @@ import me.luzhuo.lib_core.ui.calculation.UICalculation;
  * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
  **/
 public class BottomDialog2 {
-    private Context context;
-    private Dialog dialog;
-    private UICalculation ui;
+    private final Context context;
+    private final Dialog dialog;
+    private final UICalculation ui;
 
     public BottomDialog2(@NonNull Context context, @NonNull View layout) {
         this(context, true, layout);
