@@ -50,6 +50,13 @@ public class TipPopWindow extends PopWindowManager {
         this.padding = ui.dp2px(paddingDp);
     }
 
+    /**
+     * 在显示pop的时候, 用户点击pop以外的地方, 直接将触摸事件透传给父布局
+     */
+    public void setOutsideTouch() {
+        this.setFocusable(false);
+    }
+
     @Override
     public void show() {
         if (this.parentView == null) {

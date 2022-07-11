@@ -40,7 +40,6 @@ import androidx.fragment.app.Fragment;
  * <p>
  * =================================================
  **/
-@Deprecated
 public abstract class CoreBaseFragment extends Fragment {
 	protected View view;
 	protected Context context;

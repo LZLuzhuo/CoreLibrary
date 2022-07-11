@@ -16,6 +16,7 @@ package me.luzhuo.lib_core.app.appinfo;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
@@ -25,9 +26,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
 import java.io.File;
@@ -323,5 +328,29 @@ public class AppManager {
      */
     public void registerAppForegroundCallback(@Nullable AppForegroundCallback callback) {
         AppForeground.getInstance().registerAppForegroundCallback((Application) CoreBaseApplication.appContext, callback);
+    }
+
+    /**
+     * 将Activity界面设置成灰色
+     * 每个Activity都要设置, 可以设置在 setContentView() 之前
+     */
+    public void activityGray(@NonNull Activity activity) {
+        Window window = activity.getWindow();
+        if (window == null) return;
+
+        View view = window.getDecorView();
+        viewGray(view);
+    }
+
+    /**
+     * 将指定的View设置为灰色
+     */
+    public void viewGray(@NonNull View view) {
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        // 设置饱和度
+        cm.setSaturation(0f);
+        paint.setColorFilter(new ColorMatrixColorFilter(cm));
+        view.setLayerType(View.LAYER_TYPE_HARDWARE, paint);
     }
 }

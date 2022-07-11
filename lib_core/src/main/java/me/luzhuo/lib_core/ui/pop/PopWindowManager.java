@@ -45,6 +45,9 @@ public class PopWindowManager extends PopupWindow {
     protected FragmentActivity activity;
     protected UICalculation ui;
 
+    public static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
+    public static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
+
     /**
      * @param view 用于展示的View
      * @param from 方向

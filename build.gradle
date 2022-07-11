@@ -7,7 +7,7 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven{ url 'http://code.luzhuo.me:8081/repository/luzhuo-public/' }
+        maven{ url 'http://code.luzhuo.me' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.2'
@@ -25,7 +25,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven{ url 'http://code.luzhuo.me:8081/repository/luzhuo-public/' }
+        maven{ url 'http://code.luzhuo.me' }
     }
 }
 
