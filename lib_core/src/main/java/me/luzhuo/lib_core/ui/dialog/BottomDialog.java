@@ -96,7 +96,7 @@ public class BottomDialog {
      *     }
      *
      *     String[] menus = new String[]{"设置备注", "加入黑名单", "删除", "取消"};
-     *     String[] colors = new String[]{"#111111", "#111111", "#111111", "#F24343"};
+     *     String[] colors = new String[]{0xFF111111, 0xFF111111, 0xFF#111111, 0xFFF24343};
      *     dialog = BottomDialog.instance().showMenu(this, menus, colors, new BottomDialog.OnMenuItemClick() {
      *         @Override
      *         public void onItemClick(String[] menus, int position, String menu) {
@@ -114,7 +114,7 @@ public class BottomDialog {
      * @return BottomSheetDialog
      */
     @MainThread
-    public BottomSheetDialog buildMenu(@NonNull Context context, @NonNull List<String> menus, @Nullable List<String> colors, @Nullable OnMenuItemClick onMenuItemClick) {
+    public BottomSheetDialog buildMenu(@NonNull Context context, @NonNull List<String> menus, @Nullable List<Integer> colors, @Nullable OnMenuItemClick onMenuItemClick) {
         // create view
         RecyclerView recyclerView = new RecyclerView(context);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -132,7 +132,7 @@ public class BottomDialog {
     }
 
     @MainThread
-    public BottomSheetDialog showMenu(@NonNull Context context, @NonNull List<String> menus, @Nullable List<String> colors, @Nullable OnMenuItemClick onMenuItemClick) {
+    public BottomSheetDialog showMenu(@NonNull Context context, @NonNull List<String> menus, @Nullable List<Integer> colors, @Nullable OnMenuItemClick onMenuItemClick) {
         BottomSheetDialog buildMenu = buildMenu(context, menus, colors, onMenuItemClick);
         buildMenu.show();
         return buildMenu;

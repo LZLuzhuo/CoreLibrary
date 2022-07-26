@@ -20,7 +20,7 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.SuperscriptSpan;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 
 /**
  * Description: 数学计算
@@ -62,5 +62,29 @@ public class MathCalculation {
             return spannableString;
         }
         return spannableString;
+    }
+
+    /**
+     * 完成的百分比
+     * <pre>
+     *     任务1完成比   | 任务2完成比    | 完成百分比(计算结果)
+     *     0            |   0           | 0
+     *     0            |   0.5         | 0.25
+     *     0.5          |   0           | 0.25
+     *     0.5          |   0.5         | 0.5
+     *     1            |   0.5         | 0.75
+     *     0.5          |   1           | 0.75
+     *     1            |   1           | 1
+     * </p>
+     * 任务完成比 = min((实际完成量 / 应完成量), 1f)
+     * @param values Pair(实际完成量, 应完成量)
+     * @return
+     */
+    public float completePercent(Pair<Integer, Integer>... values) {
+        float totalCompletePercent = 0f;
+        for (int i = 0; i < values.length; i++) {
+            totalCompletePercent += Math.min(values[i].first.floatValue() / values[i].second.floatValue(), 1f);
+        }
+        return totalCompletePercent / values.length;
     }
 }

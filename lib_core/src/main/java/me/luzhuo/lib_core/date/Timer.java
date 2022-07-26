@@ -85,7 +85,7 @@ public class Timer implements LifecycleObserver {
      * 同时只能开启一个
      */
     @NonNull
-    public TimerTask startTimer(@Nullable final ITimerCallback callback) {
+    public TimerTask startTimer(@Nullable final ITimerCallback callback, int delay, int period) {
         if (task != null) return task;
         final java.util.Timer timer = new java.util.Timer(true);
 
@@ -107,9 +107,14 @@ public class Timer implements LifecycleObserver {
                 });
             }
         };
-        timer.schedule(task, 0, 1000);
+        timer.schedule(task, delay, period);
         startTime = task.scheduledExecutionTime();
         return task;
+    }
+
+    @NonNull
+    public TimerTask startTimer(@Nullable final ITimerCallback callback) {
+        return startTimer(callback, 0, 1000);
     }
 
     /**

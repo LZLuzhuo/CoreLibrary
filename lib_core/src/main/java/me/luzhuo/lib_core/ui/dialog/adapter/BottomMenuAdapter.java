@@ -39,14 +39,14 @@ import me.luzhuo.lib_core.R;
 public class BottomMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private int layoutId;
     private List<String> menus;
-    private List<String> colors;
+    private List<Integer> colors;
     private OnMenuItemClick onMenuItemClick;
 
     public BottomMenuAdapter(@LayoutRes int layoutId, @NonNull List<String> menus, @Nullable OnMenuItemClick onMenuItemClick) {
         this(layoutId, menus, null, onMenuItemClick);
     }
 
-    public BottomMenuAdapter(@LayoutRes int layoutId, @NonNull List<String> menus, @Nullable List<String> colors, @Nullable OnMenuItemClick onMenuItemClick) {
+    public BottomMenuAdapter(@LayoutRes int layoutId, @NonNull List<String> menus, @Nullable List<Integer> colors, @Nullable OnMenuItemClick onMenuItemClick) {
         this.layoutId = layoutId;
         this.menus = menus;
         this.colors = colors;
@@ -82,7 +82,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         private void bindData(String data) {
             menuTitle.setText(data);
-            if(colors != null && colors.size() == menus.size()) menuTitle.setTextColor(Color.parseColor(colors.get(getLayoutPosition())));
+            if(colors != null && colors.size() == menus.size()) menuTitle.setTextColor(colors.get(getLayoutPosition()));
         }
 
         @Override

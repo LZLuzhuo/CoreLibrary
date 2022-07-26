@@ -116,6 +116,14 @@ public class ColorManager {
     }
 
     /**
+     * 背景的背景色
+     */
+    @ColorInt
+    public int getColorBackground() {
+        return getAndroidAttrColor(android.R.attr.colorBackground);
+    }
+
+    /**
      * 获取颜色值
      */
     @ColorInt
