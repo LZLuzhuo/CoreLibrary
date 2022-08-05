@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import me.luzhuo.lib_core.app.base.CoreBaseApplication;
 import me.luzhuo.lib_core.ui.calculation.UICalculation;
 
 /**
@@ -41,18 +42,18 @@ import me.luzhuo.lib_core.ui.calculation.UICalculation;
  * =================================================
  **/
 public class ToastManager {
-    private static Handler mainThread = new Handler(Looper.getMainLooper());
+    private static final Handler mainThread = new Handler(Looper.getMainLooper());
     private static Toast quickToast;
 
     /**
      * 默认的吐司显示方式
      */
-    public static void show(@NonNull final Context context, @NonNull final String content){
+    public static void show(@NonNull Context context, @NonNull final String content) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    show(context, content);
+                    show(content);
                 }
             });
             return;
@@ -61,27 +62,35 @@ public class ToastManager {
         Toast.makeText(context.getApplicationContext(), content, Toast.LENGTH_SHORT).show();
     }
 
+    public static void show(@NonNull final String content){
+        show(CoreBaseApplication.appContext, content);
+    }
+
     private static int toastHeight = 0;
     /**
      * 显示在 2/3 处的吐司
      * Android 11 (API30) 及以上不再允许自定义Toast的位置
      */
     @Deprecated
-    public static void show2(@NonNull final Context context, @NonNull final String content) {
+    public static void show2(@NonNull Context context, @NonNull final String content) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    show2(context, content);
+                    show2(content);
                 }
             });
             return;
         }
 
-        if(toastHeight == 0) toastHeight = new UICalculation(context).getDisplay()[1] / 3;
+        if(toastHeight == 0) toastHeight = new UICalculation().getDisplay()[1] / 3;
         Toast toast = Toast.makeText(context.getApplicationContext(), content, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP, 0, toastHeight);
         toast.show();
+    }
+
+    public static void show2(@NonNull final String content) {
+        show2(CoreBaseApplication.appContext, content);
     }
 
     /**
@@ -89,20 +98,24 @@ public class ToastManager {
      * BUG: 如果连续不断的执行, 会导致一段时间后的吐司不显示
      */
     @Deprecated
-    public static void showQuick(@NonNull final Context context, @NonNull final String content) {
+    public static void showQuick(@NonNull Context context, @NonNull final String content) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    showQuick(context, content);
+                    showQuick(content);
                 }
             });
             return;
         }
 
-        if(quickToast == null) quickToast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+        if(quickToast == null) quickToast = Toast.makeText(context.getApplicationContext(), "", Toast.LENGTH_SHORT);
         quickToast.setText(content);
         quickToast.show();
+    }
+
+    public static void showQuick(@NonNull final String content) {
+        showQuick(CoreBaseApplication.appContext, content);
     }
 
     /**
@@ -110,19 +123,23 @@ public class ToastManager {
      * toast.showViewToast(this, LayoutInflater.from(this).inflate(R.layout.view_toast, null, false))
      * Android 11 (API30) 及以上不再允许自定义Toast
      */
-    public static void showView(@NonNull final Context context, @NonNull final View view) {
+    public static void showView(@NonNull Context context, @NonNull final View view) {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             mainThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    showView(context, view);
+                    showView(view);
                 }
             });
             return;
         }
 
-        Toast viewToast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+        Toast viewToast = Toast.makeText(context.getApplicationContext(), "", Toast.LENGTH_SHORT);
         viewToast.setView(view);
         viewToast.show();
+    }
+
+    public static void showView(@NonNull final View view) {
+        showView(CoreBaseApplication.appContext, view);
     }
 }

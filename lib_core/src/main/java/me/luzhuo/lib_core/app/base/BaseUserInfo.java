@@ -47,7 +47,12 @@ public class BaseUserInfo {
 
     @NonNull
     public String get(@NonNull String name) {
-        return preferences.getString(name, "");
+        try {
+            return preferences.getString(name, "");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     public void put_bool(@NonNull String name, boolean value) {
@@ -55,7 +60,12 @@ public class BaseUserInfo {
     }
 
     public boolean get_bool(@NonNull String name) {
-        return preferences.getBoolean(name, false);
+        try {
+            return preferences.getBoolean(name, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public void put_int(@NonNull String name, int value) {
@@ -63,7 +73,12 @@ public class BaseUserInfo {
     }
 
     public int get_int(@NonNull String name) {
-        return preferences.getInt(name, -1);
+        try {
+            return preferences.getInt(name, -1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     public void put_long(@NonNull String name, long value) {
@@ -71,7 +86,12 @@ public class BaseUserInfo {
     }
 
     public long get_long(@NonNull String name) {
-        return preferences.getLong(name, -1);
+        try {
+            return preferences.getLong(name, -1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     public void put_float(@NonNull String name, float value) {
@@ -79,7 +99,12 @@ public class BaseUserInfo {
     }
 
     public float get_float(@NonNull String name) {
-        return preferences.getFloat(name, -1F);
+        try {
+            return preferences.getFloat(name, -1F);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1f;
+        }
     }
 
     public void put_obj(@NonNull String name, @Nullable Serializable value) {

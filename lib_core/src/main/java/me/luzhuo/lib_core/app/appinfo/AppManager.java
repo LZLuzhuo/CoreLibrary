@@ -68,6 +68,10 @@ public class AppManager {
         this.context = CoreBaseApplication.appContext;
     }
 
+    public AppManager(@NonNull Context context) {
+        this.context = context.getApplicationContext();
+    }
+
     /**
      * 检查当前应用的版本是否为 Debug 版本
      * @return 如果是Debug版本则返回true, 否则返回false

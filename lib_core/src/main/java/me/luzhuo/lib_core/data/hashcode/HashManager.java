@@ -32,6 +32,11 @@ import androidx.annotation.Nullable;
 
 /**
  * Description: 哈希序列管理
+ * 以支持的加解密算法:
+ * 1. 对称加密:
+ * 2. 非对称加密: RSA
+ * 3. 签名算法: MD5, SHA, UUID
+ * 4. 编码算法: Base64
  *
  * @Author: Luzhuo
  * @Creation Date: 2020/5/15 15:09

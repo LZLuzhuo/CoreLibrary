@@ -17,8 +17,6 @@ package me.luzhuo.lib_core.ui.calculation;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -26,6 +24,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import me.luzhuo.lib_core.app.base.CoreBaseApplication;
 
 /**
  * Description: UI计算
@@ -36,10 +35,14 @@ import androidx.annotation.Nullable;
  **/
 public class UICalculation {
     private Context context;
-    private StatusBarUtils statusBar = new StatusBarUtils();
-    private NavigationBarUtils navigationBar = new NavigationBarUtils();
+    private final StatusBarUtils statusBar = new StatusBarUtils();
+    private final NavigationBarUtils navigationBar = new NavigationBarUtils();
 
-    public UICalculation(@NonNull Context context){
+    public UICalculation() {
+        this.context = CoreBaseApplication.appContext;
+    }
+
+    public UICalculation(@NonNull Context context) {
         this.context = context.getApplicationContext();
     }
 
