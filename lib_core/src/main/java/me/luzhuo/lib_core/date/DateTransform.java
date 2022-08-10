@@ -33,7 +33,7 @@ import me.luzhuo.lib_core.date.enums.FormatRule;
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
 public class DateTransform {
-    private Map<FormatRule, SimpleDateFormat> formatRules = new HashMap<>();
+    private final Map<FormatRule, SimpleDateFormat> formatRules = new HashMap<>();
 
     private SimpleDateFormat getFormat(FormatRule rule){
         SimpleDateFormat simpleDateFormat = formatRules.get(rule);

@@ -185,6 +185,7 @@ public class AppManager {
      * @return 5F200783B117251F137FA19A365EFD932293E8D1
      */
     @Nullable
+    @Deprecated
     public String getDeviceId() {
         return new DeviceIdUtils().getDeviceId(context);
     }

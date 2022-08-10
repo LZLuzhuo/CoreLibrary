@@ -28,11 +28,13 @@ import androidx.annotation.Nullable;
 
 /**
  * Description: 设备唯一ID获取工具
+ * 废弃: 相同型号的手机, 唯一id是相同的
  *
  * @Author: Luzhuo
  * @Creation Date: 2020/11/2 11:34
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
+@Deprecated
 class DeviceIdUtils {
     @Nullable
     public String getDeviceId(Context context) {

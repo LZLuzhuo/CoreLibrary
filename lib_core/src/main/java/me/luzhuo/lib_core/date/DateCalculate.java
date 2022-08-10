@@ -33,7 +33,7 @@ import me.luzhuo.lib_core.date.enums.TimeRule;
  **/
 public class DateCalculate {
     private static final String TAG = DateCalculate.class.getSimpleName();
-    private DateCalendar calendar = new DateCalendar();
+    private final DateCalendar calendar = new DateCalendar();
 
     /**
      * 是否是今天
@@ -206,6 +206,38 @@ public class DateCalculate {
         }
 
         return fomatString;
+    }
+
+    /**
+     * 将秒转成时分秒的格式
+     * 0    :   00:00
+     * 1    :   00:01
+     * 33   :   00:33
+     * 60   :   01:00
+     * 70   :   01:10
+     * 1980 :   33:00
+     * 666666   :   185:11:06
+     * @param seconds s
+     * @return 时:分:秒 00:03:41
+     */
+    public static String secondFormat(long seconds){
+        long temp = 0;
+        final StringBuilder sb = new StringBuilder();
+        // 时
+        temp = seconds / 3600;
+        if (temp != 0) sb.append(String.format(Locale.getDefault(), "%02d:", temp));
+
+        // 分
+        temp = seconds % 3600 / 60;
+        if (temp != 0) sb.append(String.format(Locale.getDefault(), "%02d:", temp));
+        else sb.append("00:");
+
+        // 秒
+        temp = seconds % 3600 % 60;
+        if (temp != 0) sb.append(String.format(Locale.getDefault(), "%02d", temp));
+        else sb.append("00");
+
+        return sb.toString();
     }
 
     /**
