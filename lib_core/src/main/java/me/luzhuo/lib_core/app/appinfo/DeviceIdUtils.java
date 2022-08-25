@@ -14,6 +14,7 @@
  */
 package me.luzhuo.lib_core.app.appinfo;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
@@ -28,13 +29,11 @@ import androidx.annotation.Nullable;
 
 /**
  * Description: 设备唯一ID获取工具
- * 废弃: 相同型号的手机, 唯一id是相同的
  *
  * @Author: Luzhuo
  * @Creation Date: 2020/11/2 11:34
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
-@Deprecated
 class DeviceIdUtils {
     @Nullable
     public String getDeviceId(Context context) {
@@ -68,28 +67,31 @@ class DeviceIdUtils {
     }
 
     private String getDeviceUUID() {
-        String dev = "10086" + Build.BOARD.length() +
-                Build.BRAND.length() +
-                Build.DEVICE.length() +
-                Build.HARDWARE.length() +
-                Build.ID.length() +
-                Build.MODEL.length() +
-                Build.PRODUCT.length() +
-                getSerial().length();
+        String dev = "10086" + Build.BOARD +
+                Build.BRAND +
+                Build.DEVICE +
+                Build.HARDWARE +
+                Build.ID +
+                Build.MODEL +
+                Build.PRODUCT +
+                getSerial();
         return new UUID(dev.hashCode(), getSerial().hashCode()).toString().replace("-", "");
     }
 
+    @SuppressLint("HardwareIds")
     private String getSerial() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            try {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 return Build.getSerial();
-            } catch (Exception e) {
-                return "123321";
+            } else {
+                return Build.SERIAL;
             }
+        } catch (Exception e) {
+            return "123321";
         }
-        return "123321";
     }
 
+    @SuppressLint("HardwareIds")
     private String getAndroidId(Context context) {
         try {
             return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);

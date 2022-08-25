@@ -8,7 +8,7 @@
 
     <application>
         <provider
-            android:name="androidx.core.content.FileProvider"
+            android:name=".app.appinfo.CoreProvider"
             android:authorities="me.luzhuo.fileprovider.${applicationId}"
             android:exported="false"
             android:grantUriPermissions="true">

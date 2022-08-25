@@ -160,13 +160,14 @@ public class BaseUserInfo {
 
     // =====================================================
 
-    public void setToken(String token){
+    public void setToken(@Nullable String token){
         if(TextUtils.isEmpty(token)) return;
 
         this.token = token;
         put("token", token);
     }
 
+    @Nullable
     public String getToken(){
         if(!TextUtils.isEmpty(token)) return this.token;
 

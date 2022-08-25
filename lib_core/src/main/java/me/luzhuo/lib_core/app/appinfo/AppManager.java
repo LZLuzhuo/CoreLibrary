@@ -31,15 +31,18 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Process;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
 import java.io.File;
 import java.security.MessageDigest;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
@@ -185,7 +188,6 @@ public class AppManager {
      * @return 5F200783B117251F137FA19A365EFD932293E8D1
      */
     @Nullable
-    @Deprecated
     public String getDeviceId() {
         return new DeviceIdUtils().getDeviceId(context);
     }
@@ -230,20 +232,6 @@ public class AppManager {
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
         return view.getDrawingCache();
-    }
-
-    /**
-     * 获得当前进程的名字
-     * @return 进程名, 默认进程为报名 (com.jincai.myapplication)
-     */
-    @Nullable
-    public String processName() {
-        int pid = android.os.Process.myPid();
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager.getRunningAppProcesses()) {
-            if (appProcess.pid == pid) { return appProcess.processName; }
-        }
-        return null;
     }
 
     /**
@@ -357,5 +345,57 @@ public class AppManager {
         cm.setSaturation(0f);
         paint.setColorFilter(new ColorMatrixColorFilter(cm));
         view.setLayerType(View.LAYER_TYPE_HARDWARE, paint);
+    }
+
+    /**
+     * 在多进程的App中, 常常需要知道当前进程是 主进程 还是 后台进程.
+     * @param applicationId BuildConfig.APPLICATION_ID
+     * @return 主进程true, 非主进程false
+     */
+    public boolean isMainProcess(@NonNull String applicationId) {
+        return applicationId.equals(currentProcessName());
+    }
+
+    /**
+     * 获取当前进程名
+     */
+    @Nullable
+    public String currentProcessName() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) return getCurrentProcessName();
+        else return getCurrentProcessName(context);
+    }
+
+    /**
+     * 获取当前进程名
+     *
+     * 此函数的弊端:
+     * 1. ActivityManager.getRunningAppProcesses() 需要跨进程 和 系统进程的ActivityManagerService 通信, 效率不高
+     * 2. 拿到 RunningAppProcessInfo 的列表之后, 需要遍历一遍找到与当前进程的信息, 循环会影响效率
+     * 3. 此函数的多次地方会调用失败, 返回null
+     */
+    @Nullable
+    private String getCurrentProcessName(@Nullable Context context) {
+        if (context == null) return null;
+
+        ActivityManager am = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        if (am == null) return null;
+
+        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
+        if (runningAppProcesses == null) return null;
+
+        int myPid = Process.myPid();
+        for (ActivityManager.RunningAppProcessInfo runningAppProcess : runningAppProcesses) {
+            if (runningAppProcess.pid == myPid) return runningAppProcess.processName;
+        }
+        return null;
+    }
+
+    /**
+     * 获取当前进程名
+     */
+    @NonNull
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    private String getCurrentProcessName() {
+        return Application.getProcessName();
     }
 }

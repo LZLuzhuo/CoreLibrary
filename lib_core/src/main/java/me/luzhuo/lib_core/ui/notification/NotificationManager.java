@@ -128,17 +128,22 @@ public class NotificationManager {
     }
 
     public PendingIntent createIntent_Activity(@NonNull Intent intent) {
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, flags());
         return pendingIntent;
     }
 
     public PendingIntent createIntent_Service(@NonNull Intent intent) {
-        PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, flags());
         return pendingIntent;
     }
 
     public PendingIntent createIntent_Broadcast(@NonNull Intent intent) {
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, flags());
         return pendingIntent;
+    }
+
+    public int flags() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) return PendingIntent.FLAG_IMMUTABLE; // Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent.
+        return  0;
     }
 }
