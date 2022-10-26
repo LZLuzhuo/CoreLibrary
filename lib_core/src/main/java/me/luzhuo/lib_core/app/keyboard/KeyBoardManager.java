@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Description: 软键盘工具
@@ -50,7 +51,7 @@ public class KeyBoardManager {
      * 显示键盘
      * 弹出的键盘类型与editText的配置有关
      */
-    public void show(@NonNull EditText editText) {
+    public void show(@Nullable EditText editText) {
         if (editText == null) return;
 
         editText.requestFocus(); // 请求获取焦点
@@ -60,7 +61,7 @@ public class KeyBoardManager {
     /**
      * 隐藏软键盘
      */
-    public void hide(@NonNull View view) {
+    public void hide(@Nullable View view) {
         if (view == null) return;
 
         try {
@@ -71,7 +72,7 @@ public class KeyBoardManager {
     /**
      * 隐藏软键盘
      */
-    public void hide(@NonNull Activity activity) {
+    public void hide(@Nullable Activity activity) {
         if (activity == null) return;
 
         try {

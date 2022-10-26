@@ -164,6 +164,10 @@ public class ScreenshotManager {
         return bigBitmap;
     }
 
+    /**
+     * 在WebView创建之前调用
+     * 可以放在Application调用
+     */
     public static void initWebViewScreenshot() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             android.webkit.WebView.enableSlowWholeDocumentDraw();

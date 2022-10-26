@@ -32,7 +32,6 @@ import me.luzhuo.lib_core.date.enums.TimeRule;
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
 public class DateCalculate {
-    private static final String TAG = DateCalculate.class.getSimpleName();
     private final DateCalendar calendar = new DateCalendar();
 
     /**

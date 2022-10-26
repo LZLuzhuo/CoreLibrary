@@ -25,7 +25,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
@@ -220,18 +219,6 @@ public class AppManager {
             }
         } catch (Exception ignored) { }
         return "";
-    }
-
-    /**
-     * 对指定的View进行截屏
-     * @param view 指定的View
-     * @return 截频返回的Bitmap
-     */
-    @Nullable
-    public Bitmap screenshot(@NonNull View view) {
-        view.setDrawingCacheEnabled(true);
-        view.buildDrawingCache();
-        return view.getDrawingCache();
     }
 
     /**

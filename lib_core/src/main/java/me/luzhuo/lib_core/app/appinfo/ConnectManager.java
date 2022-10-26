@@ -14,12 +14,16 @@
  */
 package me.luzhuo.lib_core.app.appinfo;
 
+import android.Manifest;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
+import me.luzhuo.lib_core.app.base.CoreBaseApplication;
 
 /**
  * Description: 手机网络连接管理
@@ -28,6 +32,15 @@ import androidx.annotation.RequiresPermission;
  * @Copyright: Copyright 2022 Luzhuo. All rights reserved.
  **/
 public class ConnectManager {
+    private Context context;
+
+    public ConnectManager() {
+        this.context = CoreBaseApplication.appContext;
+    }
+
+    public ConnectManager(Context context) {
+        this.context = context.getApplicationContext();
+    }
 
     public enum ConnectType {
         NONE, WIFI, MOBILE
@@ -39,7 +52,7 @@ public class ConnectManager {
      */
     @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     @NonNull
-    public ConnectType checkConnectType(@NonNull Context context) {
+    public ConnectType checkConnectType() {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mobileWorkInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         if (mobileWorkInfo != null) {
@@ -54,4 +67,24 @@ public class ConnectManager {
         return ConnectType.NONE;
     }
 
+    /**
+     * 获取wifi的ip
+     * @return ipv4
+     */
+    @RequiresPermission(Manifest.permission.ACCESS_WIFI_STATE)
+    public int wifiIP() {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        return wifiInfo.getIpAddress(); // IPV4
+    }
+
+    /**
+     * int类型的ipv4转为String类型的IPV4
+     * @param ipv4 int类型的IPV4
+     * @return String类型的IPV4
+     */
+    @NonNull
+    public String ipv4(int ipv4) {
+        return (ipv4 & 0xFF) + "." + (ipv4 >> 8 & 0xFF) + "." + (ipv4 >> 16 & 0xFF) + "." + (ipv4 >> 24 & 0xFF);
+    }
 }

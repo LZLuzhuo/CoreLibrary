@@ -121,7 +121,7 @@ public class ToastManager {
     /**
      * 显示View的吐司
      * toast.showViewToast(this, LayoutInflater.from(this).inflate(R.layout.view_toast, null, false))
-     * Android 11 (API30) 及以上不再允许自定义Toast
+     * Android 11 (API30) 及以上, 后台不再允许使用自定义Toast, 前台不受影响
      */
     public static void showView(@NonNull Context context, @NonNull final View view) {
         if (Looper.myLooper() != Looper.getMainLooper()) {

@@ -14,6 +14,8 @@
  */
 package me.luzhuo.lib_core_ktx
 
+import android.text.TextUtils
+
 val Any?.int: Int? get() = try {
     this?.toString()?.toFloat()?.toInt()
 } catch (e: Exception) {
@@ -48,3 +50,5 @@ val Float?.float: Float get() = this ?: 0.0f
 val String?.string: String get() = this ?: ""
 val Boolean?.bool: Boolean get() = this ?: false
 val Long.int: Int get() = this.toInt()
+
+val CharSequence?.isEmpty: Boolean get() = TextUtils.isEmpty(this)
