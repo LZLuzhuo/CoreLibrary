@@ -32,7 +32,7 @@ import androidx.fragment.app.FragmentActivity;
  * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
  **/
 public class ActivityFinishManager {
-    private Map<String, List<FragmentActivity>> activitys = new LinkedHashMap<>();
+    private final Map<String, List<FragmentActivity>> activitys = new LinkedHashMap<>();
 
     private ActivityFinishManager() { }
     private static class Instance{

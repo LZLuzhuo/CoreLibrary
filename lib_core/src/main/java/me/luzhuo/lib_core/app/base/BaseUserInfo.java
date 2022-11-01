@@ -14,20 +14,15 @@
  */
 package me.luzhuo.lib_core.app.base;
 
-import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Base64;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import me.luzhuo.lib_core.data.SharedPreferencesManager;
 
 /**
  * Description: 用户信息管理
@@ -35,128 +30,73 @@ import androidx.annotation.Nullable;
  * @Creation Date: 2021/3/14 15:05
  * @Copyright: Copyright 2021 Luzhuo. All rights reserved.
  **/
-@SuppressLint("ApplySharedPref")
 public class BaseUserInfo {
-    protected SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(CoreBaseApplication.appContext);
+    private final SharedPreferencesManager sharedPreferences = new SharedPreferencesManager();
+    private final Cache cache = new Cache();
 
     protected String token;
 
     public void put(@NonNull String name, @Nullable String value) {
-        preferences.edit().putString(name, value).commit();
+        sharedPreferences.put_string(name, value);
     }
 
     @NonNull
     public String get(@NonNull String name) {
-        try {
-            return preferences.getString(name, "");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
+        return sharedPreferences.get_string(name);
     }
 
     public void put_bool(@NonNull String name, boolean value) {
-        preferences.edit().putBoolean(name, value).commit();
+        sharedPreferences.put_bool(name, value);
     }
 
     public boolean get_bool(@NonNull String name) {
-        try {
-            return preferences.getBoolean(name, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        return sharedPreferences.get_bool(name);
     }
 
     public void put_int(@NonNull String name, int value) {
-        preferences.edit().putInt(name, value).commit();
+        sharedPreferences.put_int(name, value);
     }
 
     public int get_int(@NonNull String name) {
-        try {
-            return preferences.getInt(name, -1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
+        return sharedPreferences.get_int(name);
     }
 
     public void put_long(@NonNull String name, long value) {
-        preferences.edit().putLong(name, value).commit();
+        sharedPreferences.put_long(name, value);
     }
 
     public long get_long(@NonNull String name) {
-        try {
-            return preferences.getLong(name, -1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
+        return sharedPreferences.get_long(name);
     }
 
     public void put_float(@NonNull String name, float value) {
-        preferences.edit().putFloat(name, value).commit();
+        sharedPreferences.put_float(name, value);
     }
 
     public float get_float(@NonNull String name) {
-        try {
-            return preferences.getFloat(name, -1F);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1f;
-        }
+        return sharedPreferences.get_float(name);
     }
 
     public void put_obj(@NonNull String name, @Nullable Serializable value) {
-        if (value == null) {
-            put(name, null);
-            return;
-        }
-
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(value);
-            // 将对象转为Base64
-            String base64 = Byte2Base64(baos.toByteArray());
-            put(name, base64);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        sharedPreferences.put_obj(name, value);
     }
 
     @Nullable
     public Object get_obj(@NonNull String name) {
-        try {
-            String base64 = get(name);
-            if (TextUtils.isEmpty(base64)) return null;
-            // 将base64转为对象
-            byte[] bytes = Base642Byte(base64);
-            ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-            ObjectInputStream ois = new ObjectInputStream(bais);
-            Object obj = ois.readObject();
-            ois.close();
-            return obj;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private String Byte2Base64(@NonNull byte[] bytes) {
-        byte[] encode = Base64.encode(bytes, 0, bytes.length, 0);
-        return new String(encode);
-    }
-
-    private byte[] Base642Byte(@NonNull String base64) {
-        byte[] decode = Base64.decode(base64, 0);
-        return decode;
+        return sharedPreferences.get_obj(name);
     }
 
     public void clear() {
         this.token = null;
-        preferences.edit().clear().commit();
+        cache.save(this);
+        sharedPreferences.clear();
+        cache.restore(this);
     }
+
+    /**
+     * 重写该钩子, 实现部分缓存不清空
+     */
+    public void cacheSave(@NonNull Cache cache) { }
 
     // =====================================================
 
@@ -173,5 +113,25 @@ public class BaseUserInfo {
 
         this.token = get("token");
         return this.token;
+    }
+
+    public static class Cache {
+        public final Map<String, String> cache_string = new HashMap<>();
+        public final Map<String, Boolean> cache_bool = new HashMap<>();
+        public final Map<String, Integer> cache_int = new HashMap<>();
+        public final Map<String, Long> cache_long = new HashMap<>();
+        public final Map<String, Float> cache_float = new HashMap<>();
+
+        public void save(@NonNull BaseUserInfo userInfo) {
+            userInfo.cacheSave(this);
+        }
+
+        public void restore(BaseUserInfo userInfo) {
+            for (String value : cache_string.keySet()) { userInfo.put(value, cache_string.get(value)); }
+            for (String value : cache_bool.keySet()) { userInfo.put_bool(value, cache_bool.get(value)); }
+            for (String value : cache_int.keySet()) { userInfo.put_int(value, cache_int.get(value)); }
+            for (String value : cache_long.keySet()) { userInfo.put_long(value, cache_long.get(value)); }
+            for (String value : cache_float.keySet()) { userInfo.put_float(value, cache_float.get(value)); }
+        }
     }
 }

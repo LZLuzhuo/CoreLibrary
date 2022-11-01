@@ -49,6 +49,7 @@ public class HashManager {
     private static final String SHA256 = "SHA-256";
     private static final String SHA384 = "SHA-384";
     private static final String SHA512 = "SHA-512";
+    private final Base64Manager base64 = Base64Manager.getInstance();
 
     private HashManager() { }
     public static HashManager getInstance(){
@@ -89,11 +90,9 @@ public class HashManager {
         if (TextUtils.isEmpty(content)) return null;
 
         if (action == HashAction.Encode) {
-            byte[] encode = Base64.encode(content.getBytes(Charset.defaultCharset()), Base64.DEFAULT);
-            return new String(encode);
+            return base64.String2Base64(content);
         } else if (action == HashAction.Decode) {
-            byte[] decode = Base64.decode(content, Base64.DEFAULT);
-            return new String(decode, Charset.defaultCharset());
+            return base64.Base642String(content);
         }
         return null;
     }
@@ -105,16 +104,7 @@ public class HashManager {
      */
     @Nullable
     public String getFileToBase64(@NonNull InputStream inputStream) {
-        try {
-            byte[] bytes = new byte[inputStream.available()];
-            int length = inputStream.read(bytes);
-
-            byte[] encode = Base64.encode(bytes, 0, length, Base64.DEFAULT);
-            return new String(encode);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return base64.File2Base64(inputStream);
     }
 
     /**
@@ -125,9 +115,7 @@ public class HashManager {
     @Nullable
     public byte[] getBase64ToFile(@Nullable String base64Content) {
         if (TextUtils.isEmpty(base64Content)) return null;
-
-        byte[] decode = Base64.decode(base64Content, Base64.DEFAULT);
-        return decode;
+        return base64.Base642File(base64Content);
     }
 
     /**
