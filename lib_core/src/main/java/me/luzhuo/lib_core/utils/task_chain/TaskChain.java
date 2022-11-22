@@ -26,9 +26,9 @@ import androidx.annotation.NonNull;
  **/
 public class TaskChain {
     // 开始的第一个任务
-    private Task startTask = null;
+    protected Task startTask = null;
     // 结束的最后一个任务
-    private Task endTask = null;
+    protected Task endTask = null;
 
     /**
      * 添加任务

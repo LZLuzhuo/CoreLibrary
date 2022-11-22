@@ -126,7 +126,7 @@ public class BaseUserInfo {
             userInfo.cacheSave(this);
         }
 
-        public void restore(BaseUserInfo userInfo) {
+        public void restore(@NonNull BaseUserInfo userInfo) {
             for (String value : cache_string.keySet()) { userInfo.put(value, cache_string.get(value)); }
             for (String value : cache_bool.keySet()) { userInfo.put_bool(value, cache_bool.get(value)); }
             for (String value : cache_int.keySet()) { userInfo.put_int(value, cache_int.get(value)); }
