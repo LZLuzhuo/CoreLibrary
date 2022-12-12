@@ -32,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import me.luzhuo.lib_core.app.appinfo.AppManager;
+import me.luzhuo.lib_core.app.base.CoreBaseApplication;
 import me.luzhuo.lib_core.data.hashcode.HashManager;
 import me.luzhuo.lib_core.media.ImageManager;
 import me.luzhuo.lib_file.FileManager;
@@ -44,7 +45,7 @@ import me.luzhuo.lib_file.FileManager;
 class Camera extends ActivityResultContract<Void, String> {
     private Uri imageUri;
     private File photoFile;
-    private final FileManager fileManager = new FileManager();
+    private final FileManager fileManager = new FileManager(CoreBaseApplication.appContext);
     private final ImageManager imageManager = new ImageManager();
     private static final String authority = AppManager.AUTHORITY;
     private Context context;

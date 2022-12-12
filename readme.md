@@ -3,13 +3,13 @@
 # 1. 导包
 
 ```groovy
-implementation 'me.luzhuo.android:lib_core:2.0.4'
-implementation 'me.luzhuo.android:lib_core_ktx:2.0.4'
+implementation 'me.luzhuo.android:lib_core:2.5.89'
+implementation 'me.luzhuo.android:lib_core_ktx:2.3.24'
 ```
 
 # 2. 使用文档
 
-https://www.yuque.com/luzhuo/library
+https://www.yuque.com/luzhuo/library/lib_core
 
 # 3. 版权
 

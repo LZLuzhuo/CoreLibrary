@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import java.io.File;
 
@@ -29,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.core.util.Pair;
+import me.luzhuo.lib_core.app.base.CoreBaseApplication;
 import me.luzhuo.lib_core.data.hashcode.HashManager;
 import me.luzhuo.lib_file.FileManager;
 
@@ -41,7 +41,7 @@ import me.luzhuo.lib_file.FileManager;
 class VideoRecorder extends ActivityResultContract<Void, Pair<Uri, File>> {
     private Uri videoUri;
     private File videoFile;
-    private final FileManager fileManager = new FileManager();
+    private final FileManager fileManager = new FileManager(CoreBaseApplication.appContext);
     private static final String authority = "me.luzhuo.fileprovider.";
     private VideoQuality quality;
     private int durationLimit;

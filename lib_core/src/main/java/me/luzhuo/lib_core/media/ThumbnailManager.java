@@ -87,7 +87,7 @@ public class ThumbnailManager {
             Bitmap bitmap = getVideoThumbnail(context, videoFile);
             if(bitmap == null) return null;
 
-            new FileManager().Bitmap2JPGFile(bitmap, savePath);
+            new FileManager(context).Bitmap2JPGFile(bitmap, savePath);
             return savePath;
         } catch (IOException e) {
             e.printStackTrace();
